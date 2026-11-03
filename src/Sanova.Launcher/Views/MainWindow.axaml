@@ -1,0 +1,178 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Sanova.Launcher.ViewModels"
+        xmlns:svc="using:Sanova.Launcher.Services"
+        xmlns:l="using:Sanova.Launcher.Infrastructure"
+        xmlns:ctl="using:Sanova.Launcher.Controls"
+        xmlns:chrome="using:Avalonia.Controls.Chrome"
+        x:Class="Sanova.Launcher.Views.MainWindow"
+        x:DataType="vm:MainViewModel"
+        Title="SANOVA Launcher"
+        Icon="/Assets/Branding/sanova.ico"
+        Width="1200" Height="780" MinWidth="980" MinHeight="660"
+        WindowStartupLocation="CenterScreen"
+        WindowDecorations="BorderOnly"
+        ExtendClientAreaToDecorationsHint="True">
+
+  <Panel>
+    <Grid ColumnDefinitions="236,*">
+
+      <!-- Sidebar -->
+      <Border Grid.Column="0" Background="{DynamicResource Bg1}" BorderBrush="{DynamicResource Line}" BorderThickness="0,0,1,0">
+        <Grid RowDefinitions="Auto,Auto,*,Auto,Auto">
+          <Panel Grid.Row="0" Height="84" Background="Transparent" chrome:WindowDecorationProperties.ElementRole="TitleBar">
+            <StackPanel Orientation="Horizontal" Spacing="12" Margin="22,26,0,0" VerticalAlignment="Top" IsHitTestVisible="False">
+              <ctl:LogoMark Width="32" Height="32" />
+              <StackPanel VerticalAlignment="Center" Spacing="1">
+                <TextBlock Text="SANOVA" FontWeight="Black" FontSize="17" LetterSpacing="3.4" />
+                <TextBlock Text="{l:Tr app.tagline}" FontSize="11" Classes="faint" />
+              </StackPanel>
+            </StackPanel>
+          </Panel>
+
+          <ListBox Grid.Row="1" Classes="nav" ItemsSource="{Binding PrimaryNav}" SelectedItem="{Binding SelectedPrimary}">
+            <ListBox.ItemTemplate>
+              <DataTemplate x:DataType="vm:NavItem">
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                  <PathIcon Data="{Binding Icon}" Margin="0,0,13,0" />
+                  <TextBlock Grid.Column="1" Text="{Binding Label.Value}" VerticalAlignment="Center" />
+                  <Border Grid.Column="2" Classes="badge" IsVisible="{Binding HasBadge}" VerticalAlignment="Center" />
+                </Grid>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+
+          <ListBox Grid.Row="3" Classes="nav" ItemsSource="{Binding SecondaryNav}" SelectedItem="{Binding SelectedSecondary}" Margin="0,0,0,8">
+            <ListBox.ItemTemplate>
+              <DataTemplate x:DataType="vm:NavItem">
+                <Grid ColumnDefinitions="Auto,*">
+                  <PathIcon Data="{Binding Icon}" Margin="0,0,13,0" />
+                  <TextBlock Grid.Column="1" Text="{Binding Label.Value}" VerticalAlignment="Center" />
+                </Grid>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+
+          <Panel Grid.Row="4" Margin="14,0,14,16">
+            <Border Padding="12,10" CornerRadius="10" Background="{DynamicResource Bg2}" IsVisible="{Binding Operations.IsRunning}">
+              <StackPanel Spacing="7">
+                <TextBlock Text="{Binding Operations.Title.Value}" FontWeight="SemiBold" FontSize="12.5" TextTrimming="CharacterEllipsis" />
+                <ProgressBar Classes="thin" Maximum="100" Value="{Binding Operations.Fraction}" IsIndeterminate="{Binding Operations.IsIndeterminate}" />
+                <TextBlock Text="{Binding Operations.StageText.Value}" FontSize="11.5" Classes="faint" TextTrimming="CharacterEllipsis" />
+              </StackPanel>
+            </Border>
+            <TextBlock Text="{Binding VersionText.Value}" Classes="faint" FontSize="11.5" Margin="10,0,0,2" IsVisible="{Binding !Operations.IsRunning}" />
+          </Panel>
+        </Grid>
+      </Border>
+
+      <!-- Pages -->
+      <TransitioningContentControl Grid.Column="1" Content="{Binding CurrentPage}">
+        <TransitioningContentControl.PageTransition>
+          <CrossFade Duration="0:0:0.14" />
+        </TransitioningContentControl.PageTransition>
+      </TransitioningContentControl>
+    </Grid>
+
+    <!-- First-run setup -->
+    <ContentControl Content="{Binding Setup}" IsVisible="{Binding IsSetupVisible}" />
+
+    <!-- Toasts -->
+    <ItemsControl ItemsSource="{Binding Toasts}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,24,24" Width="370">
+      <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+          <StackPanel Spacing="10" />
+        </ItemsPanelTemplate>
+      </ItemsControl.ItemsPanel>
+      <ItemsControl.ItemTemplate>
+        <DataTemplate x:DataType="svc:ToastViewModel">
+          <Border Classes="toast">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+              <Panel Width="20" Height="20" VerticalAlignment="Top" Margin="0,1,0,0">
+                <PathIcon Data="{StaticResource Icon.CheckCircle}" Classes="success" IsVisible="{Binding IsSuccess}" />
+                <PathIcon Data="{StaticResource Icon.Warning}" Classes="warning" IsVisible="{Binding IsWarning}" />
+                <PathIcon Data="{StaticResource Icon.Error}" Classes="danger" IsVisible="{Binding IsDanger}" />
+                <PathIcon Data="{StaticResource Icon.InfoFilled}" Classes="accent" IsVisible="{Binding IsInfo}" />
+              </Panel>
+              <StackPanel Grid.Column="1" Spacing="3" Margin="12,0,8,0">
+                <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextWrapping="Wrap" />
+                <TextBlock Text="{Binding Message}" Classes="small muted wrap" IsVisible="{Binding HasMessage}" />
+                <Button Classes="link" Content="{Binding ActionText}" Command="{Binding InvokeCommand}" IsVisible="{Binding HasAction}" Margin="0,4,0,0" FontSize="13" />
+              </StackPanel>
+              <Button Grid.Column="2" Classes="icon" Width="26" Height="26" VerticalAlignment="Top" Command="{Binding DismissCommand}" ToolTip.Tip="{l:Tr common.dismiss}"
+                      AutomationProperties.Name="{l:Tr common.dismiss}">
+                <PathIcon Data="{StaticResource Icon.Dismiss}" Width="10" Height="10" />
+              </Button>
+            </Grid>
+          </Border>
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+
+    <!-- Dialogs -->
+    <Panel IsVisible="{Binding Dialogs.Current, Converter={x:Static ObjectConverters.IsNotNull}}">
+      <Border Background="{DynamicResource Scrim}" />
+      <ContentControl Content="{Binding Dialogs.Current}" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <ContentControl.ContentTemplate>
+          <DataTemplate x:DataType="svc:DialogViewModel">
+            <Border Classes="dialog" Width="500" Padding="28,26,28,24">
+              <StackPanel Spacing="16">
+                <Grid ColumnDefinitions="Auto,*">
+                  <Panel Width="24" Height="24" VerticalAlignment="Top" Margin="0,1,14,0">
+                    <PathIcon Classes="large success" Data="{StaticResource Icon.CheckCircle}" IsVisible="{Binding IsSuccess}" />
+                    <PathIcon Classes="large warning" Data="{StaticResource Icon.Warning}" IsVisible="{Binding IsWarning}" />
+                    <PathIcon Classes="large danger" Data="{StaticResource Icon.Error}" IsVisible="{Binding IsDanger}" />
+                    <PathIcon Classes="large accent" Data="{StaticResource Icon.InfoFilled}" IsVisible="{Binding IsInfo}" />
+                  </Panel>
+                  <TextBlock Grid.Column="1" Text="{Binding Title}" Classes="h2" />
+                </Grid>
+                <TextBlock Text="{Binding Message}" Classes="body muted" Margin="38,0,0,0" />
+                <StackPanel Spacing="8" IsVisible="{Binding HasDetails}" Margin="38,0,0,0">
+                  <Button Classes="link" Content="{l:Tr dialog.details}" Command="{Binding ToggleDetailsCommand}" FontSize="13" />
+                  <Border Classes="callout" MaxHeight="190" IsVisible="{Binding ShowDetails}">
+                    <ScrollViewer>
+                      <SelectableTextBlock Text="{Binding Details}" Classes="mono muted" TextWrapping="Wrap" />
+                    </ScrollViewer>
+                  </Border>
+                </StackPanel>
+                <ItemsControl ItemsSource="{Binding Buttons}" HorizontalAlignment="Right" Margin="0,8,0,0">
+                  <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                      <StackPanel Orientation="Horizontal" Spacing="10" />
+                    </ItemsPanelTemplate>
+                  </ItemsControl.ItemsPanel>
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="svc:DialogButton">
+                      <Button Content="{Binding Text}" Classes.primary="{Binding IsPrimary}" Classes.dangerFill="{Binding IsDanger}" MinWidth="96"
+                              HorizontalContentAlignment="Center"
+                              Command="{Binding $parent[ItemsControl].((svc:DialogViewModel)DataContext).ChooseCommand}" CommandParameter="{Binding}" />
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </StackPanel>
+            </Border>
+          </DataTemplate>
+        </ContentControl.ContentTemplate>
+      </ContentControl>
+    </Panel>
+
+    <!-- Title bar: drag area and caption buttons, above everything so the window stays controllable. -->
+    <Grid Height="40" VerticalAlignment="Top" ColumnDefinitions="236,*,Auto" IsVisible="True">
+      <Border Grid.Column="1" Background="Transparent" chrome:WindowDecorationProperties.ElementRole="TitleBar" />
+      <StackPanel Grid.Column="2" Orientation="Horizontal">
+        <Button Classes="caption" Click="OnMinimizeClick" chrome:WindowDecorationProperties.ElementRole="MinimizeButton" ToolTip.Tip="{l:Tr window.minimize}"
+                AutomationProperties.Name="{l:Tr window.minimize}">
+          <PathIcon Data="{StaticResource Icon.Minimize}" />
+        </Button>
+        <Button Classes="caption" Click="OnMaximizeClick" chrome:WindowDecorationProperties.ElementRole="MaximizeButton" ToolTip.Tip="{l:Tr window.maximize}"
+                AutomationProperties.Name="{l:Tr window.maximize}">
+          <PathIcon x:Name="MaximizeIcon" Data="{StaticResource Icon.Maximize}" />
+        </Button>
+        <Button Classes="caption close" Click="OnCloseClick" chrome:WindowDecorationProperties.ElementRole="CloseButton" ToolTip.Tip="{l:Tr window.close}"
+                AutomationProperties.Name="{l:Tr window.close}">
+          <PathIcon Data="{StaticResource Icon.Dismiss}" />
+        </Button>
+      </StackPanel>
+    </Grid>
+  </Panel>
+</Window>

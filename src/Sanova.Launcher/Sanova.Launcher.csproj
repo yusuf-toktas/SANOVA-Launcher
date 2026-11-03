@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Sanova.Launcher</RootNamespace>
+    <AssemblyName>SanovaLauncher</AssemblyName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\Branding\sanova.ico</ApplicationIcon>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <BuiltInComInteropSupport>false</BuiltInComInteropSupport>
+    <!-- Velopack packages the publish output; single-file is not required. -->
+    <SelfContained Condition="'$(RuntimeIdentifier)' != ''">true</SelfContained>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\**" Exclude="Assets\Fonts\OFL.txt" />
+    <!-- License texts shipped next to the executable, in a "licenses" folder. -->
+    <None Include="Assets\Fonts\OFL.txt" CopyToOutputDirectory="PreserveNewest" Link="licenses\Overpass-OFL.txt" />
+    <None Update="licenses\*.txt" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\LICENSE" CopyToOutputDirectory="PreserveNewest" Link="licenses\LICENSE.txt" />
+    <None Include="..\..\NOTICE" CopyToOutputDirectory="PreserveNewest" Link="licenses\NOTICE.txt" />
+    <None Include="..\..\THIRD-PARTY-NOTICES.md" CopyToOutputDirectory="PreserveNewest" Link="licenses\THIRD-PARTY-NOTICES.md" />
+    <None Remove="Localization\*.json" />
+    <EmbeddedResource Include="Localization\*.json" LogicalName="Sanova.Launcher.Localization.%(Filename)%(Extension)" />
+    <EmbeddedResource Include="distribution.json" LogicalName="Sanova.Launcher.distribution.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" />
+    <PackageReference Include="Avalonia.Desktop" />
+    <PackageReference Include="Avalonia.Themes.Fluent" />
+    <PackageReference Include="CommunityToolkit.Mvvm" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.Logging" />
+    <PackageReference Include="Serilog" />
+    <PackageReference Include="Serilog.Extensions.Logging" />
+    <PackageReference Include="Serilog.Sinks.File" />
+    <PackageReference Include="Velopack" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Sanova.Core\Sanova.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Sanova.Launcher.Tests" />
+  </ItemGroup>
+</Project>

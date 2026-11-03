@@ -1,0 +1,38 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:Sanova.Launcher.Infrastructure"
+             x:Class="Sanova.Launcher.App"
+             RequestedThemeVariant="Dark"
+             Name="SANOVA Launcher">
+
+  <Application.DataTemplates>
+    <local:ViewLocator />
+  </Application.DataTemplates>
+
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://SanovaLauncher/Themes/Tokens.axaml" />
+        <ResourceInclude Source="avares://SanovaLauncher/Themes/Icons.axaml" />
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </Application.Resources>
+
+  <Application.Styles>
+    <FluentTheme>
+      <FluentTheme.Palettes>
+        <ColorPaletteResources x:Key="Dark" Accent="#FFAA4D" RegionColor="#120E18" ErrorText="#FF6474"
+                               BaseHigh="#F4EFE8" BaseMediumHigh="#D8D0DE" BaseMedium="#B5ACBF" BaseMediumLow="#7E758A" BaseLow="#3D3349"
+                               AltHigh="#120E18" AltMediumHigh="#17121E" AltMedium="#211A2A" AltMediumLow="#2B2336" AltLow="#2E2638"
+                               ChromeHigh="#3D3349" ChromeMediumLow="#211A2A" ChromeMedium="#2B2336" ChromeLow="#17121E" ChromeAltLow="#F4EFE8"
+                               ListLow="#211A2A" ListMedium="#2B2336" />
+        <ColorPaletteResources x:Key="Light" Accent="#D9770F" RegionColor="#ECEEF1" ErrorText="#C8303F"
+                               BaseHigh="#1A1622" BaseMediumHigh="#33303C" BaseMedium="#4D4759" BaseMediumLow="#777083" BaseLow="#CBD0D8"
+                               AltHigh="#FFFFFF" AltMediumHigh="#F8F9FB" AltMedium="#ECEEF1" AltMediumLow="#E2E5EA" AltLow="#D7DBE2"
+                               ChromeHigh="#CBD0D8" ChromeMediumLow="#E2E5EA" ChromeMedium="#D7DBE2" ChromeLow="#F8F9FB" ChromeAltLow="#1A1622"
+                               ListLow="#E2E5EA" ListMedium="#D7DBE2" />
+      </FluentTheme.Palettes>
+    </FluentTheme>
+    <StyleInclude Source="avares://SanovaLauncher/Themes/Controls.axaml" />
+  </Application.Styles>
+</Application>

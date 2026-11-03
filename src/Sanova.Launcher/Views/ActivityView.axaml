@@ -1,0 +1,83 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Sanova.Launcher.ViewModels"
+             xmlns:l="using:Sanova.Launcher.Infrastructure"
+             x:Class="Sanova.Launcher.Views.ActivityView"
+             x:DataType="vm:ActivityViewModel">
+  <ScrollViewer>
+    <StackPanel Classes="page">
+      <StackPanel Spacing="8">
+        <TextBlock Text="{l:Tr activity.title}" Classes="h1" />
+        <TextBlock Text="{l:Tr activity.lede}" Classes="lede" />
+      </StackPanel>
+
+      <!-- Current operation -->
+      <Border Classes="group" Padding="22,20">
+        <Panel>
+          <StackPanel Spacing="12" IsVisible="{Binding Operations.IsRunning}">
+            <Grid ColumnDefinitions="*,Auto">
+              <StackPanel Spacing="3">
+                <TextBlock Text="{Binding Operations.Title.Value}" Classes="h2" />
+                <TextBlock Text="{Binding Operations.StageText.Value}" Classes="muted" />
+              </StackPanel>
+              <TextBlock Grid.Column="1" Text="{Binding Operations.PercentText.Value}" FontSize="26" FontWeight="ExtraBold" VerticalAlignment="Center" />
+            </Grid>
+            <ProgressBar Maximum="100" Value="{Binding Operations.Fraction}" IsIndeterminate="{Binding Operations.IsIndeterminate}" />
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Text="{Binding Operations.DetailText.Value}" Classes="small muted" VerticalAlignment="Center" />
+              <Button Grid.Column="1" Content="{l:Tr common.cancel}" Command="{Binding Operations.CancelCommand}" IsVisible="{Binding Operations.CanCancel}" />
+            </Grid>
+          </StackPanel>
+          <Grid ColumnDefinitions="Auto,*" IsVisible="{Binding IsIdle}">
+            <PathIcon Data="{StaticResource Icon.CheckCircle}" Classes="large success" VerticalAlignment="Top" Margin="0,2,14,0" />
+            <StackPanel Grid.Column="1" Spacing="3">
+              <TextBlock Text="{l:Tr activity.idleTitle}" Classes="h3" />
+              <TextBlock Text="{l:Tr activity.idleBody}" Classes="body muted" />
+            </StackPanel>
+          </Grid>
+        </Panel>
+      </Border>
+
+      <!-- History -->
+      <StackPanel Spacing="12">
+        <TextBlock Text="{l:Tr activity.history}" Classes="h2" />
+        <TextBlock Text="{l:Tr activity.noHistory}" Classes="muted" IsVisible="{Binding !HasHistory}" />
+        <Border Classes="group" IsVisible="{Binding HasHistory}">
+          <ItemsControl ItemsSource="{Binding History}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="vm:HistoryItem">
+                <Border Classes="row">
+                  <Grid ColumnDefinitions="Auto,*,Auto">
+                    <PathIcon Data="{Binding Icon}" Classes="small" Classes.success="{Binding IsSuccess}" Classes.danger="{Binding IsFailure}"
+                              Foreground="{DynamicResource Text3}" VerticalAlignment="Center" Margin="0,0,14,0" />
+                    <StackPanel Grid.Column="1" Spacing="2">
+                      <TextBlock Text="{Binding Title.Value}" FontWeight="SemiBold" />
+                      <TextBlock Text="{Binding Outcome.Value}" Classes="small muted" TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                    <TextBlock Grid.Column="2" Text="{Binding When.Value}" Classes="small faint" VerticalAlignment="Center" />
+                  </Grid>
+                </Border>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </Border>
+      </StackPanel>
+
+      <!-- Download cache -->
+      <StackPanel Spacing="12">
+        <TextBlock Text="{l:Tr activity.cache.title}" Classes="h2" />
+        <Border Classes="group">
+          <Border Classes="row last">
+            <Grid ColumnDefinitions="*,Auto">
+              <StackPanel Spacing="3" Margin="0,0,20,0">
+                <TextBlock Text="{Binding CacheText.Value}" Classes="h3" />
+                <TextBlock Text="{l:Tr activity.cache.body}" Classes="small muted wrap" />
+              </StackPanel>
+              <Button Grid.Column="1" Content="{l:Tr activity.cache.clear}" Command="{Binding ClearCacheCommand}" IsEnabled="{Binding HasCache}" VerticalAlignment="Center" />
+            </Grid>
+          </Border>
+        </Border>
+      </StackPanel>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

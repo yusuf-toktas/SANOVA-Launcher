@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Sanova.Core/Sanova.Core.csproj" />
+    <Project Path="src/Sanova.Launcher/Sanova.Launcher.csproj" />
+    <Project Path="src/Sanova.ManifestTool/Sanova.ManifestTool.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Sanova.Core.Tests/Sanova.Core.Tests.csproj" />
+    <Project Path="tests/Sanova.Launcher.Tests/Sanova.Launcher.Tests.csproj" />
+  </Folder>
+</Solution>

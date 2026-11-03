@@ -1,0 +1,32 @@
+<Project>
+  <!-- Shared build settings for every project in the repository. -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Deterministic>true</Deterministic>
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <NeutralLanguage>en</NeutralLanguage>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
+    <TreatWarningsAsErrors Condition="'$(CI)' == 'true'">true</TreatWarningsAsErrors>
+    <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <!-- Product metadata. The launcher version is the single source of truth for releases;
+       CI overrides it from the release tag (see docs/RELEASING.md). -->
+  <PropertyGroup>
+    <Version>0.1.0</Version>
+    <Product>SANOVA Launcher</Product>
+    <Company>SANOVA</Company>
+    <Authors>SANOVA contributors</Authors>
+    <Copyright>Copyright © 2026 SANOVA contributors</Copyright>
+    <Description>Installer, updater and launcher for SANOVA — San Andreas Reimagined.</Description>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/yusuf-toktas/SANOVA-Launcher</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/yusuf-toktas/SANOVA-Launcher</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+</Project>

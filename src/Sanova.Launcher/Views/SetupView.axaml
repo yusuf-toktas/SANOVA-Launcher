@@ -1,0 +1,399 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Sanova.Launcher.ViewModels"
+             xmlns:l="using:Sanova.Launcher.Infrastructure"
+             xmlns:ctl="using:Sanova.Launcher.Controls"
+             x:Class="Sanova.Launcher.Views.SetupView"
+             x:DataType="vm:SetupViewModel"
+             Background="{DynamicResource Bg0}">
+  <UserControl.Styles>
+    <Style Selector="Button.choice">
+      <Setter Property="Background" Value="{DynamicResource Bg1}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource Line}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="12" />
+      <Setter Property="Padding" Value="16,13" />
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+      <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+      <Setter Property="FontWeight" Value="Normal" />
+    </Style>
+    <Style Selector="Button.choice:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource Bg2}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource LineStrong}" />
+    </Style>
+    <Style Selector="Button.choice.selected">
+      <Setter Property="Background" Value="{DynamicResource AccentSoft}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource AccentFill}" />
+    </Style>
+    <Style Selector="Button.choice.selected:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource AccentSoft}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource AccentFill}" />
+    </Style>
+    <Style Selector="Border.radio">
+      <Setter Property="Width" Value="18" />
+      <Setter Property="Height" Value="18" />
+      <Setter Property="CornerRadius" Value="9" />
+      <Setter Property="BorderThickness" Value="2" />
+      <Setter Property="BorderBrush" Value="{DynamicResource LineStrong}" />
+    </Style>
+    <Style Selector="Button.choice.selected Border.radio">
+      <Setter Property="BorderBrush" Value="{DynamicResource AccentFill}" />
+      <Setter Property="BorderThickness" Value="5" />
+    </Style>
+    <Style Selector="Border.step">
+      <Setter Property="Width" Value="28" />
+      <Setter Property="Height" Value="28" />
+      <Setter Property="CornerRadius" Value="14" />
+      <Setter Property="BorderThickness" Value="1.5" />
+      <Setter Property="BorderBrush" Value="#59FFFFFF" />
+    </Style>
+    <Style Selector="Border.step.current">
+      <Setter Property="Background" Value="#FFAA4D" />
+      <Setter Property="BorderBrush" Value="#FFAA4D" />
+    </Style>
+    <Style Selector="Border.step.done">
+      <Setter Property="Background" Value="#334CC38A" />
+      <Setter Property="BorderBrush" Value="#4CC38A" />
+    </Style>
+    <Style Selector="Border.step TextBlock">
+      <Setter Property="Foreground" Value="#D9CFDF" />
+    </Style>
+    <Style Selector="Border.step.current TextBlock">
+      <Setter Property="Foreground" Value="#1C1206" />
+    </Style>
+  </UserControl.Styles>
+
+  <Grid ColumnDefinitions="380,*">
+    <!-- Left: artwork and steps -->
+    <Panel Grid.Column="0">
+      <ctl:DuskScene />
+      <Border>
+        <Border.Background>
+          <LinearGradientBrush StartPoint="0%,0%" EndPoint="0%,100%">
+            <GradientStop Offset="0" Color="#F2120E18" />
+            <GradientStop Offset="0.55" Color="#CC120E18" />
+            <GradientStop Offset="1" Color="#33120E18" />
+          </LinearGradientBrush>
+        </Border.Background>
+      </Border>
+      <StackPanel Margin="38,70,38,0" Spacing="34">
+        <StackPanel Spacing="14">
+          <ctl:LogoMark Width="46" Height="46" HorizontalAlignment="Left" />
+          <StackPanel Spacing="2">
+            <TextBlock Text="SANOVA" FontSize="34" FontWeight="Black" LetterSpacing="5" Foreground="{StaticResource WordmarkFill}" />
+            <TextBlock Text="{l:Tr app.tagline}" Classes="tagline" FontSize="13" LetterSpacing="1.6" />
+          </StackPanel>
+        </StackPanel>
+        <ItemsControl ItemsSource="{Binding Steps}">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <StackPanel Spacing="14" />
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+          <ItemsControl.ItemTemplate>
+            <DataTemplate x:DataType="vm:StepItem">
+              <StackPanel Orientation="Horizontal" Spacing="14">
+                <Border Classes="step" Classes.current="{Binding IsCurrent}" Classes.done="{Binding IsDone}">
+                  <Panel>
+                    <TextBlock Text="{Binding Number}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="13"
+                               IsVisible="{Binding !IsDone}" />
+                    <PathIcon Data="{StaticResource Icon.Check}" Width="13" Height="13" Foreground="#4CC38A" IsVisible="{Binding IsDone}" />
+                  </Panel>
+                </Border>
+                <TextBlock Text="{Binding Title.Value}" VerticalAlignment="Center" FontSize="14.5" FontWeight="SemiBold" Foreground="#D9CFDF" />
+              </StackPanel>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </StackPanel>
+    </Panel>
+
+    <!-- Right: step content -->
+    <Grid Grid.Column="1" RowDefinitions="*,Auto" Margin="58,66,58,34">
+      <ScrollViewer Grid.Row="0" Padding="0,0,16,0">
+        <Panel MaxWidth="700" HorizontalAlignment="Left">
+
+          <!-- Welcome -->
+          <StackPanel Spacing="22" IsVisible="{Binding IsWelcome}">
+            <TextBlock Text="{l:Tr setup.welcome.title}" Classes="h1" />
+            <TextBlock Text="{l:Tr setup.welcome.body}" Classes="lede" />
+            <StackPanel Spacing="10">
+              <TextBlock Text="{l:Tr setup.welcome.language}" Classes="label" />
+              <ItemsControl ItemsSource="{Binding Languages}">
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <StackPanel Spacing="8" />
+                  </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate x:DataType="vm:LanguageOption">
+                    <Button Classes="choice" Classes.selected="{Binding IsSelected}"
+                            Command="{Binding $parent[UserControl].((vm:SetupViewModel)DataContext).SelectLanguageCommand}" CommandParameter="{Binding}">
+                      <Grid ColumnDefinitions="Auto,*,Auto">
+                        <Border Classes="radio" VerticalAlignment="Center" Margin="0,0,14,0" />
+                        <TextBlock Grid.Column="1" Text="{Binding Name.Value}" FontSize="15" FontWeight="SemiBold" VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="2" Text="{Binding NativeName}" Classes="faint small" VerticalAlignment="Center" />
+                      </Grid>
+                    </Button>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </StackPanel>
+            <Border Classes="callout accent">
+              <Grid ColumnDefinitions="Auto,*">
+                <PathIcon Data="{StaticResource Icon.ShieldCheck}" Classes="accent" VerticalAlignment="Top" Margin="0,1,12,0" />
+                <TextBlock Grid.Column="1" Text="{l:Tr setup.welcome.note}" Classes="body" />
+              </Grid>
+            </Border>
+          </StackPanel>
+
+          <!-- Game -->
+          <StackPanel Spacing="20" IsVisible="{Binding IsGame}">
+            <TextBlock Text="{l:Tr setup.game.title}" Classes="h1" />
+            <TextBlock Text="{l:Tr setup.game.body}" Classes="lede" />
+            <StackPanel Spacing="10" IsVisible="{Binding IsDetecting}">
+              <ProgressBar IsIndeterminate="True" Width="280" HorizontalAlignment="Left" />
+              <TextBlock Text="{l:Tr setup.game.searching}" Classes="muted" />
+            </StackPanel>
+            <ItemsControl ItemsSource="{Binding Candidates}" IsVisible="{Binding !IsDetecting}">
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <StackPanel Spacing="8" />
+                </ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:CandidateItem">
+                  <Button Classes="choice" Classes.selected="{Binding IsSelected}"
+                          Command="{Binding $parent[UserControl].((vm:SetupViewModel)DataContext).SelectCandidateCommand}" CommandParameter="{Binding}">
+                    <Grid ColumnDefinitions="Auto,*">
+                      <Border Classes="radio" VerticalAlignment="Center" Margin="0,0,14,0" />
+                      <StackPanel Grid.Column="1" Spacing="3">
+                        <TextBlock Text="{Binding Directory}" FontWeight="SemiBold" TextTrimming="PrefixCharacterEllipsis" />
+                        <TextBlock Text="{Binding Source.Value}" Classes="small muted" />
+                        <TextBlock Text="{l:Tr setup.game.definitive}" Classes="small warning" IsVisible="{Binding IsDefinitive}" />
+                      </StackPanel>
+                    </Grid>
+                  </Button>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <Border Classes="callout" IsVisible="{Binding !HasCandidates}">
+              <StackPanel Spacing="4">
+                <TextBlock Text="{l:Tr setup.game.noneTitle}" Classes="h3" />
+                <TextBlock Text="{l:Tr setup.game.noneBody}" Classes="body muted" />
+              </StackPanel>
+            </Border>
+            <StackPanel Orientation="Horizontal" Spacing="10">
+              <Button Command="{Binding BrowseGameCommand}">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                  <PathIcon Data="{StaticResource Icon.FolderOpen}" Classes="small" />
+                  <TextBlock Text="{l:Tr setup.game.browse}" />
+                </StackPanel>
+              </Button>
+              <Button Classes="ghost" Command="{Binding DetectCommand}">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                  <PathIcon Data="{StaticResource Icon.Refresh}" Classes="small" />
+                  <TextBlock Text="{l:Tr setup.game.rescan}" />
+                </StackPanel>
+              </Button>
+            </StackPanel>
+            <StackPanel Spacing="10" IsVisible="{Binding HasExistingInstallations}">
+              <TextBlock Text="{l:Tr setup.game.existingTitle}" Classes="h3" Margin="0,10,0,0" />
+              <TextBlock Text="{l:Tr setup.game.existingBody}" Classes="body muted" />
+              <ItemsControl ItemsSource="{Binding ExistingInstallations}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate x:DataType="vm:CandidateItem">
+                    <Border Classes="callout" Margin="0,0,0,8">
+                      <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Text="{Binding Directory}" VerticalAlignment="Center" TextTrimming="PrefixCharacterEllipsis" />
+                        <Button Grid.Column="1" Classes="primary" Content="{l:Tr setup.game.useExisting}" Margin="12,0,0,0"
+                                Command="{Binding $parent[UserControl].((vm:SetupViewModel)DataContext).UseExistingCommand}" CommandParameter="{Binding}" />
+                      </Grid>
+                    </Border>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </StackPanel>
+          </StackPanel>
+
+          <!-- Compatibility -->
+          <StackPanel Spacing="20" IsVisible="{Binding IsCompatibility}">
+            <TextBlock Text="{l:Tr setup.compat.title}" Classes="h1" />
+            <StackPanel Spacing="10" IsVisible="{Binding IsChecking}">
+              <ProgressBar IsIndeterminate="True" Width="280" HorizontalAlignment="Left" />
+              <TextBlock Text="{l:Tr setup.compat.checking}" Classes="muted" />
+            </StackPanel>
+            <StackPanel Spacing="18" IsVisible="{Binding !IsChecking}">
+              <Border Classes="callout" Classes.success="{Binding CanProceedCompatibility}" Classes.danger="{Binding IsBlocked}">
+                <StackPanel Spacing="4">
+                  <TextBlock Text="{Binding VerdictTitle.Value}" Classes="h3" />
+                  <TextBlock Text="{Binding VerdictBody.Value}" Classes="body muted" />
+                </StackPanel>
+              </Border>
+              <StackPanel Spacing="3">
+                <TextBlock Text="{l:Tr setup.compat.version}" Classes="label" />
+                <TextBlock Text="{Binding ExecutableText.Value}" Classes="h3" />
+              </StackPanel>
+              <ItemsControl ItemsSource="{Binding Findings}">
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <StackPanel Spacing="14" />
+                  </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate x:DataType="vm:FindingItem">
+                    <Grid ColumnDefinitions="Auto,*">
+                      <PathIcon Data="{Binding Icon}" Classes.danger="{Binding IsError}" Classes.warning="{Binding IsWarning}" Classes.success="{Binding IsInfo}"
+                                VerticalAlignment="Top" Margin="0,1,12,0" />
+                      <StackPanel Grid.Column="1" Spacing="4">
+                        <TextBlock Text="{Binding Title.Value}" FontWeight="SemiBold" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding Body.Value}" Classes="body muted" />
+                        <ItemsControl ItemsSource="{Binding Items}" IsVisible="{Binding HasItems}" Margin="0,4,0,0">
+                          <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="x:String">
+                              <TextBlock Text="{Binding}" Classes="mono faint" />
+                            </DataTemplate>
+                          </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <TextBlock Text="{Binding MoreItems.Value}" Classes="small faint" />
+                      </StackPanel>
+                    </Grid>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+              <StackPanel Orientation="Horizontal" Spacing="10">
+                <Button Command="{Binding BackCommand}" Content="{l:Tr setup.compat.another}" />
+                <Button Classes="ghost" Command="{Binding RecheckCommand}" Content="{l:Tr setup.compat.recheck}" />
+              </StackPanel>
+            </StackPanel>
+          </StackPanel>
+
+          <!-- Location -->
+          <StackPanel Spacing="20" IsVisible="{Binding IsLocation}">
+            <TextBlock Text="{l:Tr setup.location.title}" Classes="h1" />
+            <TextBlock Text="{l:Tr setup.location.body}" Classes="lede" />
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBox Text="{Binding InstallPath}" />
+              <Button Grid.Column="1" Margin="10,0,0,0" Command="{Binding BrowseLocationCommand}">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                  <PathIcon Data="{StaticResource Icon.FolderOpen}" Classes="small" />
+                  <TextBlock Text="{l:Tr common.browse}" />
+                </StackPanel>
+              </Button>
+            </Grid>
+            <StackPanel Spacing="6">
+              <StackPanel Orientation="Horizontal" Spacing="8" IsVisible="{Binding IsPathValid}">
+                <PathIcon Data="{StaticResource Icon.CheckCircle}" Classes="small success" />
+                <TextBlock Text="{Binding PathMessage.Value}" Classes="success" TextWrapping="Wrap" />
+              </StackPanel>
+              <Grid ColumnDefinitions="Auto,*" IsVisible="{Binding IsPathInvalid}">
+                <PathIcon Data="{StaticResource Icon.Error}" Classes="small danger" VerticalAlignment="Top" Margin="0,2,8,0" />
+                <TextBlock Grid.Column="1" Text="{Binding PathMessage.Value}" Classes="danger wrap" />
+              </Grid>
+              <TextBlock Text="{Binding SpaceText.Value}" Classes="muted small" />
+            </StackPanel>
+            <Border Classes="callout">
+              <Grid ColumnDefinitions="Auto,*">
+                <PathIcon Data="{StaticResource Icon.InfoFilled}" Classes="accent" VerticalAlignment="Top" Margin="0,1,12,0" />
+                <TextBlock Grid.Column="1" Text="{l:Tr setup.location.note}" Classes="body muted" />
+              </Grid>
+            </Border>
+          </StackPanel>
+
+          <!-- Components -->
+          <StackPanel Spacing="20" IsVisible="{Binding IsComponents}">
+            <TextBlock Text="{l:Tr setup.components.title}" Classes="h1" />
+            <TextBlock Text="{l:Tr setup.components.body}" Classes="lede" />
+            <ItemsControl ItemsSource="{Binding OptionalComponents}">
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <StackPanel Spacing="8" />
+                </ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:ComponentItemViewModel">
+                  <Border Classes="callout">
+                    <Grid ColumnDefinitions="*,Auto,Auto">
+                      <StackPanel Spacing="3" Margin="0,0,16,0">
+                        <TextBlock Text="{Binding Name.Value}" FontWeight="SemiBold" />
+                        <TextBlock Text="{Binding Description.Value}" Classes="small muted wrap" IsVisible="{Binding HasDescription}" />
+                      </StackPanel>
+                      <TextBlock Grid.Column="1" Text="{Binding Size.Value}" Classes="small faint" VerticalAlignment="Center" Margin="0,0,16,0" />
+                      <ToggleSwitch Grid.Column="2" IsChecked="{Binding IsEnabled}" VerticalAlignment="Center" />
+                    </Grid>
+                  </Border>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+
+          <!-- Review -->
+          <StackPanel Spacing="20" IsVisible="{Binding IsReview}">
+            <TextBlock Text="{l:Tr setup.review.title}" Classes="h1" />
+            <Border Classes="group">
+              <StackPanel>
+                <Border Classes="row">
+                  <Grid ColumnDefinitions="200,*">
+                    <TextBlock Text="{l:Tr setup.review.game}" Classes="muted" />
+                    <TextBlock Grid.Column="1" Text="{Binding ReviewGame.Value}" TextTrimming="PrefixCharacterEllipsis" />
+                  </Grid>
+                </Border>
+                <Border Classes="row">
+                  <Grid ColumnDefinitions="200,*">
+                    <TextBlock Text="{l:Tr setup.review.version}" Classes="muted" />
+                    <TextBlock Grid.Column="1" Text="{Binding ReviewExecutable.Value}" />
+                  </Grid>
+                </Border>
+                <Border Classes="row">
+                  <Grid ColumnDefinitions="200,*">
+                    <TextBlock Text="{l:Tr setup.review.location}" Classes="muted" />
+                    <TextBlock Grid.Column="1" Text="{Binding InstallPath}" TextTrimming="PrefixCharacterEllipsis" />
+                  </Grid>
+                </Border>
+                <Border Classes="row">
+                  <Grid ColumnDefinitions="200,*">
+                    <TextBlock Text="{l:Tr setup.review.components}" Classes="muted" />
+                    <TextBlock Grid.Column="1" Text="{Binding ReviewComponents.Value}" />
+                  </Grid>
+                </Border>
+                <Border Classes="row">
+                  <Grid ColumnDefinitions="200,*">
+                    <TextBlock Text="{l:Tr setup.review.download}" Classes="muted" />
+                    <TextBlock Grid.Column="1" Text="{Binding ReviewDownload.Value}" />
+                  </Grid>
+                </Border>
+                <Border Classes="row last">
+                  <Grid ColumnDefinitions="200,*">
+                    <TextBlock Text="{l:Tr setup.review.space}" Classes="muted" />
+                    <TextBlock Grid.Column="1" Text="{Binding ReviewSpace.Value}" />
+                  </Grid>
+                </Border>
+              </StackPanel>
+            </Border>
+            <Border Classes="callout warning" IsVisible="{Binding !HasContent}">
+              <Grid ColumnDefinitions="Auto,*">
+                <PathIcon Data="{StaticResource Icon.Warning}" Classes="warning" VerticalAlignment="Top" Margin="0,1,12,0" />
+                <TextBlock Grid.Column="1" Text="{Binding ContentNotice.Value}" Classes="body" />
+              </Grid>
+            </Border>
+            <TextBlock Text="{l:Tr setup.review.savesNote}" Classes="body muted" />
+          </StackPanel>
+        </Panel>
+      </ScrollViewer>
+
+      <!-- Footer -->
+      <Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto" Margin="0,20,0,0">
+        <Button Classes="ghost" Content="{l:Tr setup.later}" Command="{Binding FinishLaterCommand}" />
+        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="10">
+          <Button Content="{l:Tr common.back}" Command="{Binding BackCommand}" IsVisible="{Binding CanGoBack}" MinWidth="96" HorizontalContentAlignment="Center" />
+          <Button Classes="primary" Content="{Binding NextLabel.Value}" Command="{Binding NextCommand}" IsVisible="{Binding !IsReview}" IsEnabled="{Binding CanNext}"
+                  MinWidth="140" HorizontalContentAlignment="Center" />
+          <Button Classes="primary" Content="{l:Tr setup.install}" Command="{Binding InstallCommand}" IsVisible="{Binding CanInstallNow}" MinWidth="160"
+                  HorizontalContentAlignment="Center" />
+          <Button Classes="primary" Content="{l:Tr setup.finish}" Command="{Binding InstallCommand}" IsVisible="{Binding CanFinishWithoutContent}" MinWidth="160"
+                  HorizontalContentAlignment="Center" />
+        </StackPanel>
+      </Grid>
+    </Grid>
+  </Grid>
+</UserControl>

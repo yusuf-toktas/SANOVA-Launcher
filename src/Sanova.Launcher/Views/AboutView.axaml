@@ -1,0 +1,95 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Sanova.Launcher.ViewModels"
+             xmlns:l="using:Sanova.Launcher.Infrastructure"
+             xmlns:ctl="using:Sanova.Launcher.Controls"
+             x:Class="Sanova.Launcher.Views.AboutView"
+             x:DataType="vm:AboutViewModel">
+  <ScrollViewer>
+    <StackPanel Classes="page">
+      <StackPanel Orientation="Horizontal" Spacing="20">
+        <ctl:LogoMark Width="76" Height="76" />
+        <StackPanel VerticalAlignment="Center" Spacing="4">
+          <TextBlock Text="SANOVA" FontSize="34" FontWeight="Black" LetterSpacing="5" />
+          <TextBlock Text="{l:Tr app.tagline}" Classes="muted" FontSize="15" FontWeight="SemiBold" LetterSpacing="1.4" />
+          <TextBlock Text="{Binding VersionText.Value}" Classes="small faint" ToolTip.Tip="{Binding InformationalVersion}" />
+          <TextBlock Text="{l:Tr about.license}" Classes="small faint" />
+        </StackPanel>
+      </StackPanel>
+
+      <TextBlock Text="{l:Tr about.body}" Classes="lede" />
+
+      <ItemsControl ItemsSource="{Binding Links}" IsVisible="{Binding HasLinks}">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <WrapPanel />
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="vm:LinkItem">
+            <Button Margin="0,0,10,10" Command="{Binding $parent[UserControl].((vm:AboutViewModel)DataContext).OpenCommand}" CommandParameter="{Binding Url}">
+              <StackPanel Orientation="Horizontal" Spacing="8">
+                <TextBlock Text="{Binding Label.Value}" />
+                <PathIcon Data="{StaticResource Icon.Open}" Classes="small" />
+              </StackPanel>
+            </Button>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+
+      <Border Classes="callout">
+        <StackPanel Spacing="6">
+          <TextBlock Text="{l:Tr about.disclaimerTitle}" Classes="h3" />
+          <TextBlock Text="{l:Tr about.disclaimer}" Classes="body muted" />
+        </StackPanel>
+      </Border>
+
+      <StackPanel Spacing="12" IsVisible="{Binding HasModCredits}">
+        <TextBlock Text="{l:Tr about.modCredits}" Classes="h2" />
+        <Border Classes="group">
+          <ItemsControl ItemsSource="{Binding ModCredits}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="vm:CreditItem">
+                <Border Classes="row">
+                  <Grid ColumnDefinitions="*,Auto,Auto">
+                    <StackPanel Spacing="2" Margin="0,0,16,0" VerticalAlignment="Center">
+                      <TextBlock Text="{Binding Name}" FontWeight="SemiBold" TextWrapping="Wrap" />
+                      <TextBlock Text="{Binding Detail}" Classes="small muted wrap" IsVisible="{Binding HasDetail}" />
+                    </StackPanel>
+                    <TextBlock Grid.Column="1" Text="{Binding License}" Classes="small faint" VerticalAlignment="Center" Margin="0,0,12,0" />
+                    <Button Grid.Column="2" Classes="icon" IsVisible="{Binding HasUrl}" ToolTip.Tip="{Binding Url}" AutomationProperties.Name="{Binding Name}"
+                            Command="{Binding $parent[UserControl].((vm:AboutViewModel)DataContext).OpenCommand}" CommandParameter="{Binding Url}">
+                      <PathIcon Data="{StaticResource Icon.Open}" Classes="small" />
+                    </Button>
+                  </Grid>
+                </Border>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </Border>
+      </StackPanel>
+
+      <StackPanel Spacing="12">
+        <TextBlock Text="{l:Tr about.thirdParty}" Classes="h2" />
+        <Border Classes="group">
+          <ItemsControl ItemsSource="{Binding ThirdParty}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="vm:CreditItem">
+                <Border Classes="row">
+                  <Grid ColumnDefinitions="*,Auto,Auto">
+                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" VerticalAlignment="Center" />
+                    <TextBlock Grid.Column="1" Text="{Binding License}" Classes="small muted" VerticalAlignment="Center" Margin="0,0,12,0" />
+                    <Button Grid.Column="2" Classes="icon" IsVisible="{Binding HasUrl}" ToolTip.Tip="{Binding Url}" AutomationProperties.Name="{Binding Name}"
+                            Command="{Binding $parent[UserControl].((vm:AboutViewModel)DataContext).OpenCommand}" CommandParameter="{Binding Url}">
+                      <PathIcon Data="{StaticResource Icon.Open}" Classes="small" />
+                    </Button>
+                  </Grid>
+                </Border>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </Border>
+      </StackPanel>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

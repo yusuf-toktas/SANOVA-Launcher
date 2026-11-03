@@ -1,0 +1,25 @@
+# Normalize text files; keep Windows-native line endings for Windows-only formats.
+* text=auto
+
+*.cs      text diff=csharp
+*.axaml   text
+*.xaml    text
+*.csproj  text
+*.props   text
+*.targets text
+*.slnx    text
+*.json    text
+*.md      text
+*.yml     text
+*.ps1     text eol=crlf
+*.cmd     text eol=crlf
+*.bat     text eol=crlf
+
+# Binary assets
+*.png  binary
+*.ico  binary
+*.ttf  binary
+*.otf  binary
+*.zip  binary
+*.exe  binary
+*.dll  binary

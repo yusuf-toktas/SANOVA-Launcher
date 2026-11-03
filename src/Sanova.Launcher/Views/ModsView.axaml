@@ -1,0 +1,88 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Sanova.Launcher.ViewModels"
+             xmlns:l="using:Sanova.Launcher.Infrastructure"
+             x:Class="Sanova.Launcher.Views.ModsView"
+             x:DataType="vm:ModsViewModel">
+  <Grid RowDefinitions="*,Auto">
+    <ScrollViewer Grid.Row="0">
+      <StackPanel Classes="page">
+        <StackPanel Spacing="8">
+          <TextBlock Text="{l:Tr mods.title}" Classes="h1" />
+          <TextBlock Text="{l:Tr mods.lede}" Classes="lede" />
+          <TextBlock Text="{Binding Summary.Value}" Classes="small faint" IsVisible="{Binding HasComponents}" />
+        </StackPanel>
+
+        <Border Classes="callout" IsVisible="{Binding IsEmpty}" MaxWidth="640" HorizontalAlignment="Left">
+          <Grid ColumnDefinitions="Auto,*">
+            <PathIcon Data="{StaticResource Icon.Mods}" Classes="large accent" VerticalAlignment="Top" Margin="0,2,14,0" />
+            <StackPanel Grid.Column="1" Spacing="4">
+              <TextBlock Text="{Binding EmptyTitle.Value}" Classes="h3" />
+              <TextBlock Text="{Binding EmptyBody.Value}" Classes="body muted" />
+            </StackPanel>
+          </Grid>
+        </Border>
+
+        <ItemsControl ItemsSource="{Binding Groups}" IsVisible="{Binding HasComponents}">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <StackPanel Spacing="26" />
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+          <ItemsControl.ItemTemplate>
+            <DataTemplate x:DataType="vm:ComponentGroup">
+              <StackPanel Spacing="12">
+                <TextBlock Text="{Binding Title.Value}" Classes="h2" />
+                <Border Classes="group">
+                  <ItemsControl ItemsSource="{Binding Items}">
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate x:DataType="vm:ComponentItemViewModel">
+                        <Border Classes="row">
+                          <Grid ColumnDefinitions="*,Auto,Auto">
+                            <StackPanel Spacing="4" Margin="0,0,20,0">
+                              <TextBlock Text="{Binding Name.Value}" Classes="h3" />
+                              <TextBlock Text="{Binding Description.Value}" Classes="small muted wrap" IsVisible="{Binding HasDescription}" />
+                              <WrapPanel Orientation="Horizontal" Margin="0,3,0,0">
+                                <TextBlock Text="{Binding Authors.Value}" Classes="small faint" Margin="0,0,14,0" IsVisible="{Binding HasAuthors}" />
+                                <TextBlock Text="{Binding License.Value}" Classes="small faint" Margin="0,0,14,0" />
+                                <TextBlock Text="{Binding Redistribution.Value}" Classes="small faint" Margin="0,0,14,0" />
+                                <Button Classes="link" Content="{l:Tr mods.homepage}" Command="{Binding OpenHomepageCommand}" IsVisible="{Binding HasHomepage}" FontSize="12.5" />
+                              </WrapPanel>
+                              <TextBlock Text="{Binding Dependencies.Value}" Classes="small accent" IsVisible="{Binding HasDependencies}" />
+                              <TextBlock Text="{Binding SourceNote.Value}" Classes="small info wrap" IsVisible="{Binding HasSourceNote}" />
+                            </StackPanel>
+                            <TextBlock Grid.Column="1" Text="{Binding Size.Value}" Classes="small faint" VerticalAlignment="Center" Margin="0,0,18,0" />
+                            <Panel Grid.Column="2" VerticalAlignment="Center" Width="64">
+                              <ToggleSwitch IsChecked="{Binding IsEnabled}" IsVisible="{Binding IsOptional}" HorizontalAlignment="Right" />
+                              <StackPanel Orientation="Horizontal" Spacing="6" IsVisible="{Binding IsRequired}" HorizontalAlignment="Right"
+                                      ToolTip.Tip="{l:Tr mods.requiredTip}">
+                                <PathIcon Data="{StaticResource Icon.Lock}" Classes="small" Foreground="{DynamicResource Text3}" />
+                                <TextBlock Text="{l:Tr mods.required}" Classes="small faint" />
+                              </StackPanel>
+                            </Panel>
+                          </Grid>
+                        </Border>
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                </Border>
+              </StackPanel>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </StackPanel>
+    </ScrollViewer>
+
+    <!-- Pending changes -->
+    <Border Grid.Row="1" IsVisible="{Binding HasPendingChanges}" Background="{DynamicResource Bg1}" BorderBrush="{DynamicResource Line}" BorderThickness="0,1,0,0"
+            Padding="40,14">
+      <Grid ColumnDefinitions="*,Auto">
+        <TextBlock Text="{Binding PendingText.Value}" VerticalAlignment="Center" FontWeight="SemiBold" />
+        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="10">
+          <Button Classes="ghost" Content="{l:Tr common.discard}" Command="{Binding DiscardCommand}" />
+          <Button Classes="primary" Content="{l:Tr mods.apply}" Command="{Binding ApplyCommand}" IsEnabled="{Binding CanApply}" />
+        </StackPanel>
+      </Grid>
+    </Border>
+  </Grid>
+</UserControl>

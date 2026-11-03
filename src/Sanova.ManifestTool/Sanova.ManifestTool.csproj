@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Maintainer CLI: builds signed content manifests and release packages from the Root/ directory. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Sanova.ManifestTool</RootNamespace>
+    <AssemblyName>sanova-manifest</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Sanova.Core\Sanova.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Sanova.Core.Tests" />
+  </ItemGroup>
+</Project>

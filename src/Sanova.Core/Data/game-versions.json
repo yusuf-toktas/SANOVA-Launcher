@@ -1,0 +1,73 @@
+{
+  // Known GTA San Andreas executables, matched by hash.
+  //
+  // Sources:
+  //  - sa-1.0-us-retail: verified locally against an original v1.0 US DVD installation
+  //    (SecuROM-wrapped, encrypted code section, ReadMe "V1.00").
+  //  - MD5-only entries: public community hash list
+  //    https://gist.github.com/martonp96/a8e378f86abd455675b7667287b19577
+  //
+  // The SANOVA content manifest can add executables and override support levels
+  // without a launcher release (see docs/CONTENT-PIPELINE.md, "compatibility").
+  "schemaVersion": 1,
+  "executables": [
+    {
+      "id": "sa-1.0-us-retail",
+      "label": "GTA San Andreas v1.0 (US), original retail executable",
+      "edition": "retail",
+      "version": "1.0",
+      "region": "US",
+      "fileName": "gta_sa.exe",
+      "size": 14405632,
+      "md5": [ "e7697a085336f974a4a6102a51223960" ],
+      "sha256": [ "8c609f108ad737deffbd0d17c702f5974d290c4379de742277b809f80350da1c" ],
+      "support": "supported",
+      "notes": [ "securom" ]
+    },
+    {
+      "id": "sa-2.0-us-retail",
+      "label": "GTA San Andreas v2.0 (US)",
+      "edition": "retail",
+      "version": "2.0",
+      "region": "US",
+      "fileName": "gta_sa.exe",
+      "md5": [ "bf25c28e9f6c13bd2d9e28f151899373" ],
+      "support": "unsupported"
+    },
+    {
+      "id": "sa-1.01-eu-modified",
+      "label": "GTA San Andreas v1.01 (EU), third-party modified executable",
+      "edition": "modified",
+      "version": "1.01",
+      "region": "EU",
+      "fileName": "gta_sa.exe",
+      "md5": [ "25405921d1c47747fd01fd0bfe0a05ae" ],
+      "support": "unsupported"
+    },
+    {
+      "id": "sa-1.0-us-compact",
+      "label": "GTA San Andreas v1.0 (US), third-party \"compact\" executable",
+      "edition": "modified",
+      "version": "1.0",
+      "region": "US",
+      "fileName": "gta_sa.exe",
+      "md5": [ "667f799c4ba8c9e1054fccaea6d4259b" ],
+      "support": "unverified"
+    },
+    {
+      "id": "sa-modified-unknown",
+      "label": "GTA San Andreas, third-party modified executable",
+      "edition": "modified",
+      "fileName": "gta_sa.exe",
+      "md5": [
+        "170b3a9108687b26da2d8901c6948a18",
+        "6c6160da9b175b66cf9127c86be57bf7",
+        "68ba9ec43813ad58e39d64f88ebdc6a6",
+        "c8a31567f7279889cff09e49f3b8ce7a",
+        "842c61a45ace7638ff1e85d1f7a38545",
+        "8a3ff2c40e64ecb8ebe9a51d36b18b21"
+      ],
+      "support": "unverified"
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+# Builds a launcher release and creates a DRAFT GitHub release in this repository.
+# Nothing becomes visible to players until a maintainer reviews and publishes the draft.
+# See docs/RELEASING.md.
+name: Release launcher
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version to build, e.g. 0.2.0 or 0.3.0-beta.1
+        required: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: windows-latest
+    timeout-minutes: 45
+    env:
+      DOTNET_NOLOGO: true
+      DOTNET_CLI_TELEMETRY_OPTOUT: true
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Determine version
+        id: version
+        shell: pwsh
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          $version = if ($env:GITHUB_EVENT_NAME -eq 'workflow_dispatch') { $env:INPUT_VERSION } else { $env:REF_NAME -replace '^v', '' }
+          if ($version -notmatch '^\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?$') { throw "'$version' is not a semantic version." }
+          "version=$version" >> $env:GITHUB_OUTPUT
+          "prerelease=$(if ($version.Contains('-')) { 'true' } else { 'false' })" >> $env:GITHUB_OUTPUT
+          Write-Host "Building SANOVA Launcher $version"
+
+      - name: Check distribution.json
+        shell: pwsh
+        run: |
+          # distribution.json allows full-line // comments; strip them before parsing.
+          $text = (Get-Content src/Sanova.Launcher/distribution.json -Raw) -replace '(?m)^\s*//.*$', ''
+          $config = $text | ConvertFrom-Json
+          $updates = $config.launcherUpdates
+          if (-not $updates.repository -and -not $updates.url) {
+            throw 'distribution.json has no launcher update source (launcherUpdates.repository or url). A release built now could never update itself. See docs/RELEASING.md.'
+          }
+          if ($updates.repository -and $updates.repository -ne $env:GITHUB_REPOSITORY) {
+            Write-Host "::warning::launcherUpdates.repository is '$($updates.repository)', but this workflow publishes to '$env:GITHUB_REPOSITORY'."
+          }
+          if (-not $config.trust.requireSignature -or -not $config.trust.publicKeys) {
+            Write-Host '::warning::Content manifest signatures are not required (trust.requireSignature / trust.publicKeys). Configure them before a public release.'
+          }
+
+      - name: Test
+        run: dotnet test SANOVA.Launcher.slnx -c Release
+
+      - name: Download the previous release (for a delta package)
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          dotnet tool restore
+          dotnet vpk download github --repoUrl "https://github.com/$env:GITHUB_REPOSITORY" --token $env:GH_TOKEN --channel win -o artifacts/releases
+          if ($LASTEXITCODE) {
+            Write-Host '::notice::No previous release could be downloaded; building without a delta package.'
+            $global:LASTEXITCODE = 0
+          }
+
+      - name: Extract release notes from CHANGELOG.md
+        id: notes
+        shell: pwsh
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          $lines = Get-Content CHANGELOG.md
+          $heading = $lines | Select-String -Pattern "^## \[$([regex]::Escape($env:VERSION))\]" | Select-Object -First 1
+          if (-not $heading) {
+            Write-Host "::warning::CHANGELOG.md has no section for $env:VERSION; the release has no notes."
+            exit 0
+          }
+          $rest = @($lines | Select-Object -Skip $heading.LineNumber)
+          $next = $rest | Select-String -Pattern '^## \[' | Select-Object -First 1
+          $section = if ($next) { @($rest | Select-Object -First ($next.LineNumber - 1)) } else { $rest }
+          $path = Join-Path $env:RUNNER_TEMP 'release-notes.md'
+          $section | Set-Content $path -Encoding utf8
+          "path=$path" >> $env:GITHUB_OUTPUT
+
+      - name: Package
+        shell: pwsh
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          NOTES: ${{ steps.notes.outputs.path }}
+        run: |
+          $package = @{ Version = $env:VERSION; IncludeTools = $true }
+          if ($env:NOTES) { $package.ReleaseNotes = $env:NOTES }
+          ./build/package.ps1 @package
+
+      - name: Create draft release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.version.outputs.version }}
+          PRERELEASE: ${{ steps.version.outputs.prerelease }}
+        run: |
+          # No --publish: the release stays a draft until a maintainer publishes it.
+          $upload = @('vpk', 'upload', 'github',
+            '--repoUrl', "https://github.com/$env:GITHUB_REPOSITORY", '--token', $env:GH_TOKEN,
+            '--channel', 'win', '-o', 'artifacts/releases',
+            '--tag', "v$env:VERSION", '--releaseName', "SANOVA Launcher $env:VERSION")
+          if ($env:PRERELEASE -eq 'true') { $upload += '--pre' }
+          dotnet @upload
+          if ($LASTEXITCODE) { throw 'vpk upload failed' }
+
+      - name: Keep build outputs
+        uses: actions/upload-artifact@v7
+        with:
+          name: sanova-launcher-${{ steps.version.outputs.version }}
+          path: |
+            artifacts/releases
+            artifacts/tools
+          retention-days: 30

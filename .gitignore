@@ -1,0 +1,50 @@
+# Build output
+[Bb]in/
+[Oo]bj/
+artifacts/
+publish/
+Releases/
+*.nupkg
+*.snupkg
+
+# IDE / tooling
+.vs/
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.user
+*.suo
+*.userprefs
+*.DotSettings.user
+
+# Test results and coverage
+TestResults/
+[Tt]est[Rr]esult*/
+coverage*.json
+coverage*.xml
+*.coverage
+*.trx
+
+# Visual snapshots rendered by UI tests (regenerated on each run)
+tests/**/snapshots/
+
+# Local secrets — manifest signing keys must never be committed
+*.pem
+!**/*public-key*.pem
+*.key
+*.pfx
+*.p12
+.env
+.env.*
+secrets/
+
+# Logs
+*.log
+
+# OS noise
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Local content builds produced by the manifest tool
+content-out/

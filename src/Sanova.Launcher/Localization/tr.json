@@ -1,0 +1,713 @@
+{
+  "_meta": {
+    "code": "tr",
+    "name": "Turkish",
+    "nativeName": "Türkçe",
+    "culture": "tr-TR"
+  },
+
+  "app": {
+    "tagline": "San Andreas Reimagined"
+  },
+
+  "nav": {
+    "home": "Ana sayfa",
+    "game": "Oyunum",
+    "mods": "Modlar",
+    "activity": "İndirmeler",
+    "updates": "Güncellemeler",
+    "settings": "Ayarlar",
+    "diagnostics": "Tanılama",
+    "about": "Hakkında"
+  },
+
+  "shell": {
+    "version": "Başlatıcı {version}"
+  },
+
+  "window": {
+    "minimize": "Simge durumuna küçült",
+    "maximize": "Ekranı kapla",
+    "close": "Kapat"
+  },
+
+  "common": {
+    "ok": "Tamam",
+    "cancel": "İptal",
+    "dismiss": "Kapat",
+    "browse": "Gözat…",
+    "change": "Değiştir",
+    "copy": "Kopyala",
+    "openFolder": "Klasörü aç",
+    "apply": "Uygula",
+    "discard": "Vazgeç",
+    "back": "Geri",
+    "continue": "Devam"
+  },
+
+  "home": {
+    "playAnyway": "Güncellemeden oyna",
+    "notesTitle": "{version} sürümündeki yenilikler",
+    "action": {
+      "setUp": "KURULUM",
+      "setUpSentence": "SANOVA'yı kur",
+      "fixGame": "OYUNU KONTROL ET",
+      "install": "YÜKLE",
+      "resume": "DEVAM ET",
+      "update": "GÜNCELLE",
+      "updateLauncher": "BAŞLATICIYI GÜNCELLE",
+      "repair": "ONAR",
+      "running": "ÇALIŞIYOR",
+      "working": "İŞLENİYOR",
+      "play": "OYNA"
+    },
+    "status": {
+      "running": { "title": "SANOVA çalışıyor", "body": "Güncelleme yüklemeden veya modları değiştirmeden önce oyunu kapatın." },
+      "setUp": { "title": "SANOVA'yı hazırlayalım", "body": "Başlamak için başlatıcıya GTA San Andreas kopyanızın yerini gösterin." },
+      "fixGame": { "title": "Oyununuzla ilgili bir sorun var", "body": "Sorunu ve çözümünü görmek için Oyunum sayfasını açın." },
+      "install": { "title": "Yüklemeye hazır", "body": "Sürüm {version}, yaklaşık {size} indirilecek." },
+      "resume": { "title": "Yükleme duraklatıldı", "body": "Kaldığınız yerden devam edin. Hiçbir şey iki kez indirilmez." },
+      "update": { "title": "Güncelleme var", "body": "{version} sürümü hazır. Sizdeki sürüm: {current}." },
+      "updateLauncher": { "title": "Başlatıcı güncellemesi gerekiyor", "body": "SANOVA {version}, bu başlatıcının daha yeni bir sürümünü gerektiriyor." },
+      "repair": {
+        "title": "Bazı dosyaların onarılması gerekiyor",
+        "body": "Doğrulama sırasında eksik veya değiştirilmiş dosyalar bulundu.",
+        "pending": "Önceki bir değişiklik yarıda kaldı. Onarım, kurulumu tutarlı hâle getirir."
+      },
+      "play": { "title": "Oynamaya hazır", "body": "SANOVA {version}", "upToDate": "SANOVA {version}, güncel" },
+      "notConfigured": { "title": "SANOVA henüz yayımlanmadı", "body": "Bu başlatıcı sürümünde bir indirme kaynağı tanımlı değil. Sürümler yayımlandığında burada görünecek." },
+      "offline": { "title": "İnternet bağlantısı yok", "body": "SANOVA'yı indirmek için internete bağlanın." },
+      "noRelease": { "title": "Henüz yayımlanmış bir sürüm yok", "body": "{channel} kanalında henüz bir SANOVA sürümü yok." },
+      "checkFailed": { "title": "SANOVA sürümleri kontrol edilemedi", "body": "Birazdan tekrar deneyin." },
+      "checking": { "title": "SANOVA kontrol ediliyor…", "body": "En son sürüm aranıyor." }
+    },
+    "ledger": {
+      "game": "Oyununuz",
+      "content": "SANOVA",
+      "launcher": "Başlatıcı",
+      "checking": "Kontrol ediliyor…",
+      "gameNone": "Seçilmedi",
+      "gameHint": "GTA San Andreas klasörünüzü seçin",
+      "manageGame": "Oyunu yönet",
+      "version": "Sürüm {version}",
+      "incomplete": "Kurulum tamamlanmadı",
+      "notInstalled": "Yüklü değil",
+      "available": "{version} sürümü hazır",
+      "contentHint": "Bir sürüm bekleniyor",
+      "updateAvailable": "{version} sürümü hazır",
+      "needsRepair": "Bazı dosyaların onarılması gerekiyor",
+      "verified": "Dosyalar {when} doğrulandı",
+      "notVerified": "Henüz doğrulanmadı",
+      "verify": "Dosyaları doğrula",
+      "updates": "Güncellemeleri denetle"
+    }
+  },
+
+  "setup": {
+    "steps": {
+      "welcome": "Hoş geldiniz",
+      "game": "Oyununuz",
+      "compatibility": "Uyumluluk",
+      "location": "Kurulum klasörü",
+      "components": "Modlar",
+      "review": "Özet"
+    },
+    "getStarted": "Başlayalım",
+    "later": "Daha sonra kur",
+    "install": "SANOVA'yı yükle",
+    "finish": "Kurulumu bitir",
+    "welcome": {
+      "title": "SANOVA'ya hoş geldiniz",
+      "body": "SANOVA, modernleştirilmiş bir San Andreas'ı kendi oyun kopyanıza getirir. Bu başlatıcı her şeyi sizin için kurar, güncel tutar ve oyunu başlatır.",
+      "language": "Dil",
+      "systemLanguage": "Windows ile aynı",
+      "note": "Bu bilgisayarda GTA San Andreas'ın PC sürümünün yüklü olması gerekir. SANOVA kendi klasörüne kurulur ve orijinal oyununuzu asla değiştirmez."
+    },
+    "game": {
+      "title": "GTA San Andreas kopyanızı bulalım",
+      "body": "Olağan yerlere baktık. SANOVA'nın temel olarak kullanacağı kurulumu seçin.",
+      "searching": "GTA San Andreas aranıyor…",
+      "definitive": "Bu, Definitive Edition sürümü. Farklı bir oyun olduğu için SANOVA bunu kullanamaz.",
+      "noneTitle": "GTA San Andreas otomatik olarak bulunamadı",
+      "noneBody": "İçinde gta_sa.exe bulunan klasörü seçin.",
+      "browse": "Klasör seç…",
+      "rescan": "Yeniden ara",
+      "pickTitle": "GTA San Andreas klasörünüzü seçin",
+      "existingTitle": "Mevcut SANOVA kurulumları",
+      "existingBody": "Bu klasörlerde zaten SANOVA var. Kaldığınız yerden devam etmek için birini kullanın.",
+      "useExisting": "Bu kurulumu kullan"
+    },
+    "compat": {
+      "title": "Oyununuz kontrol ediliyor",
+      "checking": "Oyun dosyaları kontrol ediliyor…",
+      "version": "Oyun sürümü",
+      "another": "Başka bir klasör seç",
+      "recheck": "Yeniden kontrol et",
+      "ok": { "title": "Oyununuz uyumlu", "body": "SANOVA'nın ihtiyaç duyduğu her şey yerinde." },
+      "warnings": { "title": "Uyumlu, birkaç notla", "body": "SANOVA yüklenebilir. Önce aşağıdaki notlara göz atın." },
+      "override": { "title": "Desteklenmiyor, sorumluluk sizde", "body": "Ayarlar'dan desteklenmeyen oyun sürümlerine izin verdiniz. SANOVA düzgün çalışmayabilir." },
+      "blocked": { "title": "Bu kurulum kullanılamıyor", "body": "SANOVA'nın yüklenebilmesi için aşağıdaki sorunların çözülmesi gerekiyor." }
+    },
+    "location": {
+      "title": "SANOVA nereye kurulsun?",
+      "body": "SANOVA kendi klasörüne kurulur. Orijinal oyununuz olduğu gibi kalır.",
+      "pickTitle": "SANOVA'nın kurulacağı yeri seçin",
+      "ok": "Bu klasör hazır.",
+      "existing": "Bu klasörde bir SANOVA kurulumu var. Kurulum ona devam edecek.",
+      "space": "Yaklaşık {required} gerekiyor. Bu sürücüde {free} boş alan var.",
+      "spaceUnknown": "Yaklaşık {required} gerekiyor.",
+      "note": "Sade harflerden oluşan kısa bir klasör adı kullanın. 2005 yapımı oyun, adında Windows dilinizin dışında karakter bulunan klasörlerden başlatılamaz."
+    },
+    "components": {
+      "title": "İsteğe bağlı modları seçin",
+      "body": "Gerekli bileşenler her zaman yüklenir. Bunları daha sonra Modlar sayfasından değiştirebilirsiniz."
+    },
+    "review": {
+      "title": "Yüklemeye hazır",
+      "game": "Oyun klasörü",
+      "version": "Oyun sürümü",
+      "location": "Kurulum klasörü",
+      "components": "Modlar",
+      "componentsValue": { "one": "{count} bileşen", "other": "{count} bileşen" },
+      "noContent": "SANOVA yayımlandığında belli olacak",
+      "download": "İndirme boyutu",
+      "space": "Gereken disk alanı",
+      "notConfigured": "SANOVA içeriği henüz yayımlanmadığı için şu anda bir şey yüklenemez. Seçimleriniz kaydedildi; bir sürüm çıktığında Ana sayfa size yüklemeyi önerecek.",
+      "offline": "İnternet bağlantınız olmadığı için SANOVA şu anda indirilemiyor. Seçimleriniz daha sonrası için kaydedildi.",
+      "unavailable": "Şu anda erişilebilir bir SANOVA sürümü yok. Seçimleriniz daha sonrası için kaydedildi.",
+      "savesNote": "Herhangi bir değişiklikten önce kayıtlı oyunlarınız yedeklenir."
+    }
+  },
+
+  "game": {
+    "title": "Oyunum",
+    "lede": "Orijinal GTA San Andreas kopyanız, ondan oluşturulan SANOVA kurulumu ve kayıtlı oyunlarınız.",
+    "original": {
+      "title": "Orijinal oyun",
+      "folder": "Klasör",
+      "version": "Oyun sürümü",
+      "details": "Teknik ayrıntılar"
+    },
+    "verdict": {
+      "ok": "Uyumlu",
+      "warnings": "Notlarla uyumlu",
+      "override": "Desteklenmiyor",
+      "blocked": "Uyumlu değil"
+    },
+    "tech": {
+      "file": "Dosya",
+      "size": "Boyut (bayt)",
+      "linkTime": "Derleme tarihi",
+      "id": "Tanımlanan sürüm"
+    },
+    "install": {
+      "title": "SANOVA kurulumu",
+      "none": "SANOVA yüklü değil",
+      "noneBody": "Oyununuzu ve bir kurulum klasörü seçmek için kurulumu başlatın.",
+      "ready": "SANOVA {version} yüklü",
+      "incomplete": "Kurulum tamamlanmadı",
+      "detail": "{components} bileşen, {files} dosya, diskte {size}",
+      "folder": "Kurulum klasörü",
+      "verifiedOk": "Tüm dosyalar {when} doğrulandı.",
+      "verifiedIssues": "{when} sorun bulundu. Düzeltmek için onarım yapın.",
+      "neverVerified": "Dosyalar henüz doğrulanmadı.",
+      "verify": "Dosyaları doğrula",
+      "repair": "Onar",
+      "uninstall": "Kaldır"
+    },
+    "saves": {
+      "title": "Kayıtlı oyunlar",
+      "lede": "GTA San Andreas, kayıtları Belgeler klasörünüzde tutar ve bunlar oyunun tüm kopyaları tarafından ortak kullanılır. Başlatıcı herhangi bir şeyi değiştirmeden önce kayıtları yedekler.",
+      "folder": "Kayıt klasörü",
+      "backupNow": "Şimdi yedekle",
+      "slots": "Kayıt yuvaları",
+      "slot": "Yuva {number}",
+      "noSlots": "Henüz kayıtlı oyun yok.",
+      "noFolder": "Kayıt klasörü henüz yok. Oyunda ilk kez kayıt aldığınızda oluşturulur.",
+      "backups": "Yedekler",
+      "openBackups": "Yedek klasörünü aç",
+      "noBackups": "Henüz yedek yok.",
+      "restore": "Geri yükle",
+      "backupDetail": { "one": "{count} dosya, {reason}", "other": "{count} dosya, {reason}" },
+      "reason": {
+        "manual": "sizin tarafınızdan",
+        "before-install": "yüklemeden önce",
+        "before-update": "güncellemeden önce",
+        "before-mod-changes": "mod değişikliğinden önce",
+        "before-repair": "onarımdan önce",
+        "before-restore": "geri yüklemeden önce"
+      }
+    }
+  },
+
+  "exe": {
+    "named": "GTA San Andreas v{version} ({region})",
+    "edition": {
+      "retail": "Orijinal kutu sürümü yürütülebilir dosyası",
+      "modified": "Üçüncü bir tarafça değiştirilmiş yürütülebilir dosya",
+      "steam": "Steam sürümü",
+      "rockstar": "Rockstar Games Launcher sürümü"
+    },
+    "kind": {
+      "modifiedUnknown": "Değiştirilmiş yürütülebilir dosya",
+      "rerelease": "Steam / Rockstar Games Launcher sürümü",
+      "retailUnrecognized": "Tanınmayan kutu sürümü",
+      "definitive": "Definitive Edition",
+      "missing": "Oyun dosyası bulunamadı",
+      "unknown": "Tanınmayan yürütülebilir dosya"
+    }
+  },
+
+  "detect": {
+    "registry": "Oyunun kurulum kaydından bulundu",
+    "uninstall": "Yüklü programlarda bulundu",
+    "steam": "Steam kütüphanenizde bulundu",
+    "samp": "SA-MP ayarlarından bulundu",
+    "rockstar": "Rockstar Games Launcher üzerinden bulundu",
+    "saved": "Geçen sefer kullanıldı",
+    "manual": "Sizin seçtiğiniz",
+    "common": "Olağan bir konumda bulundu"
+  },
+
+  "compat": {
+    "moreItems": { "one": "…ve {count} tane daha", "other": "…ve {count} tane daha" },
+    "folder_missing": { "title": "Klasör mevcut değil", "body": "GTA San Andreas'ın yüklü olduğu klasörü seçin." },
+    "folder_is_sanova": { "title": "Bu bir SANOVA kurulumu", "body": "Bunun yerine orijinal GTA San Andreas klasörünüzü seçin. SANOVA onun bir kopyasından oluşturulur." },
+    "folder_no_access": { "title": "Klasör okunamıyor", "body": "Windows oyun dosyalarına erişimi engelledi. Klasör izinlerini kontrol edin." },
+    "definitive_edition": { "title": "Bu, Definitive Edition sürümü", "body": "GTA San Andreas – The Definitive Edition ayrı bir oyundur. SANOVA, 2005 yapımı orijinal PC sürümüne ihtiyaç duyar." },
+    "exe_missing": { "title": "Oyun dosyası bulunamadı", "body": "Klasörde gta_sa.exe yok. Oyunun yüklü olduğu klasörü seçin." },
+    "exe_rerelease": { "title": "Steam / Rockstar Games Launcher sürümü", "body": "Bu, 2014'teki yeniden yayın (3.0 veya üzeri). Yürütülebilir dosyası SANOVA'nın kullandığı modları bozacak şekilde değiştirildi. SANOVA, orijinal 1.0 sürümüne ihtiyaç duyar." },
+    "exe_retail_unrecognized": { "title": "Tanınmayan kutu sürümü", "body": "Kopya korumalı bu yürütülebilir dosya bilinen sürümler listesinde yok. 1.01 sürümü ya da SANOVA ile henüz denenmemiş bölgesel bir sürüm olabilir." },
+    "exe_unknown": { "title": "Tanınmayan yürütülebilir dosya", "body": "Bu dosya bilinen hiçbir GTA San Andreas sürümüyle eşleşmiyor. Değiştirilmiş olabilir." },
+    "exe_supported": { "title": "{version} ({region}) sürümü tanındı", "body": "SANOVA'nın hedeflediği orijinal yürütülebilir dosya bu." },
+    "exe_modified": { "title": "Değiştirilmiş yürütülebilir dosya", "body": "Bu dosya üçüncü bir tarafça değiştirilmiş. SANOVA orijinal 1.0 sürümüyle test edildiği için kararlılık garanti edilemez." },
+    "exe_unverified": { "title": "{version} ({region}) sürümü doğrulanmadı", "body": "SANOVA bu sürümle henüz test edilmedi. Yine de çalışabilir." },
+    "exe_unsupported": { "title": "{version} sürümü desteklenmiyor", "body": "SANOVA, oyunun orijinal 1.0 sürümü yürütülebilir dosyasına ihtiyaç duyar." },
+    "exe_disc_check": { "title": "Oyun diskini isteyebilir", "body": "Orijinal kutu sürümündeki kopya koruması, oyun başlarken DVD'yi isteyebilir." },
+    "files_missing": { "title": "Oyun dosyaları eksik", "body": "Orijinal oyunun bazı dosyaları yerinde değil. Kurulum eksik olabilir; oyunu orijinal diskinden yeniden yüklemek genellikle sorunu çözer." },
+    "files_modified": { "title": "Bazı oyun dosyaları değiştirilmiş", "body": "Bu orijinal dosyalar, muhtemelen önceki modlar yüzünden temiz bir kurulumdan farklı. SANOVA onları olduğu gibi kopyalar." },
+    "mods_detected": { "title": "Oyun klasörünüzde modlar var", "body": "SANOVA en iyi temiz bir kurulumda çalışır. Bu dosyalar oyunla birlikte kopyalanacak." },
+    "mods_detected_filtered": { "title": "Oyun klasörünüzde modlar var", "body": "SANOVA klasörüne yalnızca orijinal oyun dosyaları kopyalanır. Bu modlar yerinde kalır ve taşınmaz." }
+  },
+
+  "mods": {
+    "title": "Modlar",
+    "lede": "SANOVA'nın isteğe bağlı bileşenlerinden hangilerinin yükleneceğini seçin. Gerekli bileşenler deneyimin tutarlı kalmasını sağlar.",
+    "summary": "SANOVA {version} sürümünde {total} bileşenden {enabled} tanesi etkin",
+    "required": "Gerekli",
+    "requiredTip": "Temel deneyimin bir parçası; her zaman yüklenir.",
+    "homepage": "Ana sayfa",
+    "by": "Yapan: {authors}",
+    "license": "Lisans: {license}",
+    "licenseUnknown": "Lisans kaydedilmemiş",
+    "requires": "Gerektirir: {names}",
+    "apply": "Değişiklikleri uygula",
+    "saved": "Mod seçimleri yükleme için kaydedildi",
+    "pending": "{added} etkinleştirilecek, {removed} devre dışı bırakılacak",
+    "pendingNotInstalled": "Varsayılana göre {added} fazla, {removed} eksik",
+    "cascade": {
+      "enabled": "Gerektiği için bu da etkinleştirildi",
+      "disabled": "Ona bağlı olduğu için bu da devre dışı bırakıldı"
+    },
+    "redistribution": {
+      "unknown": "İzin kaydedilmemiş",
+      "allowed": "Paylaşımı serbest",
+      "permission": "İzinle paylaşılıyor",
+      "external": "Yapımcının sitesinden"
+    },
+    "source": {
+      "external": "Yapımcının kendi sitesinden indirilir.",
+      "manual": "Bunu yapımcının sayfasından siz indireceksiniz; başlatıcı nereden indireceğinizi gösterecek."
+    },
+    "empty": {
+      "title": "Henüz mod listesi yok",
+      "body": "SANOVA bileşenlerinin listesi, başlatıcı bir sürüm bulduğunda görünür.",
+      "notConfigured": {
+        "title": "SANOVA henüz yayımlanmadı",
+        "body": "Bir sürüm yayımlandığında bileşenleri burada görünecek."
+      }
+    },
+    "category": {
+      "core": "Temel",
+      "graphics": "Grafik",
+      "gameplay": "Oynanış",
+      "audio": "Ses",
+      "fixes": "Düzeltmeler",
+      "interface": "Arayüz",
+      "vehicles": "Araçlar",
+      "world": "Dünya",
+      "general": "Diğer"
+    }
+  },
+
+  "activity": {
+    "title": "İndirmeler",
+    "lede": "Başlatıcının şu anda ne yaptığı, son zamanlarda ne yaptığı ve yarıda kalan indirmeleri sürdürmek için sakladığı dosyalar.",
+    "idleTitle": "Çalışan bir işlem yok",
+    "idleBody": "Yükleme, güncelleme ve onarım işlemlerinin ilerlemesi burada görünür.",
+    "history": "Son etkinlikler",
+    "noHistory": "Henüz bir işlem yapılmadı.",
+    "succeeded": "Tamamlandı",
+    "succeededNote": "Tamamlandı, sürüm {note}",
+    "cancelled": "İptal edildi",
+    "failed": "Tamamlanamadı",
+    "cache": {
+      "title": "İndirme önbelleği",
+      "size": "{size} indirilmiş paket",
+      "empty": "Önbellek boş",
+      "body": "Yarıda kalan bir yüklemenin sürdürülebilmesi için kısmen indirilmiş paketler saklanır. Tamamlananları da saklamak için Ayarlar'dan İndirilen paketleri sakla seçeneğini açın.",
+      "clear": "Önbelleği temizle",
+      "clearTitle": "İndirme önbelleği temizlensin mi?",
+      "clearBody": "İndirilmiş paketler silinecek. Duraklatılmış bir yükleme bunları yeniden indirmek zorunda kalır."
+    }
+  },
+
+  "updates": {
+    "title": "Güncellemeler",
+    "lede": "SANOVA ve başlatıcı birbirinden bağımsız olarak güncellenir.",
+    "check": "Şimdi denetle",
+    "checking": "Denetleniyor…",
+    "upToDate": "Güncel",
+    "lastChecked": "{when} denetlendi",
+    "currentVersion": "Yüklü başlatıcı sürümü: {version}",
+    "releaseNotes": "Sürüm notları",
+    "content": {
+      "title": "SANOVA",
+      "update": "SANOVA'yı güncelle",
+      "installed": "Yüklü: {version}",
+      "none": "yok",
+      "latest": "En son: {version}",
+      "planChanged": { "one": "{count} dosya eklenecek veya değişecek", "other": "{count} dosya eklenecek veya değişecek" },
+      "planRemoved": { "one": "{count} dosya kaldırılacak", "other": "{count} dosya kaldırılacak" },
+      "planDownload": "yaklaşık {size} indirilecek",
+      "source": "Kaynak: {source}",
+      "unchecked": "Henüz denetlenmedi"
+    },
+    "channel": {
+      "title": "Sürüm kanalı",
+      "body": "Beta sürümleri daha erken gelir ancak daha az kararlı olabilir."
+    },
+    "launcher": {
+      "title": "Başlatıcı",
+      "download": "İndir ve yeniden başlat",
+      "restart": "Güncellemek için yeniden başlat",
+      "restartBody": "Başlatıcı kapanır, güncellemeyi yükler ve yeniden açılır.",
+      "idle": { "title": "Başlatıcı güncellemeleri", "short": "Henüz denetlenmedi" },
+      "notConfigured": { "title": "Başlatıcı güncellemeleri ayarlanmamış", "body": "Bu sürümde henüz bir yayın kaynağı tanımlı değil.", "short": "Güncellemeler ayarlanmamış" },
+      "devBuild": { "title": "Geliştirme sürümü", "body": "Bu kopya SANOVA yükleyicisiyle kurulmadığı için kendini güncelleyemez.", "short": "Geliştirme sürümü" },
+      "available": { "title": "Başlatıcı {version} hazır", "short": "{version} sürümü hazır" },
+      "downloading": { "title": "Güncelleme indiriliyor…", "body": "%{percent} indirildi" },
+      "ready": { "title": "Güncelleme hazır", "short": "Güncellemek için yeniden başlatın" },
+      "failed": { "title": "Başlatıcı güncellemeleri denetlenemedi", "body": "Bağlantınızı kontrol edip tekrar deneyin.", "short": "Denetim başarısız" }
+    }
+  },
+
+  "settings": {
+    "title": "Ayarlar",
+    "lede": "Değişiklikler yaptığınız anda kaydedilir.",
+    "general": "Genel",
+    "game": "Oyun",
+    "downloads": "İndirmeler",
+    "updates": "Güncellemeler",
+    "advanced": "Gelişmiş",
+    "saveFailed": "Ayarlar kaydedilemedi",
+    "setupAgain": "Kurulumu yeniden çalıştır",
+    "language": { "title": "Dil", "body": "Başlatıcının tamamında kullanılır.", "auto": "Windows ile aynı" },
+    "theme": { "title": "Tema", "body": "Koyu tema oyuna yakışır. Açık tema aydınlık ortamlarda daha rahattır.", "dark": "Koyu", "light": "Açık", "system": "Windows ile aynı" },
+    "installPath": { "title": "SANOVA klasörü", "locked": "SANOVA burada yüklü. Farklı bir klasör seçmek için önce kaldırın." },
+    "gamePath": { "title": "Orijinal oyun klasörü", "manage": "Yönet" },
+    "afterLaunch": { "title": "Oyun başladığında", "body": "SANOVA'yı başlattıktan sonra başlatıcının ne yapacağı.", "minimize": "Başlatıcıyı küçült", "keepOpen": "Açık bırak", "close": "Başlatıcıyı kapat" },
+    "arguments": { "title": "Başlatma seçenekleri", "body": "Oyuna aktarılan ek komut satırı seçenekleri. Bir rehber aksini söylemedikçe boş bırakın." },
+    "backupSaves": { "title": "Değişikliklerden önce kayıtları yedekle", "body": "Yükleme, güncelleme, onarım ve mod değişikliklerinden önce kayıtlı oyunlarınızı kopyalar." },
+    "parallel": { "title": "Eş zamanlı indirmeler", "body": "Hızlı bir bağlantıda sayıyı artırmak indirmeyi hızlandırabilir." },
+    "speed": { "title": "İndirme hızı sınırı", "body": "Bağlantınızı kullanan diğer şeylere de pay bırakın.", "unlimited": "Sınırsız", "value": "{value} MB/sn" },
+    "keepCache": { "title": "İndirilen paketleri sakla", "body": "Onarımları hızlandırır ve çevrimdışı da çalışır, ancak daha fazla disk alanı kullanır." },
+    "checkContent": { "title": "Açılışta SANOVA güncellemelerini denetle", "body": "Başlatıcı her açıldığında yeni sürümleri arar." },
+    "checkLauncher": { "title": "Açılışta başlatıcı güncellemelerini denetle", "body": "Başlatıcı her açıldığında daha yeni bir sürümünü arar." },
+    "channel": { "stable": "Kararlı", "beta": "Beta" },
+    "verbose": { "title": "Ayrıntılı günlük kaydı", "body": "Günlük dosyalarına daha fazla bilgi yazar. Bir sorunu bildirirken işe yarar." },
+    "unsupported": {
+      "title": "Desteklenmeyen oyun sürümlerine izin ver",
+      "body": "Oyun sürümünüz desteklenmese bile SANOVA'yı yükler. Çökmeler olabilir.",
+      "confirmTitle": "Desteklenmeyen oyun sürümlerine izin verilsin mi?",
+      "confirmBody": "SANOVA, GTA San Andreas'ın 1.0 sürümü için hazırlandı. Diğer sürümler çökebilir veya tuhaf davranabilir ve bu sürümlerdeki sorunlara destek verilemez.",
+      "confirm": "Yine de izin ver"
+    },
+    "developer": { "title": "Geliştirici modu", "body": "SANOVA sürümlerini test etmeye yönelik araçları (örneğin özel bir içerik kaynağı) gösterir." },
+    "source": {
+      "title": "İçerik kaynağı",
+      "body": "SANOVA sürümlerinin nereden geleceğini geçersiz kılar. sanova-manifest ile hazırlanmış test sürümleri içindir.",
+      "default": "Yerleşik kaynak",
+      "github": "GitHub deposu",
+      "url": "Manifest adresi",
+      "local": "Yerel klasör",
+      "placeholder": "sahip/depo, https://… veya bir klasör",
+      "pickFolder": "sanova-manifest.json dosyasını içeren klasörü seçin"
+    },
+    "data": { "title": "Başlatıcı verileri", "open": "Klasörü aç" }
+  },
+
+  "diagnostics": {
+    "title": "Tanılama",
+    "lede": "Başlatıcıyı, oyununuzu ve SANOVA kurulumunuzu kontrol eder. Bir sorun varsa bir rapor dışa aktarın ve yardım isterken ekleyin.",
+    "run": "Kontrolleri çalıştır",
+    "copy": "Özeti kopyala",
+    "export": "Raporu dışa aktar…",
+    "exportTitle": "Tanılama raporunu kaydet",
+    "zipFilter": "Zip arşivi",
+    "exported": "Rapor kaydedildi",
+    "exportedBody": "Windows kullanıcı adınız gibi kişisel bilgiler rapordan çıkarıldı.",
+    "showFile": "Dosyayı göster",
+    "exportFailed": "Rapor kaydedilemedi",
+    "copied": "Özet kopyalandı",
+    "failed": "Tanılama tamamlanamadı",
+    "notRun": "Kontroller henüz çalıştırılmadı.",
+    "summary": "{passed}, {warnings}, {failed}, {when}",
+    "passedCount": { "one": "{count} başarılı", "other": "{count} başarılı" },
+    "warningCount": { "one": "{count} uyarı", "other": "{count} uyarı" },
+    "problemCount": { "one": "{count} sorun", "other": "{count} sorun" },
+    "log": "Son günlük kayıtları",
+    "refreshLog": "Yenile",
+    "openLogs": "Günlük klasörünü aç"
+  },
+
+  "diag": {
+    "id": {
+      "os": "Windows",
+      "runtime": "Çalışma ortamı",
+      "launcher": "Başlatıcı",
+      "data": "Başlatıcı verileri",
+      "settings": "Ayarlar",
+      "game": "Orijinal oyun",
+      "install_path": "Kurulum klasörü",
+      "transaction": "Bekleyen değişiklikler",
+      "install": "SANOVA dosyaları",
+      "disk": "Disk alanı",
+      "process": "Oyun işlemi",
+      "source": "İçerik kaynağı",
+      "network": "Bağlantı",
+      "launcher_source": "Başlatıcı güncellemeleri"
+    },
+    "os_ok": "{os}",
+    "os_old": "{os}, Windows 10'dan eski olduğu için desteklenmiyor.",
+    "os_unsupported": "{os} henüz desteklenmiyor.",
+    "runtime": "{runtime} ({arch})",
+    "launcher_version": "Sürüm {version}",
+    "data_writable": "Yazılabilir: {path}",
+    "data_not_writable": "Başlatıcı {path} konumuna yazamıyor.",
+    "settings_recovered": "Ayarlar dosyası bozuktu ve sıfırlandı.",
+    "settings_ok": "Ayarlar sorunsuz yüklendi.",
+    "game_not_configured": "Henüz bir oyun klasörü seçilmedi.",
+    "game_compatible": "{version}, konum: {path}",
+    "game_warnings": "{version}, notlarla birlikte. Oyunum sayfasına bakın.",
+    "game_incompatible": "{version} uyumlu değil. Oyunum sayfasına bakın.",
+    "game_unreadable": "{path} okunamadı.",
+    "install_none": "SANOVA yüklü değil.",
+    "install_path_ok": "{path}",
+    "install_path_not_ansi": "{path}, oyunun işleyemediği karakterler içeriyor.",
+    "transaction_pending": "Yarıda kalan bir değişiklik kurtarılacak.",
+    "install_incomplete": "Kurulum tamamlanmamış.",
+    "install_ok": "Sürüm {version}, {files} dosya, sorun yok.",
+    "install_damaged": "{files} dosyadan {issues} tanesi eksik veya değiştirilmiş.",
+    "install_state_corrupt": "Kurulum kaydı okunamıyor.",
+    "disk_low": "Yalnızca {free} boş alan var.",
+    "disk_ok": "{free} boş alan var.",
+    "game_running": "Oyun çalışıyor.",
+    "game_not_running": "Oyun çalışmıyor.",
+    "source_not_configured": "Henüz bir içerik kaynağı ayarlanmadı.",
+    "source_configured": "{type}: {source}",
+    "local_source_ok": "Yerel klasöre erişilebiliyor.",
+    "local_source_missing": "{path} mevcut değil.",
+    "network_ok": "{host} adresine ulaşılabiliyor.",
+    "network_failed": "{host} adresine ulaşılamıyor.",
+    "launcher_source": "{source}",
+    "launcher_source_not_configured": "Henüz bir başlatıcı yayın kaynağı ayarlanmadı."
+  },
+
+  "about": {
+    "version": "Başlatıcı {version}",
+    "license": "Apache Lisansı 2.0 ile lisanslanmış açık kaynak yazılım",
+    "body": "SANOVA, Grand Theft Auto: San Andreas'ın 2005 tarihli PC sürümünü ruhunu koruyarak modernleştiren bir topluluk projesidir: daha iyi görseller, düzeltmeler, atmosfer ve kararlılık — hepsi kendi oyun kopyanıza kurulur.",
+    "disclaimerTitle": "Bağımsız bir topluluk projesi",
+    "disclaimer": "SANOVA, Rockstar Games veya Take-Two Interactive ile bağlantılı değildir; onlar tarafından onaylanmamış ya da desteklenmemiştir. Grand Theft Auto ve Grand Theft Auto: San Andreas, Take-Two Interactive Software, Inc. şirketinin ticari markalarıdır. Oyunun yasal yollarla edinilmiş kendi kopyanıza sahip olmanız gerekir; SANOVA oyunu dağıtmaz.",
+    "modCredits": "Mod yapımcıları",
+    "thirdParty": "Açık kaynak yazılımlar",
+    "links": {
+      "website": "Web sitesi",
+      "source": "Kaynak kodu",
+      "community": "Topluluk",
+      "support": "Destek"
+    }
+  },
+
+  "op": {
+    "busyTitle": "Zaten çalışan bir işlem var",
+    "busyBody": "Mevcut işlemin bitmesini bekleyin veya İndirmeler sayfasından iptal edin.",
+    "percent": "%{value}",
+    "bytesOf": "{done} / {total}",
+    "itemsOf": "{done} / {total}",
+    "remaining": "yaklaşık {time} kaldı",
+    "install": { "name": "Yükleme", "running": "SANOVA yükleniyor", "failed": "Yükleme tamamlanamadı" },
+    "update": { "name": "Güncelleme", "running": "SANOVA güncelleniyor", "failed": "Güncelleme tamamlanamadı" },
+    "repair": { "name": "Onarım", "running": "SANOVA onarılıyor", "failed": "Onarım tamamlanamadı" },
+    "verify": { "name": "Dosya doğrulama", "running": "Dosyalar doğrulanıyor", "failed": "Doğrulama tamamlanamadı" },
+    "components": { "name": "Mod değişiklikleri", "running": "Mod değişiklikleri uygulanıyor", "failed": "Mod değişiklikleri uygulanamadı" },
+    "uninstall": { "name": "Kaldırma", "running": "SANOVA kaldırılıyor", "failed": "Kaldırma tamamlanamadı" },
+    "backup": { "name": "Kayıt yedekleme", "running": "Kayıtlar yedekleniyor", "failed": "Yedekleme tamamlanamadı" },
+    "restore": { "name": "Kayıtları geri yükleme", "running": "Kayıtlar geri yükleniyor", "failed": "Kayıtlar geri yüklenemedi" },
+    "launcherUpdate": { "name": "Başlatıcı güncellemesi", "running": "Başlatıcı güncellemesi indiriliyor", "failed": "Başlatıcı güncellemesi indirilemedi" },
+    "launch": { "failed": "Oyun başlatılamadı" }
+  },
+
+  "stage": {
+    "preparing": "Hazırlanıyor…",
+    "backingUpSaves": "Kayıtlı oyunlar yedekleniyor…",
+    "copying": "Oyun dosyalarınız kopyalanıyor…",
+    "downloading": "İndiriliyor…",
+    "extracting": "Dosyalar açılıyor ve kontrol ediliyor…",
+    "applying": "Dosyalar yerleştiriliyor…",
+    "verifying": "Dosyalar doğrulanıyor…",
+    "cleaningUp": "Temizleniyor…",
+    "rollingBack": "Değişiklikler geri alınıyor…",
+    "removing": "Dosyalar kaldırılıyor…",
+    "completed": "Tamamlandı",
+    "cancelling": "İptal ediliyor…"
+  },
+
+  "dialog": {
+    "details": "Teknik ayrıntılar",
+    "closeBusy": {
+      "title": "İşlem durdurulup başlatıcı kapatılsın mı?",
+      "body": "Mevcut işlem durdurulacak. Yarım kalan değişiklikler geri alınır ve indirmeler bir dahaki sefere kaldığı yerden devam eder.",
+      "wait": "Mevcut işlem güvenli bir şekilde yarıda kesilemez. Başlatıcı, işlem biter bitmez kapanacak.",
+      "confirm": "Durdur ve kapat"
+    },
+    "gameRunning": { "title": "Önce oyunu kapatın", "body": "GTA San Andreas çalışıyor. Oyunu kapatıp tekrar deneyin." },
+    "incompatible": { "title": "Oyununuz uyumlu değil", "body": "Sorunu ve çözümünü görmek için Oyunum sayfasını açın." },
+    "launcherTooOld": { "title": "Önce başlatıcıyı güncelleyin", "body": "Bu SANOVA sürümü daha yeni bir başlatıcı gerektiriyor. Güncellemeler sayfasından edinebilirsiniz." },
+    "manual": {
+      "title": "{name} indirilmeli",
+      "body": "Bu modun yapımcısı yeniden dağıtılmasına izin vermiyor. {file} dosyasını yapımcının sayfasından indirin, ardından indirdiğiniz dosyayı seçin.",
+      "openPage": "İndirme sayfasını aç",
+      "chooseFile": "İndirilen dosyayı seç…",
+      "filter": "Zip arşivleri"
+    },
+    "verifyFailed": {
+      "title": "Bazı dosyaların onarılması gerekiyor",
+      "body": { "one": "{count} dosya eksik veya değiştirilmiş.", "other": "{count} dosya eksik veya değiştirilmiş." },
+      "repair": "Şimdi onar"
+    },
+    "repairIncomplete": {
+      "title": "Bazı dosyalar onarılamadı",
+      "body": { "one": "{count} dosya hâlâ eksik veya değiştirilmiş.", "other": "{count} dosya hâlâ eksik veya değiştirilmiş." }
+    },
+    "uninstall": {
+      "title": "SANOVA kaldırılsın mı?",
+      "body": "SANOVA'nın {path} konumuna yüklediği dosyalar silinecek. Orijinal oyununuza ve kayıtlı oyunlarınıza dokunulmaz. Sizin eklediğiniz veya değiştirdiğiniz dosyalar korunur.",
+      "confirm": "Kaldır"
+    },
+    "uninstallKept": {
+      "body": { "one": "Eklediğiniz veya değiştirdiğiniz {count} dosya {path} konumunda bırakıldı.", "other": "Eklediğiniz veya değiştirdiğiniz {count} dosya {path} konumunda bırakıldı." }
+    },
+    "restore": {
+      "title": "Bu kayıtlar geri yüklensin mi?",
+      "body": "Önce mevcut kayıtlarınız yedeklenir, ardından {date} tarihli yedekle değiştirilir.",
+      "confirm": "Geri yükle"
+    },
+    "recoveryFailed": { "title": "Yarıda kalan bir değişiklik kurtarılamadı", "body": "Oyunum sayfasından Dosyaları doğrula'yı çalıştırın, gerekirse onarın." },
+    "startupFailed": { "title": "Başlatılırken bir sorun oluştu" }
+  },
+
+  "toast": {
+    "installed": { "title": "SANOVA yüklendi", "body": "{version} sürümü oynamaya hazır." },
+    "installPaused": { "title": "Yükleme duraklatıldı", "body": "Devam etmek için Ana sayfada Devam et'e basın. İndirilen dosyalar korunur." },
+    "updated": { "title": "SANOVA güncellendi", "body": "{version} sürümü hazır." },
+    "modsApplied": { "title": "Mod değişiklikleri uygulandı" },
+    "verified": { "title": "Tüm dosyalar sağlam", "body": { "one": "{count} dosya kontrol edildi.", "other": "{count} dosya kontrol edildi." } },
+    "repaired": { "title": "Onarım tamamlandı", "body": "Artık tüm dosyalar eşleşiyor." },
+    "uninstalled": { "title": "SANOVA kaldırıldı", "body": "Orijinal oyununuz ve kayıtlı oyunlarınız olduğu gibi duruyor." },
+    "alreadyRunning": { "title": "SANOVA zaten çalışıyor" },
+    "launched": { "title": "SANOVA başlatılıyor…" },
+    "noSaves": { "title": "Yedeklenecek kayıtlı oyun yok" },
+    "savesBackedUp": { "title": "Kayıtlar yedeklendi", "body": { "one": "{count} dosya kopyalandı.", "other": "{count} dosya kopyalandı." } },
+    "savesRestored": { "title": "Kayıtlar geri yüklendi" },
+    "recovered": { "title": "Yarıda kalan bir değişiklik geri alındı", "body": "Başlatıcı geçen sefer bir değişikliğin ortasında kapandığı için önceki durum geri getirildi." },
+    "settingsReset": { "title": "Ayarlar sıfırlandı", "body": "Ayarlar dosyası bozuktu. Bir kopyası başlatıcı veri klasöründe saklandı." }
+  },
+
+  "error": {
+    "unexpected": "Beklenmeyen bir sorun oluştu. Aşağıdaki ayrıntılar, sorunu bildirirken işe yarar.",
+    "cancelled": "İşlem iptal edildi.",
+    "path_unsafe": "Bu konum kullanılamaz. Kısa ve sıradan adlı bir klasör seçin.",
+    "path_not_writable": "Windows bu klasöre yazılmasına izin vermiyor. Başka bir klasör seçin, örneğin C:\\Games\\SANOVA.",
+    "path_inside_game": "Orijinal oyun klasörünüzün dışında bir klasör seçin. SANOVA orijinal oyuna dokunmaz.",
+    "path_not_empty": "Bu klasörde zaten dosyalar var. Boş veya yeni bir klasör seçin.",
+    "path_system_folder": "Bu bir sistem veya kullanıcı klasörü. Bunun için ayrı bir klasör seçin, örneğin C:\\Games\\SANOVA.",
+    "path_not_ansi": "Klasör adında 2005 yapımı oyunun işleyemediği karakterler var. Sade harfler kullanın, örneğin C:\\Games\\SANOVA.",
+    "disk_space": "Yeterli boş alan yok. SANOVA yaklaşık {required} gerektiriyor, ancak yalnızca {available} boş.",
+    "game_not_found": "GTA San Andreas bulunamadı.",
+    "game_incompatible": "Seçilen oyun kurulumu uyumlu değil.",
+    "game_running": "Önce oyunu kapatın.",
+    "game_exe_missing": "SANOVA klasöründe oyunun yürütülebilir dosyası eksik. Onarım yapın.",
+    "game_launch_failed": "Windows oyunu başlatamadı: {detail}",
+    "game_launch_elevation": "Oyun yönetici izni istedi. Yürütülebilir dosyanın uyumluluk ayarlarını kontrol edin.",
+    "manifest_invalid": "Sürüm bilgileri bozuk veya geçersiz olduğu için hiçbir şey yüklenmedi.",
+    "manifest_schema": "Bu SANOVA sürümü daha yeni bir başlatıcı gerektiriyor. Önce başlatıcıyı güncelleyin.",
+    "manifest_signature_invalid": "Sürüm bilgileri imza denetiminden geçemedi ve güvenliğiniz için reddedildi.",
+    "manifest_signature_missing": "Sürüm bilgileri imzalı olmadığı için reddedildi.",
+    "launcher_too_old": "Bu SANOVA sürümü, {required} veya daha yeni bir başlatıcı gerektiriyor.",
+    "source_not_configured": "Henüz bir indirme kaynağı ayarlanmadı.",
+    "source_unreachable": "İndirme sunucusuna ulaşılamıyor. İnternet bağlantınızı kontrol edip tekrar deneyin.",
+    "source_rate_limited": "GitHub, ağınızdan gelen istekleri bir süreliğine sınırlıyor. {resetAt} sonrasında tekrar deneyin.",
+    "source_no_release": "İndirme kaynağında bir sürüm bulunamadı.",
+    "source_http_error": "İndirme sunucusu bir hatayla yanıt verdi (HTTP {status}).",
+    "source_insecure": "İndirme adresi güvenli olmadığı için reddedildi.",
+    "download_failed": "İndirme tamamlanamadı. İlerlemeniz korunuyor; kaldığınız yerden sürdürmek için tekrar deneyin.",
+    "download_hash_mismatch": "İndirilen bir dosya bozuktu ve silindi. Tekrar deneyin.",
+    "download_size_mismatch": "İndirilen bir dosyanın boyutu hatalıydı ve silindi. Tekrar deneyin.",
+    "archive_invalid": "İndirilen bir paket bozuk. Tekrar deneyin.",
+    "archive_unsafe_entry": "Bir paket güvenli olmayan bir dosya yolu içerdiği için reddedildi.",
+    "archive_entry_missing": "Bir pakette olması gereken bir dosya eksik.",
+    "archive_too_large": "Bir paket beklenenden fazla veri içerdiği için reddedildi.",
+    "not_installed": "SANOVA bu klasöre tam olarak yüklenmemiş.",
+    "install_busy": "Başka bir değişiklik hâlâ sürüyor.",
+    "install_locked": "SANOVA klasörünü başka bir program kullanıyor. Diğer başlatıcı pencerelerini kapatıp tekrar deneyin.",
+    "install_state_corrupt": "Kurulum kaydı bozuk. Kaldırıp yeniden yükleyin.",
+    "rollback_failed": "Başarısız bir değişiklik tamamen geri alınamadı. Kurtarmayı bitirmek için başlatıcıyı yeniden başlatın, ardından dosyaları doğrulayın.",
+    "base_source_missing": "Orijinal bir oyun dosyasına ulaşılamıyor: {path}. Orijinal oyun klasörünüzün yerinde olduğundan emin olun.",
+    "manual_download_required": "{component} önce elle indirilmeli.",
+    "file_verification_failed": "Bir dosya doğrulamadan geçemedi: {file}. Tekrar deneyin.",
+    "component_dependency": "Seçilen modlar birbiriyle uyuşmuyor: {detail}",
+    "component_conflict": "Seçilen iki mod birlikte kullanılamaz.",
+    "component_required": "Gerekli bir bileşen kapatılamaz.",
+    "saves_backup_failed": "Kayıtlarınız yedeklenemediği için hiçbir şey değiştirilmedi: {detail}",
+    "saves_restore_failed": "Kayıtlar geri yüklenemedi: {detail}",
+    "access_denied": "Windows {path} konumuna erişimi engelledi.",
+    "file_in_use": "Bir dosya başka bir program tarafından kullanılıyor: {path}. Programı kapatıp tekrar deneyin.",
+    "io_error": "{path} üzerinde bir dosya işlemi başarısız oldu."
+  },
+
+  "errorShort": {
+    "disk_space": "Yetersiz disk alanı",
+    "source_unreachable": "Sunucuya ulaşılamadı",
+    "download_failed": "İndirme yarıda kaldı",
+    "download_hash_mismatch": "Bozuk indirme",
+    "manual_download_required": "Elle indirme gerekiyor",
+    "file_in_use": "Bir dosya kullanımdaydı",
+    "access_denied": "Erişim engellendi",
+    "game_incompatible": "Oyun uyumlu değil"
+  },
+
+  "format": {
+    "bytes": "{value} {unit}",
+    "speed": "{value}/sn",
+    "seconds": { "one": "{count} saniye", "other": "{count} saniye" },
+    "minutes": { "one": "{count} dakika", "other": "{count} dakika" },
+    "hours": { "one": "{count} saat", "other": "{count} saat" },
+    "hoursMinutes": "{hours} {minutes}",
+    "justNow": "az önce",
+    "minutesAgo": { "one": "{count} dakika önce", "other": "{count} dakika önce" },
+    "hoursAgo": { "one": "{count} saat önce", "other": "{count} saat önce" },
+    "daysAgo": { "one": "dün", "other": "{count} gün önce" }
+  }
+}

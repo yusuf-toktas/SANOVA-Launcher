@@ -1,0 +1,190 @@
+<!--
+  SANOVA design tokens.
+
+  Dark ("Sodium dusk", default): violet-tinted dusk ink surfaces, sodium-vapour streetlight
+  amber as the single accent, freeway-sign green for success.
+  Light ("Concrete daylight"): cool sun-bleached concrete surfaces, the same amber for fills,
+  a deeper amber for text so it stays readable.
+
+  Fluent theme resource keys are overridden here so built-in controls follow the palette.
+-->
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <ResourceDictionary.ThemeDictionaries>
+    <ResourceDictionary x:Key="Dark">
+      <SolidColorBrush x:Key="Bg0" Color="#120E18" />
+      <SolidColorBrush x:Key="Bg1" Color="#17121E" />
+      <SolidColorBrush x:Key="Bg2" Color="#211A2A" />
+      <SolidColorBrush x:Key="Bg3" Color="#2B2336" />
+      <SolidColorBrush x:Key="Line" Color="#2C2436" />
+      <SolidColorBrush x:Key="LineStrong" Color="#40354D" />
+      <SolidColorBrush x:Key="Text1" Color="#F4EFE8" />
+      <SolidColorBrush x:Key="Text2" Color="#B5ACBF" />
+      <SolidColorBrush x:Key="Text3" Color="#82798E" />
+      <SolidColorBrush x:Key="AccentFill" Color="#FFAA4D" />
+      <SolidColorBrush x:Key="AccentFillHover" Color="#FFBB6C" />
+      <SolidColorBrush x:Key="AccentFillPressed" Color="#EF9634" />
+      <SolidColorBrush x:Key="OnAccent" Color="#1C1206" />
+      <SolidColorBrush x:Key="AccentText" Color="#FFB563" />
+      <SolidColorBrush x:Key="AccentSoft" Color="#24FFAA4D" />
+      <SolidColorBrush x:Key="Success" Color="#4CC38A" />
+      <SolidColorBrush x:Key="SuccessSoft" Color="#1F4CC38A" />
+      <SolidColorBrush x:Key="Warning" Color="#F2C14E" />
+      <SolidColorBrush x:Key="WarningSoft" Color="#1FF2C14E" />
+      <SolidColorBrush x:Key="Danger" Color="#FF6474" />
+      <SolidColorBrush x:Key="DangerSoft" Color="#1FFF6474" />
+      <SolidColorBrush x:Key="Info" Color="#9DB7E8" />
+      <SolidColorBrush x:Key="InfoSoft" Color="#1F9DB7E8" />
+      <SolidColorBrush x:Key="Scrim" Color="#C20B0810" />
+      <SolidColorBrush x:Key="HoverFill" Color="#12FFFFFF" />
+      <SolidColorBrush x:Key="PressedFill" Color="#1CFFFFFF" />
+      <SolidColorBrush x:Key="NavSelected" Color="#1FFFAA4D" />
+      <SolidColorBrush x:Key="TrackFill" Color="#2E2639" />
+
+      <!-- Fluent control overrides -->
+      <SolidColorBrush x:Key="ButtonBackground" Color="#211A2A" />
+      <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#2B2336" />
+      <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#332A40" />
+      <SolidColorBrush x:Key="ButtonBackgroundDisabled" Color="#1B1623" />
+      <SolidColorBrush x:Key="ButtonForeground" Color="#F4EFE8" />
+      <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#F4EFE8" />
+      <SolidColorBrush x:Key="ButtonForegroundPressed" Color="#F4EFE8" />
+      <SolidColorBrush x:Key="ButtonForegroundDisabled" Color="#5D5568" />
+      <SolidColorBrush x:Key="ButtonBorderBrush" Color="#2C2436" />
+      <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="#40354D" />
+      <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="#40354D" />
+      <SolidColorBrush x:Key="ButtonBorderBrushDisabled" Color="#241E2C" />
+      <SolidColorBrush x:Key="TextControlForeground" Color="#F4EFE8" />
+      <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#F4EFE8" />
+      <SolidColorBrush x:Key="TextControlForegroundFocused" Color="#F4EFE8" />
+      <SolidColorBrush x:Key="TextControlBackground" Color="#1B1523" />
+      <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#211A2A" />
+      <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="#1B1523" />
+      <SolidColorBrush x:Key="TextControlBorderBrush" Color="#2C2436" />
+      <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="#40354D" />
+      <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#FFAA4D" />
+      <SolidColorBrush x:Key="TextControlPlaceholderForeground" Color="#6E657A" />
+      <SolidColorBrush x:Key="ComboBoxBackground" Color="#1B1523" />
+      <SolidColorBrush x:Key="ComboBoxBackgroundPointerOver" Color="#211A2A" />
+      <SolidColorBrush x:Key="ComboBoxBackgroundPressed" Color="#2B2336" />
+      <SolidColorBrush x:Key="ComboBoxBorderBrush" Color="#2C2436" />
+      <SolidColorBrush x:Key="ComboBoxBorderBrushPointerOver" Color="#40354D" />
+      <SolidColorBrush x:Key="ComboBoxBorderBrushPressed" Color="#FFAA4D" />
+      <SolidColorBrush x:Key="ComboBoxForeground" Color="#F4EFE8" />
+      <SolidColorBrush x:Key="ComboBoxDropDownBackground" Color="#211A2A" />
+      <SolidColorBrush x:Key="ComboBoxDropDownBorderBrush" Color="#40354D" />
+      <SolidColorBrush x:Key="ComboBoxItemBackgroundPointerOver" Color="#2B2336" />
+      <SolidColorBrush x:Key="ComboBoxItemBackgroundSelected" Color="#33FFAA4D" />
+      <SolidColorBrush x:Key="ComboBoxItemBackgroundSelectedPointerOver" Color="#40FFAA4D" />
+      <SolidColorBrush x:Key="ToolTipBackground" Color="#2B2336" />
+      <SolidColorBrush x:Key="ToolTipForeground" Color="#F4EFE8" />
+      <SolidColorBrush x:Key="ToolTipBorderBrush" Color="#40354D" />
+      <SolidColorBrush x:Key="ToggleSwitchFillOff" Color="#1B1523" />
+      <SolidColorBrush x:Key="ToggleSwitchStrokeOff" Color="#5D5568" />
+      <SolidColorBrush x:Key="ToggleSwitchKnobFillOff" Color="#B5ACBF" />
+      <SolidColorBrush x:Key="ToggleSwitchFillOn" Color="#FFAA4D" />
+      <SolidColorBrush x:Key="ToggleSwitchFillOnPointerOver" Color="#FFBB6C" />
+      <SolidColorBrush x:Key="ToggleSwitchKnobFillOn" Color="#1C1206" />
+      <SolidColorBrush x:Key="ToggleSwitchKnobFillOnPointerOver" Color="#1C1206" />
+    </ResourceDictionary>
+
+    <ResourceDictionary x:Key="Light">
+      <SolidColorBrush x:Key="Bg0" Color="#ECEEF1" />
+      <SolidColorBrush x:Key="Bg1" Color="#E3E6EB" />
+      <SolidColorBrush x:Key="Bg2" Color="#F9FAFB" />
+      <SolidColorBrush x:Key="Bg3" Color="#D9DDE3" />
+      <SolidColorBrush x:Key="Line" Color="#CDD2DA" />
+      <SolidColorBrush x:Key="LineStrong" Color="#B4BAC5" />
+      <SolidColorBrush x:Key="Text1" Color="#191621" />
+      <SolidColorBrush x:Key="Text2" Color="#4C4758" />
+      <SolidColorBrush x:Key="Text3" Color="#706A7C" />
+      <SolidColorBrush x:Key="AccentFill" Color="#F59A32" />
+      <SolidColorBrush x:Key="AccentFillHover" Color="#FFAA4D" />
+      <SolidColorBrush x:Key="AccentFillPressed" Color="#E0861F" />
+      <SolidColorBrush x:Key="OnAccent" Color="#1C1206" />
+      <SolidColorBrush x:Key="AccentText" Color="#9C5300" />
+      <SolidColorBrush x:Key="AccentSoft" Color="#26F59A32" />
+      <SolidColorBrush x:Key="Success" Color="#1C7F4F" />
+      <SolidColorBrush x:Key="SuccessSoft" Color="#1F1C7F4F" />
+      <SolidColorBrush x:Key="Warning" Color="#8F6200" />
+      <SolidColorBrush x:Key="WarningSoft" Color="#24C99A2E" />
+      <SolidColorBrush x:Key="Danger" Color="#C02E3D" />
+      <SolidColorBrush x:Key="DangerSoft" Color="#1FC02E3D" />
+      <SolidColorBrush x:Key="Info" Color="#36609F" />
+      <SolidColorBrush x:Key="InfoSoft" Color="#1F36609F" />
+      <SolidColorBrush x:Key="Scrim" Color="#80161220" />
+      <SolidColorBrush x:Key="HoverFill" Color="#0E000000" />
+      <SolidColorBrush x:Key="PressedFill" Color="#18000000" />
+      <SolidColorBrush x:Key="NavSelected" Color="#2EF59A32" />
+      <SolidColorBrush x:Key="TrackFill" Color="#D3D8DF" />
+
+      <SolidColorBrush x:Key="ButtonBackground" Color="#F9FAFB" />
+      <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#FFFFFF" />
+      <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#E3E6EB" />
+      <SolidColorBrush x:Key="ButtonBackgroundDisabled" Color="#E7E9ED" />
+      <SolidColorBrush x:Key="ButtonForeground" Color="#191621" />
+      <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#191621" />
+      <SolidColorBrush x:Key="ButtonForegroundPressed" Color="#191621" />
+      <SolidColorBrush x:Key="ButtonForegroundDisabled" Color="#9A95A3" />
+      <SolidColorBrush x:Key="ButtonBorderBrush" Color="#CDD2DA" />
+      <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="#B4BAC5" />
+      <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="#B4BAC5" />
+      <SolidColorBrush x:Key="ButtonBorderBrushDisabled" Color="#DADDE2" />
+      <SolidColorBrush x:Key="TextControlForeground" Color="#191621" />
+      <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#191621" />
+      <SolidColorBrush x:Key="TextControlForegroundFocused" Color="#191621" />
+      <SolidColorBrush x:Key="TextControlBackground" Color="#F9FAFB" />
+      <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#FFFFFF" />
+      <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="#FFFFFF" />
+      <SolidColorBrush x:Key="TextControlBorderBrush" Color="#CDD2DA" />
+      <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="#B4BAC5" />
+      <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#E0861F" />
+      <SolidColorBrush x:Key="TextControlPlaceholderForeground" Color="#8C8697" />
+      <SolidColorBrush x:Key="ComboBoxBackground" Color="#F9FAFB" />
+      <SolidColorBrush x:Key="ComboBoxBackgroundPointerOver" Color="#FFFFFF" />
+      <SolidColorBrush x:Key="ComboBoxBackgroundPressed" Color="#E3E6EB" />
+      <SolidColorBrush x:Key="ComboBoxBorderBrush" Color="#CDD2DA" />
+      <SolidColorBrush x:Key="ComboBoxBorderBrushPointerOver" Color="#B4BAC5" />
+      <SolidColorBrush x:Key="ComboBoxBorderBrushPressed" Color="#E0861F" />
+      <SolidColorBrush x:Key="ComboBoxForeground" Color="#191621" />
+      <SolidColorBrush x:Key="ComboBoxDropDownBackground" Color="#FFFFFF" />
+      <SolidColorBrush x:Key="ComboBoxDropDownBorderBrush" Color="#CDD2DA" />
+      <SolidColorBrush x:Key="ComboBoxItemBackgroundPointerOver" Color="#ECEEF1" />
+      <SolidColorBrush x:Key="ComboBoxItemBackgroundSelected" Color="#33F59A32" />
+      <SolidColorBrush x:Key="ComboBoxItemBackgroundSelectedPointerOver" Color="#40F59A32" />
+      <SolidColorBrush x:Key="ToolTipBackground" Color="#FFFFFF" />
+      <SolidColorBrush x:Key="ToolTipForeground" Color="#191621" />
+      <SolidColorBrush x:Key="ToolTipBorderBrush" Color="#CDD2DA" />
+      <SolidColorBrush x:Key="ToggleSwitchFillOff" Color="#F9FAFB" />
+      <SolidColorBrush x:Key="ToggleSwitchStrokeOff" Color="#8C8697" />
+      <SolidColorBrush x:Key="ToggleSwitchKnobFillOff" Color="#4C4758" />
+      <SolidColorBrush x:Key="ToggleSwitchFillOn" Color="#F59A32" />
+      <SolidColorBrush x:Key="ToggleSwitchFillOnPointerOver" Color="#FFAA4D" />
+      <SolidColorBrush x:Key="ToggleSwitchKnobFillOn" Color="#1C1206" />
+      <SolidColorBrush x:Key="ToggleSwitchKnobFillOnPointerOver" Color="#1C1206" />
+    </ResourceDictionary>
+  </ResourceDictionary.ThemeDictionaries>
+
+  <!-- The hero artwork is always dusk, so its overlay and type colours do not change with the theme. -->
+  <LinearGradientBrush x:Key="HeroScrim" StartPoint="0%,0%" EndPoint="100%,0%">
+    <GradientStop Offset="0" Color="#F0120E18" />
+    <GradientStop Offset="0.38" Color="#B3120E18" />
+    <GradientStop Offset="0.72" Color="#00120E18" />
+  </LinearGradientBrush>
+  <LinearGradientBrush x:Key="HeroFloor" StartPoint="0%,0%" EndPoint="0%,100%">
+    <GradientStop Offset="0.55" Color="#00120E18" />
+    <GradientStop Offset="1" Color="#99120E18" />
+  </LinearGradientBrush>
+  <LinearGradientBrush x:Key="WordmarkFill" StartPoint="0%,0%" EndPoint="0%,100%">
+    <GradientStop Offset="0" Color="#FFF8EE" />
+    <GradientStop Offset="0.62" Color="#FFE2B8" />
+    <GradientStop Offset="1" Color="#FFAA4D" />
+  </LinearGradientBrush>
+  <SolidColorBrush x:Key="HeroText" Color="#F4EFE8" />
+  <SolidColorBrush x:Key="HeroTextMuted" Color="#D9CFDF" />
+
+  <CornerRadius x:Key="ControlCornerRadius">8</CornerRadius>
+  <CornerRadius x:Key="OverlayCornerRadius">10</CornerRadius>
+  <FontFamily x:Key="MonoFont">Cascadia Mono, Consolas, Courier New</FontFamily>
+</ResourceDictionary>

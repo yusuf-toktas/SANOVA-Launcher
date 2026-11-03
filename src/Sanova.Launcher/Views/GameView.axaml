@@ -1,0 +1,224 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Sanova.Launcher.ViewModels"
+             xmlns:l="using:Sanova.Launcher.Infrastructure"
+             x:Class="Sanova.Launcher.Views.GameView"
+             x:DataType="vm:GameViewModel">
+  <ScrollViewer>
+    <StackPanel Classes="page">
+      <StackPanel Spacing="8">
+        <TextBlock Text="{l:Tr game.title}" Classes="h1" />
+        <TextBlock Text="{l:Tr game.lede}" Classes="lede" />
+      </StackPanel>
+
+      <!-- Original game -->
+      <StackPanel Spacing="12">
+        <TextBlock Text="{l:Tr game.original.title}" Classes="h2" />
+        <Border Classes="group">
+          <StackPanel>
+            <Border Classes="row">
+              <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Spacing="3" Margin="0,0,20,0">
+                  <TextBlock Text="{l:Tr game.original.folder}" Classes="label" />
+                  <TextBlock Text="{Binding GamePath}" Classes="path" IsVisible="{Binding HasGame}" />
+                  <TextBlock Text="{l:Tr home.ledger.gameHint}" Classes="muted" IsVisible="{Binding !HasGame}" />
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                  <Button Classes="icon" Command="{Binding OpenGameFolderCommand}" IsVisible="{Binding HasGame}" ToolTip.Tip="{l:Tr common.openFolder}" AutomationProperties.Name="{l:Tr common.openFolder}">
+                    <PathIcon Data="{StaticResource Icon.FolderOpen}" />
+                  </Button>
+                  <Button Content="{l:Tr common.change}" Command="{Binding ChangeGameCommand}" />
+                </StackPanel>
+              </Grid>
+            </Border>
+            <Border Classes="row" IsVisible="{Binding HasGame}">
+              <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Spacing="3">
+                  <TextBlock Text="{l:Tr game.original.version}" Classes="label" />
+                  <StackPanel Orientation="Horizontal" Spacing="10">
+                    <TextBlock Text="{Binding ExecutableText.Value}" Classes="h3" />
+                    <Border Classes="pill" Classes.success="{Binding IsVerdictOk}" Classes.warning="{Binding IsVerdictWarning}" Classes.danger="{Binding IsVerdictError}"
+                            VerticalAlignment="Center">
+                      <TextBlock Text="{Binding VerdictText.Value}" />
+                    </Border>
+                  </StackPanel>
+                  <TextBlock Text="{Binding EditionText.Value}" Classes="small muted" />
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                  <Button Classes="ghost" Content="{l:Tr game.original.details}" Command="{Binding ToggleTechnicalCommand}" />
+                  <Button Classes="ghost" Command="{Binding RecheckCommand}" ToolTip.Tip="{l:Tr setup.compat.recheck}" AutomationProperties.Name="{l:Tr setup.compat.recheck}">
+                    <PathIcon Data="{StaticResource Icon.Refresh}" Classes="small" />
+                  </Button>
+                </StackPanel>
+              </Grid>
+            </Border>
+            <Border Classes="row" IsVisible="{Binding ShowTechnical}">
+              <Grid ColumnDefinitions="*,Auto">
+                <SelectableTextBlock Text="{Binding TechnicalDetails}" Classes="mono muted" TextWrapping="Wrap" />
+                <Button Grid.Column="1" Classes="icon" Command="{Binding CopyTechnicalCommand}" VerticalAlignment="Top" ToolTip.Tip="{l:Tr common.copy}" AutomationProperties.Name="{l:Tr common.copy}">
+                  <PathIcon Data="{StaticResource Icon.Copy}" Classes="small" />
+                </Button>
+              </Grid>
+            </Border>
+            <Border Classes="row last" IsVisible="{Binding HasGame}">
+              <StackPanel Spacing="14">
+                <StackPanel Orientation="Horizontal" Spacing="10" IsVisible="{Binding IsChecking}">
+                  <ProgressBar IsIndeterminate="True" Width="160" />
+                  <TextBlock Text="{l:Tr setup.compat.checking}" Classes="muted small" />
+                </StackPanel>
+                <ItemsControl ItemsSource="{Binding Findings}">
+                  <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                      <StackPanel Spacing="12" />
+                    </ItemsPanelTemplate>
+                  </ItemsControl.ItemsPanel>
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:FindingItem">
+                      <Grid ColumnDefinitions="Auto,*">
+                        <PathIcon Data="{Binding Icon}" Classes="small" Classes.danger="{Binding IsError}" Classes.warning="{Binding IsWarning}" Classes.success="{Binding IsInfo}"
+                                  VerticalAlignment="Top" Margin="0,2,12,0" />
+                        <StackPanel Grid.Column="1" Spacing="3">
+                          <TextBlock Text="{Binding Title.Value}" FontWeight="SemiBold" TextWrapping="Wrap" />
+                          <TextBlock Text="{Binding Body.Value}" Classes="small muted wrap" />
+                          <ItemsControl ItemsSource="{Binding Items}" IsVisible="{Binding HasItems}">
+                            <ItemsControl.ItemTemplate>
+                              <DataTemplate x:DataType="x:String">
+                                <TextBlock Text="{Binding}" Classes="mono faint" />
+                              </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                          </ItemsControl>
+                          <TextBlock Text="{Binding MoreItems.Value}" Classes="small faint" />
+                        </StackPanel>
+                      </Grid>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </StackPanel>
+            </Border>
+          </StackPanel>
+        </Border>
+      </StackPanel>
+
+      <!-- SANOVA installation -->
+      <StackPanel Spacing="12">
+        <TextBlock Text="{l:Tr game.install.title}" Classes="h2" />
+        <Border Classes="group">
+          <StackPanel>
+            <Border Classes="row">
+              <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Spacing="3" Margin="0,0,20,0">
+                  <TextBlock Text="{Binding InstallStatus.Value}" Classes="h3" />
+                  <TextBlock Text="{Binding InstallDetail.Value}" Classes="small muted wrap" />
+                </StackPanel>
+                <Button Grid.Column="1" Classes="primary" Content="{l:Tr home.action.setUpSentence}" Command="{Binding SetUpCommand}" IsVisible="{Binding HasNoInstall}"
+                        VerticalAlignment="Center" />
+              </Grid>
+            </Border>
+            <Border Classes="row" IsVisible="{Binding HasInstall}">
+              <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Spacing="3" Margin="0,0,20,0">
+                  <TextBlock Text="{l:Tr game.install.folder}" Classes="label" />
+                  <TextBlock Text="{Binding InstallPath}" Classes="path" />
+                </StackPanel>
+                <Button Grid.Column="1" Classes="icon" Command="{Binding OpenInstallFolderCommand}" ToolTip.Tip="{l:Tr common.openFolder}" AutomationProperties.Name="{l:Tr common.openFolder}" VerticalAlignment="Center">
+                  <PathIcon Data="{StaticResource Icon.FolderOpen}" />
+                </Button>
+              </Grid>
+            </Border>
+            <Border Classes="row last" IsVisible="{Binding HasInstall}">
+              <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Text="{Binding VerifiedText.Value}" Classes="muted small" VerticalAlignment="Center" TextWrapping="Wrap" Margin="0,0,20,0" />
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                  <Button Command="{Binding VerifyCommand}" IsEnabled="{Binding CanModify}">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                      <PathIcon Data="{StaticResource Icon.ShieldCheck}" Classes="small" />
+                      <TextBlock Text="{l:Tr game.install.verify}" />
+                    </StackPanel>
+                  </Button>
+                  <Button Command="{Binding RepairCommand}" IsEnabled="{Binding CanModify}" IsVisible="{Binding IsInstalled}">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                      <PathIcon Data="{StaticResource Icon.Wrench}" Classes="small" />
+                      <TextBlock Text="{l:Tr game.install.repair}" />
+                    </StackPanel>
+                  </Button>
+                  <Button Classes="danger" Command="{Binding UninstallCommand}" IsEnabled="{Binding CanModify}">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                      <PathIcon Data="{StaticResource Icon.Delete}" Classes="small" />
+                      <TextBlock Text="{l:Tr game.install.uninstall}" />
+                    </StackPanel>
+                  </Button>
+                </StackPanel>
+              </Grid>
+            </Border>
+          </StackPanel>
+        </Border>
+      </StackPanel>
+
+      <!-- Saved games -->
+      <StackPanel Spacing="12">
+        <TextBlock Text="{l:Tr game.saves.title}" Classes="h2" />
+        <TextBlock Text="{l:Tr game.saves.lede}" Classes="lede" />
+        <Border Classes="group">
+          <StackPanel>
+            <Border Classes="row">
+              <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Spacing="3" Margin="0,0,20,0">
+                  <TextBlock Text="{l:Tr game.saves.folder}" Classes="label" />
+                  <TextBlock Text="{Binding UserFilesPath}" Classes="path" />
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                  <Button Classes="icon" Command="{Binding OpenSavesCommand}" ToolTip.Tip="{l:Tr common.openFolder}" AutomationProperties.Name="{l:Tr common.openFolder}">
+                    <PathIcon Data="{StaticResource Icon.FolderOpen}" />
+                  </Button>
+                  <Button Command="{Binding BackupNowCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                      <PathIcon Data="{StaticResource Icon.Archive}" Classes="small" />
+                      <TextBlock Text="{l:Tr game.saves.backupNow}" />
+                    </StackPanel>
+                  </Button>
+                </StackPanel>
+              </Grid>
+            </Border>
+            <Border Classes="row">
+              <StackPanel Spacing="8">
+                <TextBlock Text="{l:Tr game.saves.slots}" Classes="label" />
+                <TextBlock Text="{l:Tr game.saves.noSlots}" Classes="muted small" IsVisible="{Binding !HasSlots}" />
+                <ItemsControl ItemsSource="{Binding Slots}" IsVisible="{Binding HasSlots}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:SaveSlotItem">
+                      <Grid ColumnDefinitions="140,*" Margin="0,3">
+                        <TextBlock Text="{Binding Title.Value}" FontWeight="SemiBold" />
+                        <TextBlock Grid.Column="1" Text="{Binding When.Value}" Classes="muted" />
+                      </Grid>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </StackPanel>
+            </Border>
+            <Border Classes="row last">
+              <StackPanel Spacing="8">
+                <Grid ColumnDefinitions="*,Auto">
+                  <TextBlock Text="{l:Tr game.saves.backups}" Classes="label" VerticalAlignment="Center" />
+                  <Button Grid.Column="1" Classes="link" Content="{l:Tr game.saves.openBackups}" Command="{Binding OpenBackupsCommand}" FontSize="13" />
+                </Grid>
+                <TextBlock Text="{l:Tr game.saves.noBackups}" Classes="muted small" IsVisible="{Binding !HasBackups}" />
+                <ItemsControl ItemsSource="{Binding Backups}" IsVisible="{Binding HasBackups}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:BackupItem">
+                      <Grid ColumnDefinitions="200,*,Auto" Margin="0,3">
+                        <TextBlock Text="{Binding Title.Value}" FontWeight="SemiBold" VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="1" Text="{Binding Detail.Value}" Classes="muted small" VerticalAlignment="Center" />
+                        <Button Grid.Column="2" Classes="ghost" Content="{l:Tr game.saves.restore}" Padding="10,5"
+                                Command="{Binding $parent[UserControl].((vm:GameViewModel)DataContext).RestoreCommand}" CommandParameter="{Binding}" />
+                      </Grid>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </StackPanel>
+            </Border>
+          </StackPanel>
+        </Border>
+      </StackPanel>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

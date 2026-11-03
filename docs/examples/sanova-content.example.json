@@ -1,0 +1,135 @@
+{
+  // Example content configuration for `sanova-manifest build` (see docs/CONTENT-PIPELINE.md).
+  // Component names, authors and URLs below are placeholders, not real mods. Comments are allowed.
+
+  "contentVersion": "1.0.0",
+  "channel": "stable",
+  "minLauncherVersion": "0.1.0",
+  "title": { "en": "SANOVA — San Andreas Reimagined", "tr": "SANOVA — San Andreas Reimagined" },
+
+  // Markdown files relative to this config. Shown in the launcher before updating.
+  "releaseNotesFiles": { "en": "notes/1.0.0.en.md", "tr": "notes/1.0.0.tr.md" },
+
+  // The launcher's built-in database already knows these ids; listing them here makes the
+  // release's policy explicit and lets a release change it without a launcher update.
+  "compatibility": {
+    "supportedExecutables": [ "sa-1.0-us-retail" ]
+  },
+
+  "categories": [
+    { "id": "core", "name": { "en": "SANOVA", "tr": "SANOVA" }, "order": 0 },
+    { "id": "graphics", "name": { "en": "Graphics", "tr": "Grafik" }, "order": 1 },
+    { "id": "audio", "name": { "en": "Audio", "tr": "Ses" }, "order": 2 }
+  ],
+
+  "components": [
+    {
+      // Catch-all for SANOVA's own files. Everything not claimed by a higher-priority
+      // component below lands here.
+      "id": "core",
+      "name": { "en": "SANOVA core", "tr": "SANOVA çekirdeği" },
+      "description": { "en": "Required SANOVA files and fixes.", "tr": "Gerekli SANOVA dosyaları ve düzeltmeleri." },
+      "category": "core",
+      "required": true,
+      "authors": [ "SANOVA team" ],
+      "license": "SANOVA team's own work",
+      "redistribution": "allowed",
+      "include": [ "**" ],
+      "exclude": [ "**/Thumbs.db", "**/desktop.ini" ]
+    },
+    {
+      // A third-party mod whose author gave SANOVA written permission to redistribute it.
+      "id": "hd-vehicles",
+      "name": { "en": "HD vehicles", "tr": "HD araçlar" },
+      "description": { "en": "Higher-detail models for common vehicles.", "tr": "Yaygın araçlar için daha ayrıntılı modeller." },
+      "category": "graphics",
+      "defaultEnabled": true,
+      "version": "2.3",
+      "authors": [ "Example Author" ],
+      "homepage": "https://example.org/hd-vehicles",
+      "license": "Permission granted to SANOVA on 2026-10-01 (permissions/hd-vehicles.txt)",
+      "redistribution": "permission",
+      "include": [ "modloader/HD Vehicles/**" ],
+      "priority": 10,
+      "order": 1
+    },
+    {
+      // Two looks that can't be combined: enabling one turns the other off.
+      "id": "night-lighting",
+      "name": { "en": "Night lighting", "tr": "Gece aydınlatması" },
+      "category": "graphics",
+      "defaultEnabled": true,
+      "authors": [ "SANOVA team" ],
+      "license": "SANOVA team's own work",
+      "redistribution": "allowed",
+      "conflicts": [ "classic-lighting" ],
+      "include": [ "modloader/Night Lighting/**" ],
+      "priority": 10,
+      "order": 2
+    },
+    {
+      "id": "classic-lighting",
+      "name": { "en": "Classic lighting", "tr": "Klasik aydınlatma" },
+      "category": "graphics",
+      "defaultEnabled": false,
+      "authors": [ "SANOVA team" ],
+      "license": "SANOVA team's own work",
+      "redistribution": "allowed",
+      "conflicts": [ "night-lighting" ],
+      "include": [ "modloader/Classic Lighting/**" ],
+      "priority": 10,
+      "order": 3
+    },
+    {
+      // Not redistributable: the launcher downloads the author's own archive and verifies it.
+      // The files must still be in Root/ exactly as they are in that archive.
+      "id": "city-ambience",
+      "name": { "en": "City ambience", "tr": "Şehir ambiyansı" },
+      "category": "audio",
+      "defaultEnabled": false,
+      "version": "1.4",
+      "authors": [ "Another Author" ],
+      "homepage": "https://example.org/city-ambience",
+      "license": "Free to use; redistribution not permitted",
+      "redistribution": "external",
+      "dependencies": [ "core" ],
+      "include": [ "modloader/City Ambience/**" ],
+      "priority": 10,
+      "source": {
+        "type": "external",
+        "url": "https://example.org/downloads/city-ambience-1.4.zip",
+        "pageUrl": "https://example.org/city-ambience",
+        // Optional: "size": <archive size in bytes>,
+        "sha256": "REPLACE-WITH-THE-SHA256-OF-THE-AUTHORS-ARCHIVE",
+        "installPrefix": "modloader/",
+        "archivePrefix": ""
+      }
+    },
+    {
+      // Not redistributable and no direct link: the player downloads it from the author's
+      // page and the launcher verifies the archive they choose.
+      "id": "radio-pack",
+      "name": { "en": "Radio pack", "tr": "Radyo paketi" },
+      "category": "audio",
+      "defaultEnabled": false,
+      "authors": [ "Third Author" ],
+      "homepage": "https://example.org/radio-pack",
+      "license": "Download from the author's page only",
+      "redistribution": "external",
+      "include": [ "modloader/Radio Pack/**" ],
+      "priority": 10,
+      "source": {
+        "type": "manual",
+        "pageUrl": "https://example.org/radio-pack",
+        "fileName": "radio-pack-1.2.zip",
+        "sha256": "REPLACE-WITH-THE-SHA256-OF-THE-AUTHORS-ARCHIVE",
+        "instructions": {
+          "en": "Download \"radio-pack-1.2.zip\" from the author's page, then choose the file.",
+          "tr": "\"radio-pack-1.2.zip\" dosyasını yazarın sayfasından indirin, ardından dosyayı seçin."
+        },
+        "installPrefix": "modloader/Radio Pack/",
+        "archivePrefix": "Radio Pack 1.2/"
+      }
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Sanova.Launcher.ViewModels"
+             xmlns:l="using:Sanova.Launcher.Infrastructure"
+             x:Class="Sanova.Launcher.Views.DiagnosticsView"
+             x:DataType="vm:DiagnosticsViewModel">
+  <ScrollViewer>
+    <StackPanel Classes="page">
+      <StackPanel Spacing="8">
+        <TextBlock Text="{l:Tr diagnostics.title}" Classes="h1" />
+        <TextBlock Text="{l:Tr diagnostics.lede}" Classes="lede" />
+      </StackPanel>
+
+      <Grid ColumnDefinitions="*,Auto">
+        <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+          <ProgressBar IsIndeterminate="True" Width="120" IsVisible="{Binding IsRunning}" />
+          <TextBlock Text="{Binding Summary.Value}" Classes="muted" VerticalAlignment="Center" />
+        </StackPanel>
+        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+          <Button Command="{Binding RunCommand}" IsEnabled="{Binding !IsRunning}">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <PathIcon Data="{StaticResource Icon.Refresh}" Classes="small" />
+              <TextBlock Text="{l:Tr diagnostics.run}" />
+            </StackPanel>
+          </Button>
+          <Button Command="{Binding CopySummaryCommand}">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <PathIcon Data="{StaticResource Icon.Copy}" Classes="small" />
+              <TextBlock Text="{l:Tr diagnostics.copy}" />
+            </StackPanel>
+          </Button>
+          <Button Classes="primary" Command="{Binding ExportCommand}">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <PathIcon Data="{StaticResource Icon.Bug}" Classes="small" />
+              <TextBlock Text="{l:Tr diagnostics.export}" />
+            </StackPanel>
+          </Button>
+        </StackPanel>
+      </Grid>
+
+      <Border Classes="group" IsVisible="{Binding HasResults}">
+        <ItemsControl ItemsSource="{Binding Checks}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate x:DataType="vm:CheckItem">
+              <Border Classes="row">
+                <Grid ColumnDefinitions="Auto,200,*">
+                  <PathIcon Data="{Binding Icon}" Classes="small" Classes.success="{Binding IsPass}" Classes.warning="{Binding IsWarning}" Classes.danger="{Binding IsFail}"
+                            Classes.info="{Binding IsInfo}" VerticalAlignment="Top" Margin="0,2,14,0" />
+                  <TextBlock Grid.Column="1" Text="{Binding Title.Value}" FontWeight="SemiBold" Margin="0,0,16,0" TextWrapping="Wrap" />
+                  <StackPanel Grid.Column="2" Spacing="4">
+                    <TextBlock Text="{Binding Message.Value}" Classes="muted wrap" />
+                    <SelectableTextBlock Text="{Binding Detail}" Classes="mono faint" TextWrapping="Wrap" IsVisible="{Binding HasDetail}" />
+                  </StackPanel>
+                </Grid>
+              </Border>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </Border>
+
+      <StackPanel Spacing="12">
+        <Grid ColumnDefinitions="*,Auto">
+          <TextBlock Text="{l:Tr diagnostics.log}" Classes="h2" VerticalAlignment="Center" />
+          <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+            <Button Classes="ghost" Content="{l:Tr diagnostics.refreshLog}" Command="{Binding RefreshLogCommand}" />
+            <Button Content="{l:Tr diagnostics.openLogs}" Command="{Binding OpenLogsCommand}" />
+          </StackPanel>
+        </Grid>
+        <TextBlock Text="{Binding LogsFolder}" Classes="path" />
+        <Border Classes="group" Padding="16,14" MaxHeight="300">
+          <ScrollViewer HorizontalScrollBarVisibility="Auto">
+            <SelectableTextBlock Text="{Binding RecentLog}" Classes="mono muted" />
+          </ScrollViewer>
+        </Border>
+      </StackPanel>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

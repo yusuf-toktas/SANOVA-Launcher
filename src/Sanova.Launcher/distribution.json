@@ -1,0 +1,44 @@
+{
+  // Where SANOVA Launcher finds its own updates and SANOVA content releases.
+  //
+  // Nothing has been published yet, so every source below is intentionally empty.
+  // While a source is empty the launcher says so in the UI instead of guessing a URL.
+  // Fill these in before building a public release (see docs/RELEASING.md and
+  // docs/CONTENT-PIPELINE.md).
+
+  "launcherUpdates": {
+    // GitHub repository that publishes launcher builds made with Velopack: "owner/repository".
+    "repository": "",
+    // Alternative to "repository": an https URL (or folder) hosting the Velopack release files.
+    "url": "",
+    "allowPrerelease": false
+  },
+
+  "content": {
+    // gitHub    : releases of "repository" carry sanova-manifest.json and the packages
+    // url       : "manifestUrl" points straight at a manifest; packages sit next to it
+    // localFolder: developer testing only (configured in Settings > Advanced)
+    "type": "gitHub",
+    "repository": "",
+    "manifestAssetName": "sanova-manifest.json",
+    "manifestUrl": "",
+    // Optional https base URLs hosting copies of the release packages.
+    "mirrors": []
+  },
+
+  "trust": {
+    // PEM public keys produced by `sanova-manifest keygen`. Manifests signed with the
+    // matching private key are verified before anything is downloaded.
+    "publicKeys": [],
+    // Turn on once a key is configured, so unsigned manifests are rejected.
+    "requireSignature": false
+  },
+
+  // Optional links shown on the About page. Empty links are hidden.
+  "links": {
+    "website": "",
+    "sourceCode": "https://github.com/yusuf-toktas/SANOVA-Launcher",
+    "community": "",
+    "support": ""
+  }
+}

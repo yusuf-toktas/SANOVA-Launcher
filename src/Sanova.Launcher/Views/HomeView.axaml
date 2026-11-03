@@ -1,0 +1,104 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Sanova.Launcher.ViewModels"
+             xmlns:l="using:Sanova.Launcher.Infrastructure"
+             xmlns:ctl="using:Sanova.Launcher.Controls"
+             x:Class="Sanova.Launcher.Views.HomeView"
+             x:DataType="vm:HomeViewModel">
+  <Grid RowDefinitions="Auto,*">
+
+    <!-- Hero -->
+    <Border Grid.Row="0" Classes="hero" Margin="28,44,28,0" Height="404">
+      <Panel>
+        <ctl:DuskScene />
+        <Border Background="{StaticResource HeroScrim}" />
+        <Border Background="{StaticResource HeroFloor}" />
+
+        <StackPanel VerticalAlignment="Bottom" Margin="46,0,46,36">
+          <TextBlock Text="SANOVA" Classes="wordmark" />
+          <TextBlock Text="{l:Tr app.tagline}" Classes="tagline" Margin="4,0,0,0" />
+
+          <StackPanel Orientation="Horizontal" Spacing="24" Margin="2,30,0,0">
+            <Button Classes="primary hero" Command="{Binding PrimaryCommand}" IsEnabled="{Binding ActionEnabled}">
+              <StackPanel Orientation="Horizontal" Spacing="12">
+                <PathIcon Data="{Binding ActionIcon}" Width="20" Height="20" />
+                <TextBlock Text="{Binding ActionLabel.Value}" VerticalAlignment="Center" />
+              </StackPanel>
+            </Button>
+            <StackPanel VerticalAlignment="Center" Spacing="4" MaxWidth="430">
+              <TextBlock Text="{Binding StatusTitle.Value}" Foreground="{StaticResource HeroText}" FontSize="16" FontWeight="Bold" TextWrapping="Wrap" />
+              <TextBlock Text="{Binding StatusDetail.Value}" Foreground="{StaticResource HeroTextMuted}" FontSize="13.5" TextWrapping="Wrap" />
+              <Button Classes="link onHeroLink" Content="{l:Tr home.playAnyway}" Command="{Binding PlayAnywayCommand}" IsVisible="{Binding ShowPlayAnyway}"
+                      Margin="0,4,0,0" HorizontalAlignment="Left" FontSize="13" />
+            </StackPanel>
+          </StackPanel>
+
+          <StackPanel IsVisible="{Binding IsBusy}" Margin="2,24,0,0" Spacing="9" Width="600" HorizontalAlignment="Left">
+            <ProgressBar Classes="onHero" Maximum="100" Value="{Binding Operations.Fraction}" IsIndeterminate="{Binding Operations.IsIndeterminate}" />
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Text="{Binding Operations.DetailText.Value}" Foreground="{StaticResource HeroTextMuted}" FontSize="12.5" VerticalAlignment="Center"
+                         TextTrimming="CharacterEllipsis" />
+              <Button Grid.Column="1" Classes="onHero" Content="{l:Tr common.cancel}" Command="{Binding Operations.CancelCommand}"
+                      IsVisible="{Binding Operations.CanCancel}" Padding="12,5" FontSize="12.5" />
+            </Grid>
+          </StackPanel>
+        </StackPanel>
+      </Panel>
+    </Border>
+
+    <!-- Ledger and release notes -->
+    <ScrollViewer Grid.Row="1">
+      <StackPanel Margin="28,26,28,34" Spacing="34">
+        <Grid ColumnDefinitions="*,Auto,*,Auto,*">
+          <StackPanel Grid.Column="0" Spacing="6" Margin="18,0,22,0">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <PathIcon Data="{StaticResource Icon.Games}" Classes="small" Foreground="{DynamicResource Text3}" />
+              <TextBlock Text="{l:Tr home.ledger.game}" Classes="label" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Spacing="9">
+              <Ellipse Classes="dot" Classes.ok="{Binding IsGameOk}" Classes.warn="{Binding IsGameWarning}" Classes.bad="{Binding IsGameError}" />
+              <TextBlock Text="{Binding GameValue.Value}" Classes="h3" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
+            </StackPanel>
+            <TextBlock Text="{Binding GameDetail.Value}" Classes="path" />
+            <Button Classes="link" Content="{l:Tr home.ledger.manageGame}" Command="{Binding GoCommand}" CommandParameter="game" Margin="0,5,0,0" FontSize="13" />
+          </StackPanel>
+
+          <Border Grid.Column="1" Classes="vrule" />
+
+          <StackPanel Grid.Column="2" Spacing="6" Margin="22,0">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <PathIcon Data="{StaticResource Icon.Box}" Classes="small" Foreground="{DynamicResource Text3}" />
+              <TextBlock Text="{l:Tr home.ledger.content}" Classes="label" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Spacing="9">
+              <Ellipse Classes="dot" Classes.ok="{Binding IsContentOk}" Classes.warn="{Binding IsContentWarning}" />
+              <TextBlock Text="{Binding ContentValue.Value}" Classes="h3" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
+            </StackPanel>
+            <TextBlock Text="{Binding ContentDetail.Value}" Classes="small muted" TextTrimming="CharacterEllipsis" />
+            <Button Classes="link" Content="{l:Tr home.ledger.verify}" Command="{Binding VerifyCommand}" IsVisible="{Binding CanVerify}" Margin="0,5,0,0" FontSize="13" />
+          </StackPanel>
+
+          <Border Grid.Column="3" Classes="vrule" />
+
+          <StackPanel Grid.Column="4" Spacing="6" Margin="22,0,18,0">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <PathIcon Data="{StaticResource Icon.Rocket}" Classes="small" Foreground="{DynamicResource Text3}" />
+              <TextBlock Text="{l:Tr home.ledger.launcher}" Classes="label" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Spacing="9">
+              <Ellipse Classes="dot ok" Classes.warn="{Binding IsLauncherWarning}" />
+              <TextBlock Text="{Binding LauncherValue.Value}" Classes="h3" TextWrapping="NoWrap" />
+            </StackPanel>
+            <TextBlock Text="{Binding LauncherDetail.Value}" Classes="small muted" TextTrimming="CharacterEllipsis" />
+            <Button Classes="link" Content="{l:Tr home.ledger.updates}" Command="{Binding GoCommand}" CommandParameter="updates" Margin="0,5,0,0" FontSize="13" />
+          </StackPanel>
+        </Grid>
+
+        <StackPanel Spacing="14" IsVisible="{Binding HasReleaseNotes}" Margin="18,0,0,0" MaxWidth="760" HorizontalAlignment="Left">
+          <TextBlock Text="{Binding NotesTitle.Value}" Classes="h2" />
+          <ctl:MarkdownView Markdown="{Binding ReleaseNotes}" />
+        </StackPanel>
+      </StackPanel>
+    </ScrollViewer>
+  </Grid>
+</UserControl>

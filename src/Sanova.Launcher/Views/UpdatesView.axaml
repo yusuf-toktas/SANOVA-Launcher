@@ -1,0 +1,93 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Sanova.Launcher.ViewModels"
+             xmlns:l="using:Sanova.Launcher.Infrastructure"
+             xmlns:ctl="using:Sanova.Launcher.Controls"
+             x:Class="Sanova.Launcher.Views.UpdatesView"
+             x:DataType="vm:UpdatesViewModel">
+  <ScrollViewer>
+    <StackPanel Classes="page">
+      <StackPanel Spacing="8">
+        <TextBlock Text="{l:Tr updates.title}" Classes="h1" />
+        <TextBlock Text="{l:Tr updates.lede}" Classes="lede" />
+      </StackPanel>
+
+      <!-- SANOVA content -->
+      <StackPanel Spacing="12">
+        <TextBlock Text="{l:Tr updates.content.title}" Classes="h2" />
+        <Border Classes="group">
+          <StackPanel>
+            <Border Classes="row">
+              <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Spacing="4" Margin="0,0,20,0">
+                  <TextBlock Text="{Binding ContentTitle.Value}" Classes="h3" />
+                  <TextBlock Text="{Binding ContentBody.Value}" Classes="small muted wrap" />
+                  <TextBlock Text="{Binding PlanText.Value}" Classes="small accent wrap" IsVisible="{Binding HasPlan}" />
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                  <Button Content="{l:Tr updates.check}" Command="{Binding CheckContentCommand}" IsEnabled="{Binding CanCheckContent}" />
+                  <Button Classes="primary" Content="{l:Tr updates.content.update}" Command="{Binding UpdateContentCommand}" IsVisible="{Binding CanUpdateContent}" />
+                </StackPanel>
+              </Grid>
+            </Border>
+            <Border Classes="row">
+              <Grid ColumnDefinitions="*,*">
+                <TextBlock Text="{Binding InstalledText.Value}" Classes="muted" />
+                <TextBlock Grid.Column="1" Text="{Binding LatestText.Value}" Classes="muted" />
+              </Grid>
+            </Border>
+            <Border Classes="row last">
+              <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Spacing="3" Margin="0,0,20,0">
+                  <TextBlock Text="{l:Tr updates.channel.title}" Classes="h3" />
+                  <TextBlock Text="{l:Tr updates.channel.body}" Classes="small muted wrap" />
+                  <TextBlock Text="{Binding SourceText.Value}" Classes="small faint" TextTrimming="CharacterEllipsis" />
+                </StackPanel>
+                <ComboBox Grid.Column="1" ItemsSource="{Binding Channels}" SelectedItem="{Binding SelectedChannel}" VerticalAlignment="Center">
+                  <ComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="vm:ChoiceOption">
+                      <TextBlock Text="{Binding Label.Value}" />
+                    </DataTemplate>
+                  </ComboBox.ItemTemplate>
+                </ComboBox>
+              </Grid>
+            </Border>
+          </StackPanel>
+        </Border>
+        <StackPanel Spacing="10" IsVisible="{Binding HasContentNotes}" Margin="4,8,0,0" MaxWidth="760" HorizontalAlignment="Left">
+          <TextBlock Text="{l:Tr updates.releaseNotes}" Classes="h3" />
+          <ctl:MarkdownView Markdown="{Binding ContentNotes}" />
+        </StackPanel>
+      </StackPanel>
+
+      <!-- Launcher -->
+      <StackPanel Spacing="12">
+        <TextBlock Text="{l:Tr updates.launcher.title}" Classes="h2" />
+        <Border Classes="group">
+          <StackPanel>
+            <Border Classes="row">
+              <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Spacing="4" Margin="0,0,20,0">
+                  <TextBlock Text="{Binding LauncherTitle.Value}" Classes="h3" />
+                  <TextBlock Text="{Binding LauncherBody.Value}" Classes="small muted wrap" />
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                  <Button Content="{l:Tr updates.check}" Command="{Binding CheckLauncherCommand}" IsEnabled="{Binding CanCheckLauncher}" />
+                  <Button Classes="primary" Content="{l:Tr updates.launcher.download}" Command="{Binding DownloadLauncherCommand}" IsVisible="{Binding CanDownloadLauncher}" />
+                  <Button Classes="primary" Content="{l:Tr updates.launcher.restart}" Command="{Binding RestartLauncherCommand}" IsVisible="{Binding CanRestartLauncher}" />
+                </StackPanel>
+              </Grid>
+            </Border>
+            <Border Classes="row last">
+              <TextBlock Text="{Binding CurrentLauncher.Value}" Classes="muted" />
+            </Border>
+          </StackPanel>
+        </Border>
+        <StackPanel Spacing="10" IsVisible="{Binding HasLauncherNotes}" Margin="4,8,0,0" MaxWidth="760" HorizontalAlignment="Left">
+          <TextBlock Text="{l:Tr updates.releaseNotes}" Classes="h3" />
+          <ctl:MarkdownView Markdown="{Binding Launcher.ReleaseNotes}" />
+        </StackPanel>
+      </StackPanel>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

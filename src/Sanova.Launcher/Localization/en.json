@@ -1,0 +1,713 @@
+{
+  "_meta": {
+    "code": "en",
+    "name": "English",
+    "nativeName": "English",
+    "culture": "en-US"
+  },
+
+  "app": {
+    "tagline": "San Andreas Reimagined"
+  },
+
+  "nav": {
+    "home": "Home",
+    "game": "My game",
+    "mods": "Mods",
+    "activity": "Downloads",
+    "updates": "Updates",
+    "settings": "Settings",
+    "diagnostics": "Diagnostics",
+    "about": "About"
+  },
+
+  "shell": {
+    "version": "Launcher {version}"
+  },
+
+  "window": {
+    "minimize": "Minimize",
+    "maximize": "Maximize",
+    "close": "Close"
+  },
+
+  "common": {
+    "ok": "OK",
+    "cancel": "Cancel",
+    "dismiss": "Dismiss",
+    "browse": "Browse…",
+    "change": "Change",
+    "copy": "Copy",
+    "openFolder": "Open folder",
+    "apply": "Apply",
+    "discard": "Discard",
+    "back": "Back",
+    "continue": "Continue"
+  },
+
+  "home": {
+    "playAnyway": "Play without updating",
+    "notesTitle": "What's new in {version}",
+    "action": {
+      "setUp": "SET UP",
+      "setUpSentence": "Set up SANOVA",
+      "fixGame": "CHECK GAME",
+      "install": "INSTALL",
+      "resume": "RESUME",
+      "update": "UPDATE",
+      "updateLauncher": "UPDATE LAUNCHER",
+      "repair": "REPAIR",
+      "running": "RUNNING",
+      "working": "WORKING",
+      "play": "PLAY"
+    },
+    "status": {
+      "running": { "title": "SANOVA is running", "body": "Close the game before installing updates or changing mods." },
+      "setUp": { "title": "Let's get SANOVA ready", "body": "Point the launcher at your copy of GTA San Andreas to begin." },
+      "fixGame": { "title": "Your game needs attention", "body": "Open My game to see what's wrong and how to fix it." },
+      "install": { "title": "Ready to install", "body": "Version {version}, about {size} to download." },
+      "resume": { "title": "Installation paused", "body": "Pick up where you left off. Nothing is downloaded twice." },
+      "update": { "title": "Update available", "body": "Version {version} is ready. You have {current}." },
+      "updateLauncher": { "title": "Launcher update needed", "body": "SANOVA {version} needs a newer version of this launcher." },
+      "repair": {
+        "title": "Some files need repair",
+        "body": "Verification found missing or changed files.",
+        "pending": "An earlier change was interrupted. Repair restores a consistent installation."
+      },
+      "play": { "title": "Ready to play", "body": "SANOVA {version}", "upToDate": "SANOVA {version}, up to date" },
+      "notConfigured": { "title": "SANOVA isn't published yet", "body": "This launcher build has no download source configured. Releases will appear here once they're published." },
+      "offline": { "title": "You're offline", "body": "Connect to the internet to download SANOVA." },
+      "noRelease": { "title": "No release available yet", "body": "There's no SANOVA release on the {channel} channel yet." },
+      "checkFailed": { "title": "Couldn't check for SANOVA", "body": "Try again in a moment." },
+      "checking": { "title": "Checking for SANOVA…", "body": "Looking for the latest release." }
+    },
+    "ledger": {
+      "game": "Your game",
+      "content": "SANOVA",
+      "launcher": "Launcher",
+      "checking": "Checking…",
+      "gameNone": "Not selected",
+      "gameHint": "Choose your GTA San Andreas folder",
+      "manageGame": "Manage game",
+      "version": "Version {version}",
+      "incomplete": "Installation incomplete",
+      "notInstalled": "Not installed",
+      "available": "Version {version} available",
+      "contentHint": "Waiting for a release",
+      "updateAvailable": "Version {version} available",
+      "needsRepair": "Some files need repair",
+      "verified": "Files verified {when}",
+      "notVerified": "Not verified yet",
+      "verify": "Verify files",
+      "updates": "Check for updates"
+    }
+  },
+
+  "setup": {
+    "steps": {
+      "welcome": "Welcome",
+      "game": "Your game",
+      "compatibility": "Compatibility",
+      "location": "Install folder",
+      "components": "Mods",
+      "review": "Review"
+    },
+    "getStarted": "Get started",
+    "later": "Set up later",
+    "install": "Install SANOVA",
+    "finish": "Finish setup",
+    "welcome": {
+      "title": "Welcome to SANOVA",
+      "body": "SANOVA brings a modernized San Andreas to your own copy of the game. This launcher sets everything up, keeps it updated and starts the game for you.",
+      "language": "Language",
+      "systemLanguage": "Same as Windows",
+      "note": "You need GTA San Andreas for PC installed on this computer. SANOVA installs into its own folder and never changes your original game."
+    },
+    "game": {
+      "title": "Find your copy of GTA San Andreas",
+      "body": "We looked in the usual places. Choose the installation SANOVA should use as its starting point.",
+      "searching": "Searching for GTA San Andreas…",
+      "definitive": "This is the Definitive Edition, a different game that SANOVA can't use.",
+      "noneTitle": "We couldn't find GTA San Andreas automatically",
+      "noneBody": "Choose the folder that contains gta_sa.exe.",
+      "browse": "Choose folder…",
+      "rescan": "Search again",
+      "pickTitle": "Choose your GTA San Andreas folder",
+      "existingTitle": "Existing SANOVA installations",
+      "existingBody": "These folders already contain SANOVA. Use one to continue where you left off.",
+      "useExisting": "Use this installation"
+    },
+    "compat": {
+      "title": "Checking your game",
+      "checking": "Checking the game files…",
+      "version": "Game version",
+      "another": "Choose another folder",
+      "recheck": "Check again",
+      "ok": { "title": "Your game is compatible", "body": "Everything SANOVA needs is in place." },
+      "warnings": { "title": "Compatible, with a few notes", "body": "SANOVA can be installed. Review the notes below first." },
+      "override": { "title": "Unsupported, continuing at your own risk", "body": "You allowed unsupported game versions in Settings. SANOVA may not work correctly." },
+      "blocked": { "title": "This installation can't be used", "body": "The problems below need to be solved before SANOVA can be installed." }
+    },
+    "location": {
+      "title": "Where should SANOVA be installed?",
+      "body": "SANOVA gets its own folder. Your original game stays exactly as it is.",
+      "pickTitle": "Choose where to install SANOVA",
+      "ok": "This folder is ready.",
+      "existing": "This folder contains a SANOVA installation. Setup will continue it.",
+      "space": "Needs about {required}. {free} free on this drive.",
+      "spaceUnknown": "Needs about {required}.",
+      "note": "Use a short folder name with plain letters. The 2005 game can't start from folders whose names contain characters outside your Windows language."
+    },
+    "components": {
+      "title": "Choose optional mods",
+      "body": "Required parts are always installed. You can change these later on the Mods page."
+    },
+    "review": {
+      "title": "Ready to install",
+      "game": "Game folder",
+      "version": "Game version",
+      "location": "Install folder",
+      "components": "Mods",
+      "componentsValue": { "one": "{count} component", "other": "{count} components" },
+      "noContent": "Available once SANOVA is published",
+      "download": "Download size",
+      "space": "Disk space needed",
+      "notConfigured": "SANOVA content hasn't been published yet, so nothing can be installed now. Your choices are saved and Home will offer to install as soon as a release is available.",
+      "offline": "You're offline, so SANOVA can't be downloaded right now. Your choices are saved for later.",
+      "unavailable": "No SANOVA release is available right now. Your choices are saved for later.",
+      "savesNote": "Your saved games are backed up before anything changes."
+    }
+  },
+
+  "game": {
+    "title": "My game",
+    "lede": "Your original GTA San Andreas, the SANOVA installation built from it, and your saved games.",
+    "original": {
+      "title": "Original game",
+      "folder": "Folder",
+      "version": "Game version",
+      "details": "Technical details"
+    },
+    "verdict": {
+      "ok": "Compatible",
+      "warnings": "Compatible with notes",
+      "override": "Unsupported",
+      "blocked": "Not compatible"
+    },
+    "tech": {
+      "file": "File",
+      "size": "Size (bytes)",
+      "linkTime": "Build date",
+      "id": "Identified as"
+    },
+    "install": {
+      "title": "SANOVA installation",
+      "none": "SANOVA isn't installed",
+      "noneBody": "Run setup to choose your game and an install folder.",
+      "ready": "SANOVA {version} is installed",
+      "incomplete": "Installation incomplete",
+      "detail": "{components} components, {files} files, {size} on disk",
+      "folder": "Install folder",
+      "verifiedOk": "All files verified {when}.",
+      "verifiedIssues": "Problems found {when}. Run a repair to fix them.",
+      "neverVerified": "Files haven't been verified yet.",
+      "verify": "Verify files",
+      "repair": "Repair",
+      "uninstall": "Uninstall"
+    },
+    "saves": {
+      "title": "Saved games",
+      "lede": "GTA San Andreas keeps saves in your Documents folder, shared by every copy of the game. The launcher backs them up before it changes anything.",
+      "folder": "Saves folder",
+      "backupNow": "Back up now",
+      "slots": "Save slots",
+      "slot": "Slot {number}",
+      "noSlots": "No saved games yet.",
+      "noFolder": "The saves folder doesn't exist yet. It's created the first time you save in the game.",
+      "backups": "Backups",
+      "openBackups": "Open backups folder",
+      "noBackups": "No backups yet.",
+      "restore": "Restore",
+      "backupDetail": { "one": "{count} file, {reason}", "other": "{count} files, {reason}" },
+      "reason": {
+        "manual": "made by you",
+        "before-install": "before installing",
+        "before-update": "before updating",
+        "before-mod-changes": "before changing mods",
+        "before-repair": "before repairing",
+        "before-restore": "before restoring"
+      }
+    }
+  },
+
+  "exe": {
+    "named": "GTA San Andreas v{version} ({region})",
+    "edition": {
+      "retail": "Original retail executable",
+      "modified": "Executable modified by a third party",
+      "steam": "Steam release",
+      "rockstar": "Rockstar Games Launcher release"
+    },
+    "kind": {
+      "modifiedUnknown": "Modified executable",
+      "rerelease": "Steam / Rockstar Games Launcher version",
+      "retailUnrecognized": "Unrecognized retail executable",
+      "definitive": "The Definitive Edition",
+      "missing": "No game executable found",
+      "unknown": "Unrecognized executable"
+    }
+  },
+
+  "detect": {
+    "registry": "Found through the game's installer",
+    "uninstall": "Found in installed programs",
+    "steam": "Found in your Steam library",
+    "samp": "Found through SA-MP settings",
+    "rockstar": "Found through the Rockstar Games Launcher",
+    "saved": "Used last time",
+    "manual": "Chosen by you",
+    "common": "Found in a common location"
+  },
+
+  "compat": {
+    "moreItems": { "one": "…and {count} more", "other": "…and {count} more" },
+    "folder_missing": { "title": "The folder doesn't exist", "body": "Choose the folder where GTA San Andreas is installed." },
+    "folder_is_sanova": { "title": "This is a SANOVA installation", "body": "Choose your original GTA San Andreas folder instead. SANOVA is built from a copy of it." },
+    "folder_no_access": { "title": "The folder can't be read", "body": "Windows denied access to the game files. Check the folder's permissions." },
+    "definitive_edition": { "title": "This is the Definitive Edition", "body": "GTA San Andreas – The Definitive Edition is a separate game. SANOVA needs the original 2005 PC version." },
+    "exe_missing": { "title": "No game executable found", "body": "The folder doesn't contain gta_sa.exe. Choose the folder where the game is installed." },
+    "exe_rerelease": { "title": "Steam / Rockstar Games Launcher version", "body": "This is the 2014 re-release (version 3.0 or later). Its executable was changed in ways that break the mods SANOVA uses. SANOVA needs the original version 1.0." },
+    "exe_retail_unrecognized": { "title": "Unrecognized retail version", "body": "This copy-protected executable isn't in the list of known versions. It may be version 1.01 or a regional release that SANOVA hasn't been tested with." },
+    "exe_unknown": { "title": "Unrecognized executable", "body": "This executable doesn't match any known GTA San Andreas version. It may have been modified." },
+    "exe_supported": { "title": "Version {version} ({region}) recognized", "body": "This is the original executable SANOVA is built for." },
+    "exe_modified": { "title": "Modified executable", "body": "This executable was modified by a third party. SANOVA is tested with the original version 1.0, so stability isn't guaranteed." },
+    "exe_unverified": { "title": "Version {version} ({region}) isn't verified", "body": "SANOVA hasn't been tested with this version yet. It may still work." },
+    "exe_unsupported": { "title": "Version {version} isn't supported", "body": "SANOVA needs the original version 1.0 of the game executable." },
+    "exe_disc_check": { "title": "The game may ask for its disc", "body": "The original retail executable has copy protection that can ask for the game DVD when it starts." },
+    "files_missing": { "title": "Game files are missing", "body": "Some files from the original game aren't there. The installation may be incomplete; reinstalling from the original disc usually fixes this." },
+    "files_modified": { "title": "Some game files were changed", "body": "These original files differ from a clean installation, probably because of earlier mods. SANOVA copies them as they are." },
+    "mods_detected": { "title": "Your game folder contains mods", "body": "SANOVA works best on a clean installation. These files will be copied along with the game." },
+    "mods_detected_filtered": { "title": "Your game folder contains mods", "body": "Only original game files are copied into the SANOVA folder. These mods stay where they are and aren't carried over." }
+  },
+
+  "mods": {
+    "title": "Mods",
+    "lede": "Choose which optional parts of SANOVA are installed. Required parts keep the experience consistent.",
+    "summary": "{enabled} of {total} components enabled in SANOVA {version}",
+    "required": "Required",
+    "requiredTip": "Part of the core experience; always installed.",
+    "homepage": "Homepage",
+    "by": "By {authors}",
+    "license": "License: {license}",
+    "licenseUnknown": "License not recorded",
+    "requires": "Needs: {names}",
+    "apply": "Apply changes",
+    "saved": "Mod choices saved for installation",
+    "pending": "{added} to enable, {removed} to disable",
+    "pendingNotInstalled": "{added} more, {removed} fewer than the defaults",
+    "cascade": {
+      "enabled": "Also enabled because it's needed",
+      "disabled": "Also disabled because it depends on it"
+    },
+    "redistribution": {
+      "unknown": "Permission not recorded",
+      "allowed": "Free to share",
+      "permission": "Shared with permission",
+      "external": "From the author's site"
+    },
+    "source": {
+      "external": "Downloaded from the author's own site.",
+      "manual": "You'll download this from the author's page; the launcher will tell you where."
+    },
+    "empty": {
+      "title": "No mod list yet",
+      "body": "The list of SANOVA components appears after the launcher has found a release.",
+      "notConfigured": {
+        "title": "SANOVA isn't published yet",
+        "body": "Once a release is available, its components will appear here."
+      }
+    },
+    "category": {
+      "core": "Core",
+      "graphics": "Graphics",
+      "gameplay": "Gameplay",
+      "audio": "Audio",
+      "fixes": "Fixes",
+      "interface": "Interface",
+      "vehicles": "Vehicles",
+      "world": "World",
+      "general": "Other"
+    }
+  },
+
+  "activity": {
+    "title": "Downloads",
+    "lede": "What the launcher is doing now, what it did recently, and the files it keeps for resuming downloads.",
+    "idleTitle": "Nothing running",
+    "idleBody": "Installs, updates and repairs show their progress here.",
+    "history": "Recent activity",
+    "noHistory": "Nothing has happened yet.",
+    "succeeded": "Finished",
+    "succeededNote": "Finished, version {note}",
+    "cancelled": "Cancelled",
+    "failed": "Didn't finish",
+    "cache": {
+      "title": "Download cache",
+      "size": "{size} of downloaded packages",
+      "empty": "The cache is empty",
+      "body": "Partly downloaded packages are kept so an interrupted install can resume. Turn on Keep downloaded packages in Settings to keep finished ones too.",
+      "clear": "Clear cache",
+      "clearTitle": "Clear the download cache?",
+      "clearBody": "Downloaded packages will be removed. A paused installation would have to download them again."
+    }
+  },
+
+  "updates": {
+    "title": "Updates",
+    "lede": "SANOVA and the launcher update independently.",
+    "check": "Check now",
+    "checking": "Checking…",
+    "upToDate": "Up to date",
+    "lastChecked": "Checked {when}",
+    "currentVersion": "Installed launcher version: {version}",
+    "releaseNotes": "Release notes",
+    "content": {
+      "title": "SANOVA",
+      "update": "Update SANOVA",
+      "installed": "Installed: {version}",
+      "none": "none",
+      "latest": "Latest: {version}",
+      "planChanged": { "one": "{count} file to add or change", "other": "{count} files to add or change" },
+      "planRemoved": { "one": "{count} file to remove", "other": "{count} files to remove" },
+      "planDownload": "about {size} to download",
+      "source": "Source: {source}",
+      "unchecked": "Not checked yet"
+    },
+    "channel": {
+      "title": "Release channel",
+      "body": "Beta releases arrive earlier and may be less stable."
+    },
+    "launcher": {
+      "title": "Launcher",
+      "download": "Download and restart",
+      "restart": "Restart to update",
+      "restartBody": "The launcher closes, installs the update and opens again.",
+      "idle": { "title": "Launcher updates", "short": "Not checked yet" },
+      "notConfigured": { "title": "Launcher updates aren't set up", "body": "This build doesn't have a release source configured yet.", "short": "Updates not set up" },
+      "devBuild": { "title": "Development build", "body": "This copy wasn't installed with the SANOVA installer, so it can't update itself.", "short": "Development build" },
+      "available": { "title": "Launcher {version} is available", "short": "Version {version} available" },
+      "downloading": { "title": "Downloading the update…", "body": "{percent}% downloaded" },
+      "ready": { "title": "Update ready", "short": "Restart to update" },
+      "failed": { "title": "Couldn't check for launcher updates", "body": "Check your connection and try again.", "short": "Update check failed" }
+    }
+  },
+
+  "settings": {
+    "title": "Settings",
+    "lede": "Changes are saved as you make them.",
+    "general": "General",
+    "game": "Game",
+    "downloads": "Downloads",
+    "updates": "Updates",
+    "advanced": "Advanced",
+    "saveFailed": "Couldn't save settings",
+    "setupAgain": "Run setup again",
+    "language": { "title": "Language", "body": "Used throughout the launcher.", "auto": "Same as Windows" },
+    "theme": { "title": "Theme", "body": "Dark suits the game. Light works better in bright rooms.", "dark": "Dark", "light": "Light", "system": "Same as Windows" },
+    "installPath": { "title": "SANOVA folder", "locked": "SANOVA is installed here. Uninstall it to choose a different folder." },
+    "gamePath": { "title": "Original game folder", "manage": "Manage" },
+    "afterLaunch": { "title": "When the game starts", "body": "What the launcher does after starting SANOVA.", "minimize": "Minimize the launcher", "keepOpen": "Keep it open", "close": "Close the launcher" },
+    "arguments": { "title": "Launch options", "body": "Extra command-line options passed to the game. Leave empty unless a guide tells you otherwise." },
+    "backupSaves": { "title": "Back up saves before changes", "body": "Copy your saved games before installing, updating, repairing or changing mods." },
+    "parallel": { "title": "Simultaneous downloads", "body": "More can be faster on a fast connection." },
+    "speed": { "title": "Download speed limit", "body": "Leave room for other things using your connection.", "unlimited": "No limit", "value": "{value} MB/s" },
+    "keepCache": { "title": "Keep downloaded packages", "body": "Makes repairs faster and works offline, but uses more disk space." },
+    "checkContent": { "title": "Check for SANOVA updates at start", "body": "Looks for new releases each time the launcher opens." },
+    "checkLauncher": { "title": "Check for launcher updates at start", "body": "Looks for a newer launcher each time it opens." },
+    "channel": { "stable": "Stable", "beta": "Beta" },
+    "verbose": { "title": "Detailed logging", "body": "Writes more information to the log files. Useful when reporting a problem." },
+    "unsupported": {
+      "title": "Allow unsupported game versions",
+      "body": "Install SANOVA even when your game version isn't supported. Expect crashes.",
+      "confirmTitle": "Allow unsupported game versions?",
+      "confirmBody": "SANOVA is built for GTA San Andreas version 1.0. Other versions can crash or behave strangely, and problems with them can't be supported.",
+      "confirm": "Allow anyway"
+    },
+    "developer": { "title": "Developer mode", "body": "Shows tools for testing SANOVA releases, such as a custom content source." },
+    "source": {
+      "title": "Content source",
+      "body": "Overrides where SANOVA releases come from. For testing builds made with sanova-manifest.",
+      "default": "Built-in source",
+      "github": "GitHub repository",
+      "url": "Manifest URL",
+      "local": "Local folder",
+      "placeholder": "owner/repository, https://… or a folder",
+      "pickFolder": "Choose a folder containing sanova-manifest.json"
+    },
+    "data": { "title": "Launcher data", "open": "Open folder" }
+  },
+
+  "diagnostics": {
+    "title": "Diagnostics",
+    "lede": "Checks the launcher, your game and your SANOVA installation. If something's wrong, export a report and attach it when asking for help.",
+    "run": "Run checks",
+    "copy": "Copy summary",
+    "export": "Export report…",
+    "exportTitle": "Save diagnostic report",
+    "zipFilter": "Zip archive",
+    "exported": "Report saved",
+    "exportedBody": "Personal details such as your Windows user name have been removed.",
+    "showFile": "Show file",
+    "exportFailed": "Couldn't save the report",
+    "copied": "Summary copied",
+    "failed": "Diagnostics couldn't finish",
+    "notRun": "Checks haven't run yet.",
+    "summary": "{passed}, {warnings}, {failed}, {when}",
+    "passedCount": { "one": "{count} passed", "other": "{count} passed" },
+    "warningCount": { "one": "{count} warning", "other": "{count} warnings" },
+    "problemCount": { "one": "{count} problem", "other": "{count} problems" },
+    "log": "Recent log",
+    "refreshLog": "Refresh",
+    "openLogs": "Open logs folder"
+  },
+
+  "diag": {
+    "id": {
+      "os": "Windows",
+      "runtime": "Runtime",
+      "launcher": "Launcher",
+      "data": "Launcher data",
+      "settings": "Settings",
+      "game": "Original game",
+      "install_path": "Install folder",
+      "transaction": "Pending changes",
+      "install": "SANOVA files",
+      "disk": "Disk space",
+      "process": "Game process",
+      "source": "Content source",
+      "network": "Connection",
+      "launcher_source": "Launcher updates"
+    },
+    "os_ok": "{os}",
+    "os_old": "{os} is older than Windows 10 and isn't supported.",
+    "os_unsupported": "{os} isn't supported yet.",
+    "runtime": "{runtime} ({arch})",
+    "launcher_version": "Version {version}",
+    "data_writable": "Writable: {path}",
+    "data_not_writable": "The launcher can't write to {path}.",
+    "settings_recovered": "The settings file was damaged and has been reset.",
+    "settings_ok": "Settings loaded normally.",
+    "game_not_configured": "No game folder chosen yet.",
+    "game_compatible": "{version} at {path}",
+    "game_warnings": "{version}, with notes. See My game.",
+    "game_incompatible": "{version} isn't compatible. See My game.",
+    "game_unreadable": "Couldn't read {path}.",
+    "install_none": "SANOVA isn't installed.",
+    "install_path_ok": "{path}",
+    "install_path_not_ansi": "{path} contains characters the game can't handle.",
+    "transaction_pending": "An interrupted change will be recovered.",
+    "install_incomplete": "The installation is incomplete.",
+    "install_ok": "Version {version}, {files} files, no problems.",
+    "install_damaged": "{issues} of {files} files are missing or changed.",
+    "install_state_corrupt": "The installation record can't be read.",
+    "disk_low": "Only {free} free.",
+    "disk_ok": "{free} free.",
+    "game_running": "The game is running.",
+    "game_not_running": "The game isn't running.",
+    "source_not_configured": "No content source configured yet.",
+    "source_configured": "{type}: {source}",
+    "local_source_ok": "The local folder is available.",
+    "local_source_missing": "{path} doesn't exist.",
+    "network_ok": "{host} is reachable.",
+    "network_failed": "{host} can't be reached.",
+    "launcher_source": "{source}",
+    "launcher_source_not_configured": "No launcher release source configured yet."
+  },
+
+  "about": {
+    "version": "Launcher {version}",
+    "license": "Open-source software under the Apache License 2.0",
+    "body": "SANOVA is a community project that modernizes the 2005 PC release of Grand Theft Auto: San Andreas while keeping its character: better visuals, fixes, atmosphere and stability, installed into your own copy of the game.",
+    "disclaimerTitle": "An independent community project",
+    "disclaimer": "SANOVA is not affiliated with, endorsed by or sponsored by Rockstar Games or Take-Two Interactive. Grand Theft Auto and Grand Theft Auto: San Andreas are trademarks of Take-Two Interactive Software, Inc. You need your own legally obtained copy of the game; SANOVA does not distribute it.",
+    "modCredits": "Mod authors",
+    "thirdParty": "Open-source software",
+    "links": {
+      "website": "Website",
+      "source": "Source code",
+      "community": "Community",
+      "support": "Support"
+    }
+  },
+
+  "op": {
+    "busyTitle": "Something is already running",
+    "busyBody": "Wait for the current task to finish, or cancel it on the Downloads page.",
+    "percent": "{value}%",
+    "bytesOf": "{done} of {total}",
+    "itemsOf": "{done} of {total}",
+    "remaining": "about {time} left",
+    "install": { "name": "Install", "running": "Installing SANOVA", "failed": "Installation didn't finish" },
+    "update": { "name": "Update", "running": "Updating SANOVA", "failed": "The update didn't finish" },
+    "repair": { "name": "Repair", "running": "Repairing SANOVA", "failed": "The repair didn't finish" },
+    "verify": { "name": "Verify files", "running": "Verifying files", "failed": "Verification didn't finish" },
+    "components": { "name": "Mod changes", "running": "Applying mod changes", "failed": "The mod changes weren't applied" },
+    "uninstall": { "name": "Uninstall", "running": "Uninstalling SANOVA", "failed": "Uninstalling didn't finish" },
+    "backup": { "name": "Save backup", "running": "Backing up saves", "failed": "The backup didn't finish" },
+    "restore": { "name": "Restore saves", "running": "Restoring saves", "failed": "Restoring saves didn't finish" },
+    "launcherUpdate": { "name": "Launcher update", "running": "Downloading launcher update", "failed": "The launcher update didn't download" },
+    "launch": { "failed": "The game didn't start" }
+  },
+
+  "stage": {
+    "preparing": "Preparing…",
+    "backingUpSaves": "Backing up saved games…",
+    "copying": "Copying your game files…",
+    "downloading": "Downloading…",
+    "extracting": "Unpacking and checking files…",
+    "applying": "Putting files in place…",
+    "verifying": "Verifying files…",
+    "cleaningUp": "Cleaning up…",
+    "rollingBack": "Undoing changes…",
+    "removing": "Removing files…",
+    "completed": "Done",
+    "cancelling": "Cancelling…"
+  },
+
+  "dialog": {
+    "details": "Technical details",
+    "closeBusy": {
+      "title": "Stop and close the launcher?",
+      "body": "The current task will be stopped. Anything half-applied is undone, and downloads continue from where they stopped next time.",
+      "wait": "The current task can't be interrupted safely. The launcher will close as soon as it finishes.",
+      "confirm": "Stop and close"
+    },
+    "gameRunning": { "title": "Close the game first", "body": "GTA San Andreas is running. Close it, then try again." },
+    "incompatible": { "title": "Your game isn't compatible", "body": "Open My game to see what's wrong and how to fix it." },
+    "launcherTooOld": { "title": "Update the launcher first", "body": "This SANOVA release needs a newer launcher. Open Updates to get it." },
+    "manual": {
+      "title": "Download {name}",
+      "body": "This mod's author doesn't allow it to be redistributed, so download {file} from the author's page, then choose the downloaded file.",
+      "openPage": "Open download page",
+      "chooseFile": "Choose downloaded file…",
+      "filter": "Zip archives"
+    },
+    "verifyFailed": {
+      "title": "Some files need repair",
+      "body": { "one": "{count} file is missing or changed.", "other": "{count} files are missing or changed." },
+      "repair": "Repair now"
+    },
+    "repairIncomplete": {
+      "title": "Some files couldn't be repaired",
+      "body": { "one": "{count} file is still missing or changed.", "other": "{count} files are still missing or changed." }
+    },
+    "uninstall": {
+      "title": "Uninstall SANOVA?",
+      "body": "Files SANOVA installed in {path} will be removed. Your original game and your saved games aren't touched. Files you added or changed yourself are kept.",
+      "confirm": "Uninstall"
+    },
+    "uninstallKept": {
+      "body": { "one": "{count} file you added or changed was left in {path}.", "other": "{count} files you added or changed were left in {path}." }
+    },
+    "restore": {
+      "title": "Restore these saves?",
+      "body": "Your current saves are backed up first, then replaced with the backup from {date}.",
+      "confirm": "Restore"
+    },
+    "recoveryFailed": { "title": "An interrupted change couldn't be recovered", "body": "Run Verify files on the My game page, then repair if needed." },
+    "startupFailed": { "title": "Something went wrong while starting" }
+  },
+
+  "toast": {
+    "installed": { "title": "SANOVA is installed", "body": "Version {version} is ready to play." },
+    "installPaused": { "title": "Installation paused", "body": "Press Resume on Home to continue. Downloaded files are kept." },
+    "updated": { "title": "SANOVA updated", "body": "Version {version} is ready." },
+    "modsApplied": { "title": "Mod changes applied" },
+    "verified": { "title": "All files are fine", "body": { "one": "{count} file checked.", "other": "{count} files checked." } },
+    "repaired": { "title": "Repair finished", "body": "Every file now matches." },
+    "uninstalled": { "title": "SANOVA uninstalled", "body": "Your original game and saved games are untouched." },
+    "alreadyRunning": { "title": "SANOVA is already running" },
+    "launched": { "title": "Starting SANOVA…" },
+    "noSaves": { "title": "No saved games to back up" },
+    "savesBackedUp": { "title": "Saves backed up", "body": { "one": "{count} file copied.", "other": "{count} files copied." } },
+    "savesRestored": { "title": "Saves restored" },
+    "recovered": { "title": "An interrupted change was undone", "body": "The launcher closed during a change last time, so it restored the previous state." },
+    "settingsReset": { "title": "Settings were reset", "body": "The settings file was damaged. A copy was kept in the launcher data folder." }
+  },
+
+  "error": {
+    "unexpected": "Something unexpected went wrong. The details below help when reporting it.",
+    "cancelled": "The task was cancelled.",
+    "path_unsafe": "This path can't be used. Choose a folder with a short, ordinary name.",
+    "path_not_writable": "Windows doesn't allow writing to this folder. Choose another one, for example C:\\Games\\SANOVA.",
+    "path_inside_game": "Choose a folder outside your original game folder. SANOVA keeps the original untouched.",
+    "path_not_empty": "This folder already contains files. Choose an empty or new folder.",
+    "path_system_folder": "This is a system or user folder. Choose a dedicated folder, for example C:\\Games\\SANOVA.",
+    "path_not_ansi": "The folder name has characters the 2005 game can't handle. Use plain letters, for example C:\\Games\\SANOVA.",
+    "disk_space": "Not enough free space. SANOVA needs about {required}, but only {available} is free.",
+    "game_not_found": "GTA San Andreas wasn't found.",
+    "game_incompatible": "The selected game installation isn't compatible.",
+    "game_running": "Close the game first.",
+    "game_exe_missing": "The game executable is missing from the SANOVA folder. Run a repair.",
+    "game_launch_failed": "Windows couldn't start the game: {detail}",
+    "game_launch_elevation": "The game asked for administrator rights. Check the executable's compatibility settings.",
+    "manifest_invalid": "The release information is damaged or invalid, so nothing was installed.",
+    "manifest_schema": "This SANOVA release needs a newer launcher. Update the launcher first.",
+    "manifest_signature_invalid": "The release information failed its signature check and was rejected for your safety.",
+    "manifest_signature_missing": "The release information isn't signed, so it was rejected.",
+    "launcher_too_old": "This SANOVA release needs launcher {required} or newer.",
+    "source_not_configured": "No download source is configured yet.",
+    "source_unreachable": "The download server can't be reached. Check your internet connection and try again.",
+    "source_rate_limited": "GitHub is limiting requests from your network for a while. Try again after {resetAt}.",
+    "source_no_release": "No release was found at the download source.",
+    "source_http_error": "The download server answered with an error (HTTP {status}).",
+    "source_insecure": "The download address isn't secure, so it was refused.",
+    "download_failed": "The download didn't complete. Your progress is kept; try again to resume.",
+    "download_hash_mismatch": "A downloaded file was damaged and has been discarded. Try again.",
+    "download_size_mismatch": "A downloaded file has the wrong size and has been discarded. Try again.",
+    "archive_invalid": "A downloaded package is damaged. Try again.",
+    "archive_unsafe_entry": "A package contained an unsafe file path and was rejected.",
+    "archive_entry_missing": "A package is missing a file it should contain.",
+    "archive_too_large": "A package contained more data than expected and was rejected.",
+    "not_installed": "SANOVA isn't fully installed in this folder.",
+    "install_busy": "Another change is still in progress.",
+    "install_locked": "Another program is using the SANOVA folder. Close other launcher windows and try again.",
+    "install_state_corrupt": "The installation record is damaged. Uninstall and install again.",
+    "rollback_failed": "A failed change couldn't be fully undone. Restart the launcher to finish recovery, then verify the files.",
+    "base_source_missing": "An original game file is unavailable: {path}. Make sure your original game folder is still in place.",
+    "manual_download_required": "{component} has to be downloaded manually first.",
+    "file_verification_failed": "A file failed verification: {file}. Try again.",
+    "component_dependency": "The selected mods don't fit together: {detail}",
+    "component_conflict": "Two selected mods can't be used together.",
+    "component_required": "A required component can't be turned off.",
+    "saves_backup_failed": "Your saves couldn't be backed up, so nothing was changed: {detail}",
+    "saves_restore_failed": "The saves couldn't be restored: {detail}",
+    "access_denied": "Windows denied access to {path}.",
+    "file_in_use": "A file is in use by another program: {path}. Close it and try again.",
+    "io_error": "A file operation failed on {path}."
+  },
+
+  "errorShort": {
+    "disk_space": "Not enough disk space",
+    "source_unreachable": "Server unreachable",
+    "download_failed": "Download interrupted",
+    "download_hash_mismatch": "Damaged download",
+    "manual_download_required": "Manual download needed",
+    "file_in_use": "A file was in use",
+    "access_denied": "Access denied",
+    "game_incompatible": "Game not compatible"
+  },
+
+  "format": {
+    "bytes": "{value} {unit}",
+    "speed": "{value}/s",
+    "seconds": { "one": "{count} second", "other": "{count} seconds" },
+    "minutes": { "one": "{count} minute", "other": "{count} minutes" },
+    "hours": { "one": "{count} hour", "other": "{count} hours" },
+    "hoursMinutes": "{hours} {minutes}",
+    "justNow": "just now",
+    "minutesAgo": { "one": "{count} minute ago", "other": "{count} minutes ago" },
+    "hoursAgo": { "one": "{count} hour ago", "other": "{count} hours ago" },
+    "daysAgo": { "one": "yesterday", "other": "{count} days ago" }
+  }
+}
