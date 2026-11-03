@@ -6,7 +6,37 @@ All notable changes to SANOVA Launcher are documented here. The format is based 
 
 ## [Unreleased]
 
-The first version of the launcher, planned as **0.1.0**. Nothing has been published yet.
+## [0.1.0-rc.1] - 2026-11-03
+
+First public **Launcher preview**, for Windows x64. This is not a SANOVA modpack
+or Foundation content release. Official SANOVA content is not yet available for
+installation. The production content source and trust keys are intentionally
+unconfigured; content signature enforcement remains enabled.
+
+### Preview limitations
+
+- The installer and portable application are unsigned. Windows SmartScreen may
+  display an unknown-publisher warning. Compare downloaded files with the
+  published SHA-256 checksums before deciding whether to run them.
+- A clean-machine installation, live self-update, uninstall, screen-reader and
+  multi-DPI validation have not been performed. Automated fixture tests do not
+  establish compatibility with a real SANOVA content collection.
+- No GTA San Andreas files, third-party mod archives or official SANOVA content
+  are included. A legally owned original PC game will be required when content
+  becomes available.
+- The portable ZIP is self-contained; extract it before running
+  `SanovaLauncher.exe`. The setup installer is also self-contained for Windows
+  x64. No separately installed .NET runtime is required by these packages.
+- Prerelease self-updates are disabled by default in the distribution settings.
+  No previous public launcher exists for a real upgrade/delta test.
+
+### Downloads
+
+- `SANOVA.Launcher-win-Setup.exe`: per-user Windows installer.
+- `SANOVA.Launcher-win-Portable.zip`: portable Windows x64 distribution.
+- Full `.nupkg`, `releases.win.json`, `RELEASES` and `assets.win.json`: Velopack
+  package/feed assets used by the update infrastructure.
+- `SHA256SUMS.txt`: SHA-256 digests of the distributed package/feed assets.
 
 ### Fixed
 

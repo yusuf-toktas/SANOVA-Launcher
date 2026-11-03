@@ -18,7 +18,7 @@
   <!-- Product metadata. The launcher version is the single source of truth for releases;
        CI overrides it from the release tag (see docs/RELEASING.md). -->
   <PropertyGroup>
-    <Version>0.1.0</Version>
+    <Version>0.1.0-rc.1</Version>
     <Product>SANOVA Launcher</Product>
     <Company>SANOVA</Company>
     <Authors>SANOVA contributors</Authors>
