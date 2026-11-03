@@ -332,6 +332,7 @@ public sealed class ContentAcquirer
                 var staged = SafePath.GetFullPathUnder(stagingDirectory, file.Path);
                 Directory.CreateDirectory(Path.GetDirectoryName(staged)!);
                 var temp = staged + ".partial";
+                SafePath.RejectReparsePoints(temp);
                 string sha;
                 long length;
                 try

@@ -66,6 +66,10 @@ public sealed partial class MainViewModel : ViewModelBase
         _state.PropertyChanged += OnStateChanged;
         _launcherUpdater.PropertyChanged += (_, _) => UpdateBadges();
         Operations.PropertyChanged += OnOperationsChanged;
+        Dialogs.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName == nameof(DialogService.Current)) OnPropertyChanged(nameof(CanInteractWithPages));
+        };
         SingleInstance.ActivationRequested += () => Avalonia.Threading.Dispatcher.UIThread.Post(() => _services.GetRequiredService<DesktopServices>().ActivateMainWindow());
     }
 
@@ -85,7 +89,13 @@ public sealed partial class MainViewModel : ViewModelBase
 
     public bool IsSetupVisible => Setup is not null;
 
-    partial void OnSetupChanged(SetupViewModel? value) => OnPropertyChanged(nameof(IsSetupVisible));
+    public bool CanInteractWithPages => !IsSetupVisible && Dialogs.Current is null;
+
+    partial void OnSetupChanged(SetupViewModel? value)
+    {
+        OnPropertyChanged(nameof(IsSetupVisible));
+        OnPropertyChanged(nameof(CanInteractWithPages));
+    }
 
     partial void OnSelectedPrimaryChanged(NavItem? value)
     {

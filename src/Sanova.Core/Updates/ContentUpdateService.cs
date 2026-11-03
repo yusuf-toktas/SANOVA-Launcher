@@ -1,6 +1,8 @@
 using System.Net;
+using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Sanova.Core.Downloads;
+using Sanova.Core.IO;
 using Sanova.Core.Settings;
 
 namespace Sanova.Core.Updates;
@@ -32,8 +34,7 @@ public sealed class ContentUpdateService
     private readonly AppPaths _paths;
     private readonly GitHubReleasesClient _github;
     private readonly ILogger<ContentUpdateService> _logger;
-    private ResolvedManifest? _cached;
-    private bool _cacheLoaded;
+    private sealed record CacheContext(string Source, string Channel);
 
     public ContentUpdateService(HttpClient apiHttp, AppPaths paths, GitHubReleasesClient github, ILogger<ContentUpdateService> logger)
     {
@@ -43,19 +44,22 @@ public sealed class ContentUpdateService
         _logger = logger;
     }
 
-    /// <summary>The most recently verified manifest (possibly from a previous session).</summary>
-    public ResolvedManifest? CachedManifest
+    /// <summary>Reloads offline content only for the current source/channel and trust policy.</summary>
+    public ResolvedManifest? GetCachedManifest(ManifestTrustConfig trust, ContentSourceConfig source, string channel)
     {
-        get
+        try
         {
-            if (!_cacheLoaded)
-            {
-                _cached = ResolvedManifest.TryLoad(_paths.ManifestCacheDirectory);
-                _cacheLoaded = true;
-            }
-            return _cached;
+            var context = AtomicFile.ReadJson<CacheContext>(Path.Combine(_paths.ManifestCacheDirectory, "context.json"));
+            if (context is null || context.Source != SourceKey(source) || !string.Equals(context.Channel, channel, StringComparison.OrdinalIgnoreCase)) return null;
+            return ResolvedManifest.TryLoad(_paths.ManifestCacheDirectory, trust);
+        }
+        catch (Exception ex) when (ex is IOException or JsonException or UnauthorizedAccessException)
+        {
+            return null;
         }
     }
+
+    private static string SourceKey(ContentSourceConfig source) => JsonSerializer.Serialize(source, JsonDefaults.Compact);
 
     public IContentSource? CreateSource(ContentSourceConfig config)
     {
@@ -74,14 +78,15 @@ public sealed class ContentUpdateService
     public async Task<ContentCheckResult> CheckAsync(ContentSourceConfig config, ManifestTrustConfig trust, string channel, bool allowInsecure, CancellationToken cancellationToken)
     {
         var now = DateTimeOffset.UtcNow;
-        var source = CreateSource(config);
-        if (source is null)
-        {
-            return new ContentCheckResult(ContentCheckStatus.NotConfigured, null, null, now, null);
-        }
+        IContentSource? source = null;
 
         try
         {
+            source = CreateSource(config);
+            if (source is null)
+            {
+                return new ContentCheckResult(ContentCheckStatus.NotConfigured, null, null, now, null);
+            }
             var release = await source.GetLatestAsync(channel, cancellationToken).ConfigureAwait(false);
             if (release is null)
             {
@@ -99,8 +104,7 @@ public sealed class ContentUpdateService
 
             var resolved = ManifestLoader.Load(bytes, signature, trust, release);
             resolved.Save(_paths.ManifestCacheDirectory);
-            _cached = resolved;
-            _cacheLoaded = true;
+            AtomicFile.WriteJson(Path.Combine(_paths.ManifestCacheDirectory, "context.json"), new CacheContext(SourceKey(config), channel));
             _logger.LogInformation("Content release {Version} available from {Source} (signature verified: {Verified})",
                 resolved.Manifest.ContentVersion, source.Description, resolved.SignatureVerified);
             return new ContentCheckResult(ContentCheckStatus.Available, resolved, null, now, source.Description);
@@ -108,23 +112,23 @@ public sealed class ContentUpdateService
         catch (SanovaException ex) when (ex.Code is ErrorCodes.SourceUnreachable)
         {
             _logger.LogWarning("Content source unreachable: {Message}", ex.Message);
-            return new ContentCheckResult(ContentCheckStatus.Offline, null, ex, now, source.Description);
+            return new ContentCheckResult(ContentCheckStatus.Offline, null, ex, now, source?.Description);
         }
         catch (SanovaException ex) when (ex.Code is ErrorCodes.SourceNoRelease)
         {
-            return new ContentCheckResult(ContentCheckStatus.NoRelease, null, ex, now, source.Description);
+            return new ContentCheckResult(ContentCheckStatus.NoRelease, null, ex, now, source?.Description);
         }
         catch (SanovaException ex)
         {
             _logger.LogWarning(ex, "Content check failed");
-            return new ContentCheckResult(ContentCheckStatus.Failed, null, ex, now, source.Description);
+            return new ContentCheckResult(ContentCheckStatus.Failed, null, ex, now, source?.Description);
         }
-        catch (Exception ex) when (ex is HttpRequestException or IOException or TaskCanceledException && !cancellationToken.IsCancellationRequested)
+        catch (Exception ex) when (!cancellationToken.IsCancellationRequested && ex is HttpRequestException or IOException or TaskCanceledException or ArgumentException or NotSupportedException or UnauthorizedAccessException)
         {
             var offline = RetryPolicy.IsOffline(ex);
             _logger.LogWarning(ex, "Content check failed (offline: {Offline})", offline);
             var error = SanovaException.Wrap(offline ? ErrorCodes.SourceUnreachable : ErrorCodes.SourceHttpError, ex.Message, ex, ("detail", ex.Message));
-            return new ContentCheckResult(offline ? ContentCheckStatus.Offline : ContentCheckStatus.Failed, null, error, now, source.Description);
+            return new ContentCheckResult(offline ? ContentCheckStatus.Offline : ContentCheckStatus.Failed, null, error, now, source?.Description);
         }
     }
 
@@ -132,7 +136,11 @@ public sealed class ContentUpdateService
     {
         if (uri.IsFile)
         {
-            if (File.Exists(uri.LocalPath)) return await File.ReadAllBytesAsync(uri.LocalPath, cancellationToken).ConfigureAwait(false);
+            if (File.Exists(uri.LocalPath))
+            {
+                await using var input = File.OpenRead(uri.LocalPath);
+                return await ReadBoundedAsync(input, cancellationToken).ConfigureAwait(false);
+            }
             return required ? throw SanovaException.Create(ErrorCodes.SourceNoRelease, $"Missing {uri.LocalPath}", ("source", uri.LocalPath)) : null;
         }
 
@@ -152,6 +160,26 @@ public sealed class ContentUpdateService
         {
             throw SanovaException.Create(ErrorCodes.ManifestInvalid, "Manifest is too large.", ("detail", "too large"));
         }
-        return await response.Content.ReadAsByteArrayAsync(cancellationToken).ConfigureAwait(false);
+        await using var body = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        return await ReadBoundedAsync(body, cancellationToken).ConfigureAwait(false);
+    }
+
+    private static async Task<byte[]> ReadBoundedAsync(Stream input, CancellationToken cancellationToken)
+    {
+        using var output = new MemoryStream();
+        var buffer = new byte[64 * 1024];
+        while (true)
+        {
+            // Read at most one byte beyond the limit, even when Content-Length is
+            // absent or dishonest. Check before growing the in-memory manifest.
+            var remaining = ManifestLoader.MaxManifestBytes - (int)output.Length;
+            var read = await input.ReadAsync(buffer.AsMemory(0, Math.Min(buffer.Length, remaining + 1)), cancellationToken).ConfigureAwait(false);
+            if (read == 0) return output.ToArray();
+            if (read > remaining)
+            {
+                throw SanovaException.Create(ErrorCodes.ManifestInvalid, "Manifest is too large.", ("detail", "too large"));
+            }
+            output.Write(buffer, 0, read);
+        }
     }
 }

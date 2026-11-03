@@ -59,8 +59,8 @@ what the SANOVA team configures before the first release.
 
 **Downloads and updates**
 - Content releases are described by a manifest, signed with ECDSA P-256, and published on GitHub
-  Releases, any HTTPS host, or a local folder for testing. The launcher can require a valid
-  signature before downloading anything.
+  Releases, any HTTPS host, or a local folder for testing. Production content requires a
+  trusted signature; unsigned fixtures require explicit developer mode.
 - Resumable, verified downloads with mirrors, retries, a speed limit and parallel transfers.
 - Differential updates fetch only changed files. When a small part of a large package is needed,
   the launcher reads just those files through HTTP range requests.
@@ -135,7 +135,8 @@ dotnet run --project src/Sanova.ManifestTool -- --help    # maintainer tool for 
 ./build/package.ps1 -Version 0.1.0                        # Velopack installer into artifacts/releases
 ```
 
-Delete `%LocalAppData%\SANOVA` to see the first-run setup again. To try the full install flow
+Use a separate Windows test account to exercise first-run setup without disturbing existing
+settings, caches or save backups. To try the full install flow
 before anything is published, build a test release with the manifest tool (see the
 [content pipeline](docs/CONTENT-PIPELINE.md)), then enable **Settings → Advanced → Developer
 mode** and set the content source to that local folder.
@@ -159,6 +160,7 @@ mode** and set the content source to that local folder.
 - [Releasing](docs/RELEASING.md): versioning, launcher builds, GitHub Releases
 - [Localization](docs/LOCALIZATION.md): adding and maintaining languages
 - [Testing](docs/TESTING.md)
+- [Release readiness](docs/RELEASE-READINESS.md): verified checks and remaining release gates
 - [Contributing](CONTRIBUTING.md) and [Security](SECURITY.md)
 - [Changelog](CHANGELOG.md)
 

@@ -67,6 +67,36 @@ public static class Bytes
     public static string Sha(byte[] data) => Convert.ToHexStringLower(SHA256.HashData(data));
 }
 
+public static class TestLinks
+{
+    public static void CreateDirectory(string link, string target)
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            Directory.CreateSymbolicLink(link, target);
+            return;
+        }
+
+        // Junction creation does not require Developer Mode or elevation on Windows.
+        var start = new System.Diagnostics.ProcessStartInfo("cmd.exe")
+        {
+            UseShellExecute = false,
+            CreateNoWindow = true,
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+        };
+        start.ArgumentList.Add("/c");
+        start.ArgumentList.Add("mklink");
+        start.ArgumentList.Add("/J");
+        start.ArgumentList.Add(link);
+        start.ArgumentList.Add(target);
+        using var process = System.Diagnostics.Process.Start(start)!;
+        var output = process.StandardOutput.ReadToEnd() + process.StandardError.ReadToEnd();
+        process.WaitForExit();
+        Assert.True(process.ExitCode == 0, output);
+    }
+}
+
 /// <summary>
 /// In-memory HTTP server for download tests: byte ranges, redirects, failures and truncated
 /// transfers, without opening sockets.

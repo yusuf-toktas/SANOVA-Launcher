@@ -273,7 +273,7 @@
             <TextBlock Text="{l:Tr setup.location.title}" Classes="h1" />
             <TextBlock Text="{l:Tr setup.location.body}" Classes="lede" />
             <Grid ColumnDefinitions="*,Auto">
-              <TextBox Text="{Binding InstallPath}" />
+              <TextBox Text="{Binding InstallPath}" AutomationProperties.Name="{l:Tr setup.review.location}" />
               <Button Grid.Column="1" Margin="10,0,0,0" Command="{Binding BrowseLocationCommand}">
                 <StackPanel Orientation="Horizontal" Spacing="8">
                   <PathIcon Data="{StaticResource Icon.FolderOpen}" Classes="small" />
@@ -319,7 +319,7 @@
                         <TextBlock Text="{Binding Description.Value}" Classes="small muted wrap" IsVisible="{Binding HasDescription}" />
                       </StackPanel>
                       <TextBlock Grid.Column="1" Text="{Binding Size.Value}" Classes="small faint" VerticalAlignment="Center" Margin="0,0,16,0" />
-                      <ToggleSwitch Grid.Column="2" IsChecked="{Binding IsEnabled}" VerticalAlignment="Center" />
+                      <ToggleSwitch Grid.Column="2" IsChecked="{Binding IsEnabled}" VerticalAlignment="Center" AutomationProperties.Name="{Binding Name.Value}" />
                     </Grid>
                   </Border>
                 </DataTemplate>

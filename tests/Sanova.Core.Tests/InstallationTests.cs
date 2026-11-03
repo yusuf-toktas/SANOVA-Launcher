@@ -280,6 +280,23 @@ public class InstallationTests
     }
 
     [Fact]
+    public async Task Uninstall_preserves_same_size_player_edits_even_when_the_timestamp_matches()
+    {
+        using var fx = new ContentFixture();
+        await fx.InstallAsync(await fx.BuildAsync("1.0.0"));
+        var path = Path.Combine(fx.Install, "SANOVA.asi");
+        var writtenAt = File.GetLastWriteTimeUtc(path);
+        var edited = new string('x', checked((int)new FileInfo(path).Length));
+        File.WriteAllText(path, edited);
+        File.SetLastWriteTimeUtc(path, writtenAt);
+
+        var result = await fx.Service().UninstallAsync(fx.Install, null, TestContext.Current.CancellationToken);
+
+        Assert.Contains("SANOVA.asi", result.KeptModified);
+        Assert.Equal(edited, File.ReadAllText(path));
+    }
+
+    [Fact]
     public async Task Install_path_validation_explains_problems()
     {
         using var fx = new ContentFixture();
@@ -291,6 +308,28 @@ public class InstallationTests
         Assert.Equal(ErrorCodes.DiskSpace, service.ValidateInstallPath(fx.Install, fx.Game, long.MaxValue).ErrorCode);
         Assert.Equal(ErrorCodes.PathUnsafe, service.ValidateInstallPath("relative\\path", fx.Game, 1).ErrorCode);
         Assert.Equal("path_not_ansi", service.ValidateInstallPath(@"C:\ゲーム\SANOVA", fx.Game, 1).ErrorCode);
+    }
+
+    [Fact]
+    public void Junction_candidates_do_not_break_detection_and_cannot_be_install_targets()
+    {
+        using var temp = new TempDir();
+        var outside = temp.Sub("outside");
+        TempDir.WriteFile(outside, "gta_sa.exe", [1, 2, 3]);
+        var link = Path.Combine(temp.Path, "linked-game");
+        TestLinks.CreateDirectory(link, outside);
+        try
+        {
+            Assert.False(InstallStateStore.Exists(link));
+            var locator = new GameLocator(new NullRegistryReader(), Log.For<GameLocator>(), () => []);
+            Assert.NotNull(locator.Inspect(link));
+            using var fixture = new ContentFixture();
+            Assert.Equal(ErrorCodes.PathUnsafe, fixture.Service().ValidateInstallPath(link, fixture.Game, 1).ErrorCode);
+        }
+        finally
+        {
+            Directory.Delete(link);
+        }
     }
 
     [Fact]

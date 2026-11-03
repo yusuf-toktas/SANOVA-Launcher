@@ -20,7 +20,7 @@ public sealed partial class AboutViewModel : ViewModelBase
 {
     private readonly AppState _state;
 
-    public AboutViewModel(AppState state)
+    public AboutViewModel(AppState state, LocalizationService loc)
     {
         _state = state;
         VersionText = new LocalizedString(l => l.T("about.version", ("version", AppInfo.Version)));
@@ -36,6 +36,11 @@ public sealed partial class AboutViewModel : ViewModelBase
             .Select(l => new LinkItem(new LocalizedString(l.Key), l.Url!))
             .ToList();
         _state.PropertyChanged += OnStateChanged;
+        loc.LanguageChanged += (_, _) =>
+        {
+            OnPropertyChanged(nameof(ModCredits));
+            OnPropertyChanged(nameof(HasModCredits));
+        };
     }
 
     public LocalizedString VersionText { get; }

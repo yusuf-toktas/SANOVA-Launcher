@@ -17,6 +17,17 @@ public static partial class ManifestValidator
     {
         var errors = new List<string>();
 
+        // JSON null elements are allowed by the serializer even for List<T> where T
+        // is non-nullable. Reject them before following any references below.
+        if (manifest.Components is null || manifest.Packages is null || manifest.Files is null || manifest.Categories is null ||
+            manifest.Components.Any(c => c is null || c.Name is null || c.Dependencies is null || c.Conflicts is null || c.Authors is null ||
+                c.Dependencies.Any(d => d is null) || c.Conflicts.Any(d => d is null)) ||
+            manifest.Packages.Any(p => p is null) || manifest.Files.Any(f => f is null) || manifest.Categories.Any(c => c is null))
+        {
+            errors.Add("Manifest collections and their entries must not be null.");
+            return errors;
+        }
+
         if (manifest.SchemaVersion != ContentManifest.SupportedSchemaVersion)
         {
             errors.Add($"Unsupported schemaVersion {manifest.SchemaVersion} (expected {ContentManifest.SupportedSchemaVersion}).");

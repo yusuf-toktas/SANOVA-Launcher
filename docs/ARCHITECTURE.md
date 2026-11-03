@@ -200,9 +200,14 @@ report removes the user profile path, user name and computer name before sharing
 - Every path from a manifest or archive is validated and resolved under its root; extraction
   writes to paths from the validated manifest, never from archive entry names, and enforces
   the declared size (zip-bomb guard) and SHA-256.
+- Existing junctions and reparse points are rejected at installation, metadata and temporary
+  file boundaries. This is not a sandbox against concurrent changes by a hostile local process.
 - Manifests are fetched over HTTPS only (plain HTTP is accepted in developer mode, for local
   test servers); absolute package URLs, mirrors and external mod downloads must be HTTPS.
   Links opened from manifests are limited to http(s).
-- Downloads are verified before use; manifests can be signed and signatures required.
+- Downloads are verified before use, and manifest reads are bounded even without Content-Length.
+  The app requires trusted signatures outside explicit developer mode. Detached signatures
+  are saved and rechecked under the current policy when loading cached/installed manifests;
+  offline caches must also match the current source and channel.
 - The launcher does not modify or patch game executables and contains no copy-protection
   workarounds.

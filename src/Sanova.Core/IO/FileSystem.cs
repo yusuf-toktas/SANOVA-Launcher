@@ -46,6 +46,8 @@ public static class FileSystem
 
     public static void MoveFile(string source, string destination, bool overwrite)
     {
+        SafePath.RejectReparsePoints(source);
+        SafePath.RejectReparsePoints(destination);
         var directory = Path.GetDirectoryName(destination);
         if (!string.IsNullOrEmpty(directory))
         {
@@ -63,6 +65,7 @@ public static class FileSystem
 
     public static void DeleteFile(string path)
     {
+        SafePath.RejectReparsePoints(path);
         if (!File.Exists(path)) return;
         WithRetry(() =>
         {
@@ -86,8 +89,13 @@ public static class FileSystem
 
     public static void DeleteDirectory(string path)
     {
+        SafePath.RejectReparsePoints(path);
         if (!Directory.Exists(path)) return;
-        foreach (var file in Directory.EnumerateFiles(path, "*", SearchOption.AllDirectories))
+        foreach (var file in Directory.EnumerateFiles(path, "*", new EnumerationOptions
+        {
+            RecurseSubdirectories = true,
+            AttributesToSkip = FileAttributes.ReparsePoint,
+        }))
         {
             ClearReadOnly(file);
         }

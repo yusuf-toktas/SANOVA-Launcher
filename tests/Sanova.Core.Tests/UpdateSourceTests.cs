@@ -113,6 +113,51 @@ public class GitHubContentSourceTests
 public class ContentUpdateServiceTests
 {
     [Fact]
+    public async Task Invalid_local_source_configuration_returns_a_failed_check()
+    {
+        using var temp = new TempDir();
+        var paths = new AppPaths(temp.Path);
+        using var http = new HttpClient();
+        var service = new ContentUpdateService(http, paths, new GitHubReleasesClient(http, paths.HttpCacheDirectory, Log.For<GitHubReleasesClient>()),
+            Log.For<ContentUpdateService>());
+
+        var result = await service.CheckAsync(new ContentSourceConfig { Type = ContentSourceType.LocalFolder, LocalFolder = "bad\0path" },
+            new ManifestTrustConfig(), "stable", false, TestContext.Current.CancellationToken);
+
+        Assert.Equal(ContentCheckStatus.Failed, result.Status);
+        Assert.NotNull(result.Error);
+    }
+
+    [Fact]
+    public async Task Cached_signature_claims_cannot_authenticate_modified_manifest_bytes()
+    {
+        using var fx = new ContentFixture();
+        var manifest = await fx.BuildAsync("1.0.0");
+        var (privateKey, publicKey) = ManifestSignature.GenerateKeyPair();
+        var trust = new ManifestTrustConfig { RequireSignature = true, PublicKeys = [publicKey] };
+        var signed = ManifestLoader.Load(manifest.Bytes, ManifestSignature.Sign(manifest.Bytes, privateKey), trust, null);
+        var cache = fx.Temp.Sub("signed-cache");
+        signed.Save(cache);
+        Assert.True(ResolvedManifest.TryLoad(cache, trust)!.SignatureVerified);
+
+        var manifestPath = Path.Combine(cache, ContentManifest.FileName);
+        File.WriteAllText(manifestPath, File.ReadAllText(manifestPath).Replace("1.0.0", "2.0.0", StringComparison.Ordinal));
+
+        Assert.Null(ResolvedManifest.TryLoad(cache, trust));
+    }
+
+    [Fact]
+    public async Task Production_cache_policy_rejects_unsigned_developer_manifests()
+    {
+        using var fx = new ContentFixture();
+        var manifest = await fx.BuildAsync("1.0.0");
+        var cache = fx.Temp.Sub("unsigned-cache");
+        manifest.Save(cache);
+        Assert.NotNull(ResolvedManifest.TryLoad(cache, new ManifestTrustConfig()));
+        Assert.Null(ResolvedManifest.TryLoad(cache, new ManifestTrustConfig { RequireSignature = true }));
+    }
+
+    [Fact]
     public async Task Not_configured_sources_are_reported_as_such()
     {
         using var temp = new TempDir();
@@ -167,7 +212,9 @@ public class ContentUpdateServiceTests
 
         Assert.Equal(ContentCheckStatus.Offline, result.Status);
         Assert.Equal(ErrorCodes.SourceUnreachable, result.Error!.Code);
-        Assert.Equal("1.0.0", offline.CachedManifest!.Manifest.ContentVersion);
+        Assert.Equal("1.0.0", offline.GetCachedManifest(new ManifestTrustConfig(), local, "stable")!.Manifest.ContentVersion);
+        Assert.Null(offline.GetCachedManifest(new ManifestTrustConfig(), local, "beta"));
+        Assert.Null(offline.GetCachedManifest(new ManifestTrustConfig(), new ContentSourceConfig { Repository = "o/r" }, "stable"));
     }
 
     [Fact]

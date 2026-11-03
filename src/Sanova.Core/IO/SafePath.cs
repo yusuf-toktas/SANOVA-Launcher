@@ -145,7 +145,36 @@ public static partial class SafePath
         {
             throw SanovaException.Create(ErrorCodes.PathUnsafe, $"Path '{relative}' escapes '{root}'.", ("path", relative));
         }
+        RejectReparsePoints(full);
         return full;
+    }
+
+    /// <summary>
+    /// Rejects existing links/junctions in a path, including its ancestors. Lexical
+    /// containment alone does not stop a junction from redirecting an operation.
+    /// Call immediately before accessing paths that can be changed by the player.
+    /// </summary>
+    public static void RejectReparsePoints(string path)
+    {
+        var current = Path.GetFullPath(path);
+        while (!string.IsNullOrEmpty(current))
+        {
+            try
+            {
+                if ((File.GetAttributes(current) & FileAttributes.ReparsePoint) != 0)
+                {
+                    throw SanovaException.Create(ErrorCodes.PathUnsafe, $"Path contains a symbolic link or reparse point: '{current}'.", ("path", current));
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                // A future file is allowed, but its existing ancestors still need checking.
+            }
+            catch (DirectoryNotFoundException)
+            {
+            }
+            current = Path.GetDirectoryName(current);
+        }
     }
 
     /// <summary>True when <paramref name="candidate"/> is inside <paramref name="root"/> (not equal to it).</summary>

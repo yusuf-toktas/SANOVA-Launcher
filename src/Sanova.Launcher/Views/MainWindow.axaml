@@ -15,7 +15,7 @@
         ExtendClientAreaToDecorationsHint="True">
 
   <Panel>
-    <Grid ColumnDefinitions="236,*">
+    <Grid ColumnDefinitions="236,*" IsEnabled="{Binding CanInteractWithPages}">
 
       <!-- Sidebar -->
       <Border Grid.Column="0" Background="{DynamicResource Bg1}" BorderBrush="{DynamicResource Line}" BorderThickness="0,0,1,0">
@@ -75,7 +75,8 @@
     </Grid>
 
     <!-- First-run setup -->
-    <ContentControl Content="{Binding Setup}" IsVisible="{Binding IsSetupVisible}" />
+    <ContentControl Content="{Binding Setup}" IsVisible="{Binding IsSetupVisible}"
+                    IsEnabled="{Binding Dialogs.Current, Converter={x:Static ObjectConverters.IsNull}}" />
 
     <!-- Toasts -->
     <ItemsControl ItemsSource="{Binding Toasts}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,24,24" Width="370">

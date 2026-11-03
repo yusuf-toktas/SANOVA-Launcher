@@ -8,6 +8,20 @@ All notable changes to SANOVA Launcher are documented here. The format is based 
 
 The first version of the launcher, planned as **0.1.0**. Nothing has been published yet.
 
+### Fixed
+
+- Preserve transaction recovery data when post-commit backup preservation fails, and reject
+  missing staged sources before changes begin.
+- Reject existing filesystem reparse points at installation boundaries and hash managed files
+  before destructive changes, including edits that retain their original size and timestamp.
+- Recheck cached manifest signatures using the current trust policy; separate offline caches
+  by content source and channel, and discard stale checks when sources change.
+- Enforce production manifest signing while retaining explicit developer fixtures; bound
+  manifest downloads even when servers omit their content length.
+- Refresh localized update notes and prevent keyboard interaction behind modal dialogs.
+- Pin workflow actions, separate package validation from draft creation, and validate package
+  versions and cleanup boundaries before publishing local artifacts.
+
 ### Added
 
 - First-run setup: language, game detection (retail registry keys, installed programs, Steam

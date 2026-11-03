@@ -30,6 +30,19 @@ public static class ManifestSamples
 
 public class ManifestValidatorTests
 {
+    [Theory]
+    [InlineData("[]")]
+    [InlineData("null")]
+    [InlineData("{\"schemaVersion\":\"1\"}")]
+    [InlineData("{\"schemaVersion\":1,\"contentVersion\":\"1.0.0\",\"components\":null}")]
+    [InlineData("{\"schemaVersion\":1,\"contentVersion\":\"1.0.0\",\"files\":[null]}")]
+    [InlineData("{\"schemaVersion\":1,\"contentVersion\":\"1.0.0\",\"components\":[{\"id\":\"core\",\"name\":null,\"dependencies\":null}]}")]
+    public void Malformed_manifest_shapes_report_a_manifest_error(string json)
+    {
+        var error = Assert.Throws<SanovaException>(() => ManifestLoader.Parse(Encoding.UTF8.GetBytes(json)));
+        Assert.Equal(ErrorCodes.ManifestInvalid, error.Code);
+    }
+
     [Fact]
     public void Accepts_a_valid_manifest() => Assert.Empty(ManifestValidator.Validate(ManifestSamples.Valid()));
 

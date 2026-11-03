@@ -17,6 +17,46 @@ public class TransactionEngineTests
     private static TransactionEngine Engine() => new(Log.For<TransactionEngine>());
 
     [Fact]
+    public void Missing_staged_source_cannot_remove_an_existing_target_during_rollback()
+    {
+        using var temp = new TempDir();
+        var install = temp.Sub("install");
+        TempDir.WriteFile(install, "existing.ini", "must survive"u8.ToArray());
+        InstallStateStore.Save(install, new InstallState());
+
+        Assert.Throws<SanovaException>(() => Engine().Commit(install, "missing", "update",
+            [new TxOperation { Kind = TxOperationKind.Place, Path = "existing.ini", Source = "staging/missing/existing.ini" }],
+            new InstallState(), null, TestContext.Current.CancellationToken));
+
+        Assert.Equal("must survive", File.ReadAllText(Path.Combine(install, "existing.ini")));
+        Assert.False(InstallStateStore.HasPendingTransaction(install));
+    }
+
+    [Fact]
+    public void Failed_backup_preservation_keeps_the_journal_and_recovers_after_the_conflict_is_removed()
+    {
+        using var temp = new TempDir();
+        var install = temp.Sub("install");
+        TempDir.WriteFile(install, "settings.ini", "player settings"u8.ToArray());
+        InstallStateStore.Save(install, new InstallState { ContentVersion = "1.0.0" });
+        Stage(install, "preserve", "settings.ini", "updated settings");
+        var conflict = InstallStateStore.MetadataPath(install, "user-backup/preserve/settings.ini");
+        Directory.CreateDirectory(conflict);
+
+        Assert.Throws<SanovaException>(() => Engine().Commit(install, "preserve", "update",
+            [new TxOperation { Kind = TxOperationKind.Place, Path = "settings.ini", Source = "staging/preserve/settings.ini", BackupHandling = BackupHandling.KeepAsUserBackup }],
+            new InstallState { ContentVersion = "2.0.0" }, null, TestContext.Current.CancellationToken));
+
+        Assert.True(InstallStateStore.HasPendingTransaction(install));
+        Assert.Equal("player settings", File.ReadAllText(InstallStateStore.MetadataPath(install, "tx/preserve/b/0/settings.ini")));
+        Assert.Equal("2.0.0", InstallStateStore.Load(install)!.ContentVersion);
+        Directory.Delete(conflict);
+        Assert.Equal(RecoveryOutcome.Completed, Engine().Recover(install));
+        Assert.Equal("player settings", File.ReadAllText(conflict));
+        Assert.False(InstallStateStore.HasPendingTransaction(install));
+    }
+
+    [Fact]
     public void Commits_all_operation_kinds_and_handles_backups()
     {
         using var temp = new TempDir();
@@ -64,18 +104,20 @@ public class TransactionEngineTests
         var install = temp.Sub("install");
         TempDir.WriteFile(install, "a.txt", "A"u8.ToArray());
         TempDir.WriteFile(install, "b.txt", "B"u8.ToArray());
+        TempDir.WriteFile(install, "blocked", "not a directory"u8.ToArray());
         InstallStateStore.Save(install, new InstallState { ContentVersion = "1.0.0" });
         var before = Snapshot(install);
 
         const string tx = "t2";
         Stage(install, tx, "a.txt", "A2");
         Stage(install, tx, "c/new.txt", "C");
+        Stage(install, tx, "blocked/child.txt", "cannot place this");
         var operations = new List<TxOperation>
         {
             new() { Kind = TxOperationKind.Place, Path = "a.txt", Source = $"staging/{tx}/a.txt" },
             new() { Kind = TxOperationKind.Place, Path = "c/new.txt", Source = $"staging/{tx}/c/new.txt" },
             new() { Kind = TxOperationKind.Delete, Path = "b.txt" },
-            new() { Kind = TxOperationKind.Place, Path = "d.txt", Source = $"staging/{tx}/missing.txt" },
+            new() { Kind = TxOperationKind.Place, Path = "blocked/child.txt", Source = $"staging/{tx}/blocked/child.txt" },
         };
 
         Assert.Throws<SanovaException>(() =>

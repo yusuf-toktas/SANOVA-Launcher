@@ -20,7 +20,9 @@
 #>
 param(
     [string]$Version,
+    [ValidateSet('win-x64', 'win-arm64')]
     [string]$Runtime = 'win-x64',
+    [ValidatePattern('^[A-Za-z0-9][A-Za-z0-9_-]*$')]
     [string]$Channel = 'win',
     [string]$Output = (Join-Path $PSScriptRoot '..\artifacts'),
     [string]$ReleaseNotes,
@@ -39,17 +41,48 @@ try {
         [xml]$props = Get-Content (Join-Path $root 'Directory.Build.props')
         $Version = ($props.Project.PropertyGroup | Where-Object { $_.Version } | Select-Object -First 1).Version
     }
+    # Match the SemVer form supported by Velopack; reject malformed versions before publishing.
+    if ($Version -notmatch '^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(-((0|[1-9]\d*|\d*[A-Za-z-][0-9A-Za-z-]*)(\.(0|[1-9]\d*|\d*[A-Za-z-][0-9A-Za-z-]*))*))?$') {
+        throw "'$Version' is not a supported semantic version."
+    }
+    if ($SignParams -and $AzureTrustedSignFile) { throw 'Choose one signing method.' }
     Write-Host "Packaging SANOVA Launcher $Version ($Runtime, channel '$Channel')"
 
+    $Output = [IO.Path]::GetFullPath($Output)
+    $rootPath = [IO.Path]::GetFullPath($root.Path).TrimEnd('\', '/')
+    if ($rootPath.Equals($Output.TrimEnd('\', '/'), [StringComparison]::OrdinalIgnoreCase) -or
+        $rootPath.StartsWith($Output.TrimEnd('\', '/') + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase)) {
+        throw 'Output must be a dedicated build directory, not the repository or one of its parents.'
+    }
     $publish = Join-Path $Output "publish\$Runtime"
     $releases = Join-Path $Output 'releases'
-    if (Test-Path $publish) { Remove-Item $publish -Recurse -Force }
+    # Refuse junctions/symlinks before recursive cleanup can follow them outside the output tree.
+    foreach ($target in @($publish, $releases, (Join-Path $Output 'tools'))) {
+        $probe = $target
+        while ($probe) {
+            if ((Test-Path -LiteralPath $probe) -and
+                ((Get-Item -LiteralPath $probe -Force).Attributes -band [IO.FileAttributes]::ReparsePoint)) {
+                throw "Build output must not pass through a reparse point: $probe"
+            }
+            $parent = Split-Path -Parent $probe
+            if ($parent -eq $probe) { break }
+            $probe = $parent
+        }
+    }
+    if (-not ([IO.Path]::GetFullPath($publish)).StartsWith($Output.TrimEnd('\', '/') + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase)) {
+        throw 'Publish directory escaped the output directory.'
+    }
+    if (Test-Path -LiteralPath $publish) {
+        $linkedChild = Get-ChildItem -LiteralPath $publish -Force -Recurse | Where-Object { $_.Attributes -band [IO.FileAttributes]::ReparsePoint } | Select-Object -First 1
+        if ($linkedChild) { throw "Refusing to clean linked output: $($linkedChild.FullName)" }
+        Remove-Item -LiteralPath $publish -Recurse -Force
+    }
 
     dotnet tool restore
     if ($LASTEXITCODE) { throw 'dotnet tool restore failed' }
 
     dotnet publish src/Sanova.Launcher/Sanova.Launcher.csproj -c Release -r $Runtime --self-contained true `
-        -p:Version=$Version -p:DebugType=none -o $publish
+        -p:Version=$Version -p:DebugType=none -warnaserror -o $publish
     if ($LASTEXITCODE) { throw 'dotnet publish failed' }
 
     $pack = @(
@@ -58,6 +91,7 @@ try {
         '--packVersion', $Version,
         '--packDir', $publish,
         '--mainExe', 'SanovaLauncher.exe',
+        '--runtime', $Runtime,
         '--packTitle', 'SANOVA Launcher',
         '--packAuthors', 'SANOVA contributors',
         '--icon', 'src/Sanova.Launcher/Assets/Branding/sanova.ico',
@@ -72,8 +106,9 @@ try {
 
     if ($IncludeTools) {
         dotnet publish src/Sanova.ManifestTool/Sanova.ManifestTool.csproj -c Release -r $Runtime --self-contained true `
-            -p:PublishSingleFile=true -p:Version=$Version -p:DebugType=none -o (Join-Path $Output 'tools')
+            -p:PublishSingleFile=true -p:Version=$Version -p:DebugType=none -warnaserror -o (Join-Path $Output 'tools')
         if ($LASTEXITCODE) { throw 'manifest tool publish failed' }
+        Copy-Item -LiteralPath (Join-Path $publish 'licenses') -Destination (Join-Path $Output 'tools') -Recurse -Force
     }
 
     Write-Host "Done. Release files are in $releases"

@@ -115,6 +115,20 @@ public sealed class TransactionEngine
             throw SanovaException.Create(ErrorCodes.InstallBusy, "A previous transaction has not been recovered.");
         }
 
+        // Rollback distinguishes an applied placement from an untouched one by the
+        // consumed source. Establish that invariant before writing a journal or moving
+        // anything, so a missing source cannot make an old target look newly placed.
+        foreach (var operation in operations)
+        {
+            _ = SafePath.GetFullPathUnder(installDirectory, operation.Path);
+            if (operation.Kind is TxOperationKind.Place or TxOperationKind.Unstash &&
+                !File.Exists(Meta(installDirectory, operation.Source!)))
+            {
+                throw SanovaException.Create(ErrorCodes.IoError, $"Transaction source missing: {operation.Source}",
+                    ("path", operation.Path), ("detail", "transaction source missing"));
+            }
+        }
+
         var journal = new TxJournal
         {
             Id = transactionId,
@@ -343,6 +357,7 @@ public sealed class TransactionEngine
 
     private void FinishCommit(string installDirectory, TxJournal journal)
     {
+        var cleanupComplete = true;
         foreach (var operation in journal.Operations)
         {
             try
@@ -371,8 +386,16 @@ public sealed class TransactionEngine
             }
             catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
             {
+                // This can be the only remaining copy of a player's file. Retain the
+                // committed journal and its backups so recovery can retry preservation.
+                cleanupComplete = false;
                 _logger.LogWarning(ex, "Post-commit cleanup failed for {Path}", operation.Path);
             }
+        }
+        if (!cleanupComplete)
+        {
+            throw SanovaException.Create(ErrorCodes.IoError, "The transaction committed, but backup preservation is incomplete. Its journal and backups were retained for recovery.",
+                ("path", InstallStateStore.JournalPath(installDirectory)), ("detail", "backup preservation incomplete"));
         }
         Cleanup(installDirectory, journal);
     }

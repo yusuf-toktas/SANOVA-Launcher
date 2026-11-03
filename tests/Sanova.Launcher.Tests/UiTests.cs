@@ -2,6 +2,8 @@ using Avalonia.Controls;
 using Avalonia.Headless.XUnit;
 using Avalonia.Media;
 using Avalonia.Styling;
+using Avalonia.VisualTree;
+using Microsoft.Extensions.DependencyInjection;
 using Sanova.Core.Settings;
 using Sanova.Launcher.Infrastructure;
 using Sanova.Launcher.Services;
@@ -53,6 +55,49 @@ public class PrimaryActionTests
 public class LocalizationUiTests
 {
     [AvaloniaFact]
+    public async Task Switching_language_refreshes_mod_credits_and_technical_details()
+    {
+        using var scenario = await UiScenario.CreateAsync(Stage.Installed);
+        var about = (AboutViewModel)scenario.Services.GetService(typeof(AboutViewModel))!;
+        var game = (GameViewModel)scenario.Services.GetService(typeof(GameViewModel))!;
+        string? creditName = null;
+        string? details = null;
+        about.PropertyChanged += (_, args) =>
+        {
+            if (args.PropertyName == nameof(AboutViewModel.ModCredits)) creditName = about.ModCredits[0].Name;
+        };
+        game.PropertyChanged += (_, args) =>
+        {
+            if (args.PropertyName == nameof(GameViewModel.TechnicalDetails)) details = game.TechnicalDetails;
+        };
+
+        scenario.State.UpdateSettings(s => s.Language = "tr");
+
+        Assert.Equal("SANOVA çekirdeği", creditName);
+        var loc = (LocalizationService)scenario.Services.GetService(typeof(LocalizationService))!;
+        Assert.StartsWith(loc.T("game.tech.file") + ":", details);
+    }
+
+    [AvaloniaFact]
+    public async Task Switching_language_refreshes_content_release_notes()
+    {
+        using var scenario = await UiScenario.CreateAsync(Stage.UpdateAvailable);
+        var updates = (UpdatesViewModel)scenario.Services.GetService(typeof(UpdatesViewModel))!;
+        var notifications = new List<string?>();
+        updates.PropertyChanged += (_, args) =>
+        {
+            if (args.PropertyName == nameof(UpdatesViewModel.ContentNotes)) notifications.Add(updates.ContentNotes);
+        };
+        Assert.Contains("Highlights", updates.ContentNotes);
+
+        scenario.State.UpdateSettings(s => s.Language = "tr");
+
+        Assert.NotEmpty(notifications);
+        Assert.Contains("Los Santos genelinde", notifications[^1]);
+        Assert.Contains("Los Santos genelinde", updates.ContentNotes);
+    }
+
+    [AvaloniaFact]
     public async Task Switching_language_updates_visible_text_immediately()
     {
         using var scenario = await UiScenario.CreateAsync(Stage.Installed);
@@ -83,6 +128,110 @@ public class LocalizationUiTests
         Assert.Equal(ThemeVariant.Light, window.ActualThemeVariant);
         Assert.NotEqual(dark, ((SolidColorBrush)Background()).Color);
         window.Close();
+    }
+}
+
+public class ContentSourceStateTests
+{
+    [AvaloniaFact]
+    public async Task Disabling_developer_mode_revalidates_the_installed_manifest()
+    {
+        using var scenario = await UiScenario.CreateAsync(Stage.Installed);
+        Assert.NotNull(scenario.State.InstalledManifest);
+
+        scenario.State.UpdateSettings(s => s.DeveloperMode = false);
+
+        Assert.Null(scenario.State.InstalledManifest);
+    }
+
+    [AvaloniaFact]
+    public async Task An_in_flight_developer_check_cannot_restore_content_after_developer_mode_is_disabled()
+    {
+        using var handler = new DeferredManifestHandler();
+        using var client = new HttpClient(handler);
+        using var scenario = await UiScenario.CreateAsync(Stage.ReadyToInstall,
+            overrides: services => services.AddSingleton(new ApiHttp(client)));
+        var manifestBytes = scenario.State.LatestManifest!.Bytes;
+        scenario.State.UpdateSettings(s => s.ContentSource = new ContentSourceOverride
+        {
+            Kind = ContentSourceKind.ManifestUrl,
+            Value = "https://example.invalid/sanova-manifest.json",
+        });
+        var pending = scenario.State.CheckContentAsync();
+        await handler.Started.Task.WaitAsync(TimeSpan.FromSeconds(10));
+
+        scenario.State.UpdateSettings(s => s.DeveloperMode = false);
+        handler.Response.SetResult(new HttpResponseMessage(System.Net.HttpStatusCode.OK)
+        {
+            Content = new ByteArrayContent(manifestBytes),
+        });
+        await pending;
+
+        Assert.Null(scenario.State.LatestManifest);
+        Assert.Equal(ContentStatus.NotConfigured, scenario.State.ContentStatus);
+    }
+
+    [AvaloniaFact]
+    public async Task Disabling_developer_mode_discards_the_developer_manifest()
+    {
+        using var scenario = await UiScenario.CreateAsync(Stage.ReadyToInstall);
+        Assert.NotNull(scenario.State.LatestManifest);
+
+        scenario.State.UpdateSettings(s => s.DeveloperMode = false);
+
+        Assert.Null(scenario.State.LatestManifest);
+        Assert.Null(scenario.State.ContentSource);
+        Assert.Equal(ContentStatus.NotConfigured, scenario.State.ContentStatus);
+        var home = (HomeViewModel)scenario.Services.GetService(typeof(HomeViewModel))!;
+        Assert.Equal(PrimaryAction.Unavailable, home.Action);
+    }
+
+    [AvaloniaFact]
+    public async Task Changing_channel_discards_the_previous_channels_manifest()
+    {
+        using var scenario = await UiScenario.CreateAsync(Stage.ReadyToInstall);
+        Assert.NotNull(scenario.State.LatestManifest);
+
+        scenario.State.UpdateSettings(s => s.UpdateChannel = "beta");
+
+        Assert.Null(scenario.State.LatestManifest);
+        Assert.Null(scenario.State.LastContentCheck);
+        Assert.Equal(ContentStatus.Unknown, scenario.State.ContentStatus);
+    }
+
+    private sealed class DeferredManifestHandler : HttpMessageHandler
+    {
+        public TaskCompletionSource Started { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
+        public TaskCompletionSource<HttpResponseMessage> Response { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
+
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            if (request.RequestUri!.AbsolutePath.EndsWith(".sig", StringComparison.Ordinal))
+                return Task.FromResult(new HttpResponseMessage(System.Net.HttpStatusCode.NotFound));
+            Started.SetResult();
+            return Response.Task.WaitAsync(cancellationToken);
+        }
+    }
+}
+
+public class ModalUiTests
+{
+    [AvaloniaFact]
+    public async Task Modal_dialogs_disable_background_keyboard_targets()
+    {
+        using var scenario = await UiScenario.CreateAsync(Stage.Installed);
+        var window = scenario.CreateWindow();
+        var navigation = window.GetVisualDescendants().OfType<ListBox>().First();
+        Assert.True(navigation.IsEffectivelyEnabled);
+
+        var pending = scenario.Shell.Dialogs.AlertAsync("Test", "Test");
+        Avalonia.Threading.Dispatcher.UIThread.RunJobs();
+        var disabled = !navigation.IsEffectivelyEnabled;
+        scenario.Shell.Dialogs.Current!.CancelCommand.Execute(null);
+        await pending;
+        window.Close();
+
+        Assert.True(disabled, "Keyboard users must not activate controls behind the modal dialog.");
     }
 }
 

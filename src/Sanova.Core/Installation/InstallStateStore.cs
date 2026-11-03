@@ -23,21 +23,21 @@ public static class InstallStateStore
 {
     public const string MetadataFolderName = ".sanova";
 
-    public static string MetadataDirectory(string installDirectory) => Path.Combine(installDirectory, MetadataFolderName);
+    public static string MetadataDirectory(string installDirectory) => SafePath.GetFullPathUnder(installDirectory, MetadataFolderName);
 
-    public static string StatePath(string installDirectory) => Path.Combine(MetadataDirectory(installDirectory), "install.json");
+    public static string StatePath(string installDirectory) => MetadataPath(installDirectory, "install.json");
 
-    public static string NextStatePath(string installDirectory) => Path.Combine(MetadataDirectory(installDirectory), "install.next.json");
+    public static string NextStatePath(string installDirectory) => MetadataPath(installDirectory, "install.next.json");
 
-    public static string JournalPath(string installDirectory) => Path.Combine(MetadataDirectory(installDirectory), "journal.json");
+    public static string JournalPath(string installDirectory) => MetadataPath(installDirectory, "journal.json");
 
-    public static string ManifestDirectory(string installDirectory) => Path.Combine(MetadataDirectory(installDirectory), "manifest");
+    public static string ManifestDirectory(string installDirectory) => MetadataPath(installDirectory, "manifest");
 
-    public static string StagingRoot(string installDirectory) => Path.Combine(MetadataDirectory(installDirectory), "staging");
+    public static string StagingRoot(string installDirectory) => MetadataPath(installDirectory, "staging");
 
-    public static string CacheDirectory(string installDirectory) => Path.Combine(MetadataDirectory(installDirectory), "cache");
+    public static string CacheDirectory(string installDirectory) => MetadataPath(installDirectory, "cache");
 
-    public static string BaseCopyProgressPath(string installDirectory) => Path.Combine(MetadataDirectory(installDirectory), "basecopy.json");
+    public static string BaseCopyProgressPath(string installDirectory) => MetadataPath(installDirectory, "basecopy.json");
 
     public const string TransactionsFolder = "tx";
     public const string OriginalsFolder = "originals";
@@ -50,7 +50,7 @@ public static class InstallStateStore
         {
             return File.Exists(StatePath(directory));
         }
-        catch (Exception ex) when (ex is ArgumentException or NotSupportedException or IOException)
+        catch (Exception ex) when (ex is ArgumentException or NotSupportedException or IOException or UnauthorizedAccessException || ex is SanovaException { Code: ErrorCodes.PathUnsafe })
         {
             return false;
         }
@@ -118,7 +118,7 @@ public sealed class InstallLock : IDisposable
     public static InstallLock Acquire(string installDirectory)
     {
         InstallStateStore.EnsureMetadataDirectory(installDirectory);
-        var path = Path.Combine(InstallStateStore.MetadataDirectory(installDirectory), "lock");
+        var path = InstallStateStore.MetadataPath(installDirectory, "lock");
         try
         {
             return new InstallLock(new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None, 1, FileOptions.DeleteOnClose));

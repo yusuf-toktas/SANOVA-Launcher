@@ -81,6 +81,7 @@ public sealed partial class UpdatesViewModel : ViewModelBase
         SourceText = new LocalizedString(l => _state.ContentSource is { } source ? l.T("updates.content.source", ("source", source)) : string.Empty);
 
         Launcher.PropertyChanged += (_, _) => RefreshTexts();
+        LocalizationService.Instance!.LanguageChanged += (_, _) => RefreshTexts();
         _state.PropertyChanged += OnStateChanged;
         _runner.PropertyChanged += (_, e) =>
         {

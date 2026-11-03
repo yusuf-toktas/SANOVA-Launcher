@@ -8,13 +8,15 @@ Thanks for helping with SANOVA Launcher. This page covers the conventions; the
 - Windows 10/11, the [.NET 10 SDK](https://dotnet.microsoft.com/download), and any editor with C#
   support (Visual Studio, Rider, or VS Code with C# Dev Kit).
 - `dotnet build SANOVA.Launcher.slnx`, then `dotnet test SANOVA.Launcher.slnx`.
-- The launcher keeps its data in `%LocalAppData%\SANOVA`. Delete that folder to see the first-run
-  setup again.
+- The launcher keeps its data in `%LocalAppData%\SANOVA`. Use a disposable Windows account
+  for first-run testing; keep real player settings and installation records intact.
 - The .NET SDK and Avalonia's build tooling send anonymous build telemetry. Set
   `DOTNET_CLI_TELEMETRY_OPTOUT=1` and `AVALONIA_TELEMETRY_OPTOUT=1` to opt out.
 
 Report security problems privately as described in [SECURITY.md](SECURITY.md), not in public
 issues.
+
+Participation follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## Ground rules
 

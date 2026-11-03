@@ -82,6 +82,7 @@ public sealed class BaseGameCopier
 
             Directory.CreateDirectory(Path.GetDirectoryName(target)!);
             var temp = target + ".sanova-copy";
+            SafePath.RejectReparsePoints(temp);
             string sha;
             long length;
             try

@@ -32,9 +32,10 @@ first, then applies the content on top; an original file replaced by content (fo
 repository; the commands below assume they sit next to the launcher checkout. Never commit game
 or mod files to the launcher repository.
 
-`build` refuses to package files that are byte-identical to an original game file (checked
-against the embedded v1.0 reference list and the config's `baseGameReference`), so original
-game files can't end up in a public release by accident.
+`build` refuses to package files that are byte-identical to a known original game file (checked
+against the embedded v1.0 reference list and the config's `baseGameReference`). This catches
+known originals; it cannot establish redistribution rights or identify every proprietary
+file, including modified game files. Review the asset list and permissions before publication.
 
 To check that `Root/` matches the playable development installation:
 
@@ -290,3 +291,56 @@ paths, device names, alternate data streams, short 8.3 names, the `.sanova` fold
 case-insensitive duplicates, files that collide with folders, unknown components or packages,
 dependency cycles, conflicting required components, non-HTTPS package or external URLs, and
 invalid hashes.
+
+## Preparing SANOVA 0.1.0 — Foundation
+
+Foundation content has not been selected, licensed or published. ASI Loader, Mod Loader,
+SilentPatch, Widescreen Fix, CLEO/CLEO+, Framerate Vigilante, CrashInfo and GInput are
+candidates only. Their appearance here does not grant permission to redistribute them.
+
+For each selected component, record its exact upstream version, author, original HTTPS
+source, archive SHA-256, license text and any written permission. Keep these records beside
+the content configuration. Use `required` for essential components and `dependencies` for
+prerequisites; use `conflicts` for incompatible alternatives. Assign each installed path to
+one component, including shared loader files, and test the complete dependency selection.
+Unknown redistribution is rejected by default. External/manual sources still require legal
+review and exact archive/file hashes; they are not a substitute for permission.
+
+The engine supports whole-file mod configuration: ship INI/JSON/CFG files as component files.
+Player edits are preserved in backups before replacement and kept on uninstall. There is
+no per-mod configuration editor, schema, or automatic merge of player settings. Decide which
+configuration defaults to own and document how users recover edits after an update.
+
+A separate content repository would keep large binary assets and their permission records
+out of this launcher repository. No such repository is provisioned or configured yet. A
+proposed structure is:
+
+```text
+sanova-content.json       component definitions, versions and file selection
+permissions/             upstream licenses and redistribution evidence
+notes/                   English and Turkish release notes
+references/              reference metadata only, never original game files
+```
+
+Keep prepared mod files in the authorized content workspace; only legally redistributable
+packages, the signed manifest and its detached signature belong on content Releases. Review
+the example configuration's catch-all `core` rule carefully: it must not misattribute
+third-party files to SANOVA. Placeholder components and hashes in that example must be
+replaced; it is not a ready Foundation recipe.
+
+Before enabling production content distribution:
+
+1. Select and authorize a real content repository or HTTPS host, and populate `content` in
+   `distribution.json` with verified values.
+2. Generate the production signing key in a secure maintainer location outside repositories,
+   restrict access and keep an offline backup. Commit only the public verification key.
+3. Keep `trust.requireSignature` enabled and ship the real public key(s) with the launcher.
+   Empty keys must fail verification; never insert a dummy key to make the source appear ready.
+4. Build and verify a signed release using disposable fixtures first. Check required/optional
+   selections, update, repair, cancellation, recovery, configuration backups and uninstall.
+5. Review `release-assets.txt` and the actual archive entries for proprietary files, secrets
+   and permission compliance. Signatures authenticate bytes, not legal rights or mod safety.
+
+Public verification keys are safe to distribute. Private signing keys are never release
+assets, source files, workflow logs or application resources. Developer mode is an explicit
+local testing boundary; do not use its unsigned local content as release evidence.

@@ -90,6 +90,7 @@ public sealed partial class GameViewModel : ViewModelBase
             ? l.T(_state.Install.LastVerificationPassed == true ? "game.install.verifiedOk" : "game.install.verifiedIssues", ("when", l.Relative(at)))
             : l.T("game.install.neverVerified"));
         _state.PropertyChanged += OnStateChanged;
+        _loc.LanguageChanged += (_, _) => NotifyAll();
         _runner.PropertyChanged += (_, e) =>
         {
             if (e.PropertyName == nameof(OperationRunner.IsRunning)) NotifyAll();

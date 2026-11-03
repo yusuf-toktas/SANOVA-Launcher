@@ -14,6 +14,7 @@ public static class AtomicFile
 
     public static void WriteAllBytes(string path, ReadOnlySpan<byte> content)
     {
+        SafePath.RejectReparsePoints(path);
         var directory = Path.GetDirectoryName(Path.GetFullPath(path))!;
         Directory.CreateDirectory(directory);
         var temp = Path.Combine(directory, $".{Path.GetFileName(path)}.{Guid.NewGuid():N}.tmp");

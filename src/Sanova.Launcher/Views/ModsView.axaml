@@ -53,7 +53,7 @@
                             </StackPanel>
                             <TextBlock Grid.Column="1" Text="{Binding Size.Value}" Classes="small faint" VerticalAlignment="Center" Margin="0,0,18,0" />
                             <Panel Grid.Column="2" VerticalAlignment="Center" Width="64">
-                              <ToggleSwitch IsChecked="{Binding IsEnabled}" IsVisible="{Binding IsOptional}" HorizontalAlignment="Right" />
+                              <ToggleSwitch IsChecked="{Binding IsEnabled}" IsVisible="{Binding IsOptional}" HorizontalAlignment="Right" AutomationProperties.Name="{Binding Name.Value}" />
                               <StackPanel Orientation="Horizontal" Spacing="6" IsVisible="{Binding IsRequired}" HorizontalAlignment="Right"
                                       ToolTip.Tip="{l:Tr mods.requiredTip}">
                                 <PathIcon Data="{StaticResource Icon.Lock}" Classes="small" Foreground="{DynamicResource Text3}" />

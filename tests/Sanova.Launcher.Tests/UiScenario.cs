@@ -44,9 +44,12 @@ public enum Stage
     UpdateAvailable,
 }
 
-internal sealed class NoRegistry : IRegistryReader
+internal sealed class FixtureRegistry : IRegistryReader
 {
-    public string? GetString(RegHive hive, RegView view, string subKey, string valueName) => null;
+    public string? GameDirectory { get; init; }
+
+    public string? GetString(RegHive hive, RegView view, string subKey, string valueName)
+        => subKey == @"SOFTWARE\Rockstar Games\GTA San Andreas\Installation" && valueName == "ExePath" ? GameDirectory : null;
 
     public IReadOnlyList<string> GetSubKeyNames(RegHive hive, RegView view, string subKey) => [];
 }
@@ -67,7 +70,8 @@ public sealed class UiScenario : IDisposable
     public MainViewModel Shell => Services.GetRequiredService<MainViewModel>();
     public AppState State => Services.GetRequiredService<AppState>();
 
-    public static async Task<UiScenario> CreateAsync(Stage stage, string language = "en", AppTheme theme = AppTheme.Dark)
+    public static async Task<UiScenario> CreateAsync(Stage stage, string language = "en", AppTheme theme = AppTheme.Dark,
+        Action<IServiceCollection>? overrides = null)
     {
         var scenario = new UiScenario(Path.Combine(Path.GetTempPath(), "sanova-ui-tests", Guid.NewGuid().ToString("N")[..10]));
         Directory.CreateDirectory(scenario.Root);
@@ -136,8 +140,13 @@ public sealed class UiScenario : IDisposable
         };
         Core.IO.AtomicFile.WriteJson(paths.SettingsFile, settings);
 
-        scenario.Services = Bootstrapper.Build(paths, NullLoggerFactory.Instance,
-            services => services.AddSingleton<IRegistryReader>(new NoRegistry()));
+        scenario.Services = Bootstrapper.Build(paths, NullLoggerFactory.Instance, services =>
+        {
+            services.AddSingleton<IRegistryReader>(new FixtureRegistry { GameDirectory = game });
+            services.AddSingleton(sp => new GameLocator(sp.GetRequiredService<IRegistryReader>(),
+                NullLogger<GameLocator>.Instance, () => []));
+            overrides?.Invoke(services);
+        });
         await scenario.Shell.InitializeAsync();
         return scenario;
     }

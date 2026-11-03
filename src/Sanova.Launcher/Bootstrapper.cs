@@ -47,7 +47,12 @@ public static class Bootstrapper
         services.AddSingleton<BaseGameCopier>();
         services.AddSingleton<TransactionEngine>();
         services.AddSingleton(sp => new InstallationService(sp.GetRequiredService<ContentAcquirer>(), sp.GetRequiredService<BaseGameCopier>(),
-            sp.GetRequiredService<TransactionEngine>(), sp.GetRequiredService<ILogger<InstallationService>>(), AppInfo.Version));
+            sp.GetRequiredService<TransactionEngine>(), sp.GetRequiredService<ILogger<InstallationService>>(), AppInfo.Version,
+            () => new ManifestTrustConfig
+            {
+                PublicKeys = [.. sp.GetRequiredService<DistributionConfig>().Trust.PublicKeys],
+                RequireSignature = !sp.GetRequiredService<SettingsStore>().Current.DeveloperMode,
+            }));
         services.AddSingleton(_ => GameVersionDatabase.LoadEmbedded());
         services.AddSingleton(sp => new CompatibilityChecker(sp.GetRequiredService<GameVersionDatabase>(), BaseGameReference.LoadEmbedded(),
             sp.GetRequiredService<ILogger<CompatibilityChecker>>()));

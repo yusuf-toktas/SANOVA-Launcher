@@ -2,10 +2,11 @@
 
 The launcher ships in **English** (`en`, the fallback) and **Turkish** (`tr`). On first start it
 follows the Windows display language when a matching language exists, otherwise English. Players
-switch languages under **Settings → Language**; the whole interface changes immediately,
-including text that's already on screen.
+switch languages under **Settings → Language**; navigation, page text, release notes and status
+messages change immediately. Dialogs and notifications retain the language used when shown.
 
-Every user-facing string lives in a language file. Code and XAML refer to keys only.
+Interface strings live in language files. Content names and release notes come from the manifest;
+technical diagnostic details and upstream error messages may remain in English.
 
 ## Language files
 

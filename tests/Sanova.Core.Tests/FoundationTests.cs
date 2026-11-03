@@ -6,6 +6,26 @@ namespace Sanova.Core.Tests;
 
 public class SafePathTests
 {
+    [Fact]
+    public void Rejects_existing_directory_links_in_installation_paths()
+    {
+        using var temp = new TempDir();
+        var root = temp.Sub("install");
+        var outside = temp.Sub("outside");
+        var link = Path.Combine(root, "redirect");
+        TestLinks.CreateDirectory(link, outside);
+        try
+        {
+            var ex = Assert.Throws<SanovaException>(() => SafePath.GetFullPathUnder(root, "redirect/new.asi"));
+            Assert.Equal(ErrorCodes.PathUnsafe, ex.Code);
+            Assert.Throws<SanovaException>(() => SafePath.GetFullPathUnder(link, "new.asi"));
+        }
+        finally
+        {
+            Directory.Delete(link);
+        }
+    }
+
     [Theory]
     [InlineData("gta_sa.exe", "gta_sa.exe")]
     [InlineData("modloader\\HD Roads\\roads.txd", "modloader/HD Roads/roads.txd")]
@@ -85,6 +105,16 @@ public class SafePathTests
 
 public class SemanticVersionTests
 {
+    [Fact]
+    public void Default_versions_compare_as_zero_and_large_numeric_prereleases_follow_semver()
+    {
+        Assert.Equal(SemanticVersion.Parse("0.0.0"), default(SemanticVersion));
+        Assert.Equal(SemanticVersion.Parse("0.0.0").GetHashCode(), default(SemanticVersion).GetHashCode());
+        Assert.Equal("0.0.0", default(SemanticVersion).ToString());
+        Assert.True(SemanticVersion.Parse("1.0.0-99999999999999999999") < SemanticVersion.Parse("1.0.0-alpha"));
+        Assert.True(SemanticVersion.Parse("1.0.0-99999999999999999999") < SemanticVersion.Parse("1.0.0-100000000000000000000"));
+    }
+
     [Theory]
     [InlineData("1.2.3", 1, 2, 3, "")]
     [InlineData("v0.4.0", 0, 4, 0, "")]

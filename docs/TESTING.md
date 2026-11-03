@@ -6,10 +6,23 @@ dotnet test tests/Sanova.Core.Tests                                 # engine onl
 dotnet test tests/Sanova.Core.Tests --filter "FullyQualifiedName~TransactionEngineTests"
 ```
 
-Tests use [xUnit v3](https://xunit.net/). They never touch the real game, the player's documents
+Tests use [xUnit v3](https://xunit.net/). The default suite never touches the real game, the player's documents
 or `%LocalAppData%\SANOVA`: every file operation runs in a temporary folder that is deleted
 afterwards, network access goes through an in-memory HTTP server, and registry lookups use a fake
 registry.
+
+The optional real-game checks below are explicitly enabled exceptions. UI game discovery is
+restricted to the fixture registry and an empty list of real drive roots.
+
+### Reconciling the initial test counts
+
+The initial commit (`0450133`) and its GitHub CI run (`41601987799`) contain 140 engine cases:
+137 passed and three opt-in real-game cases were skipped. Nine UI cases passed, giving
+**146 passed, three skipped, 149 total**. The earlier report of 148 passing is consistent
+with enabling the two read-only game checks while leaving the full game-copy integration
+test skipped, but that earlier execution is not recorded in this repository. Git history
+contains no intervening test removal. New regression cases increase these counts; use the
+current TRX results rather than treating 148 as a fixed target.
 
 ## Strategy
 

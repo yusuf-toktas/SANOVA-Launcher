@@ -63,19 +63,22 @@ public sealed class InstallationService
     private readonly TransactionEngine _engine;
     private readonly ILogger<InstallationService> _logger;
     private readonly string _launcherVersion;
+    private readonly Func<ManifestTrustConfig> _trustProvider;
 
-    public InstallationService(ContentAcquirer acquirer, BaseGameCopier copier, TransactionEngine engine, ILogger<InstallationService> logger, string launcherVersion)
+    public InstallationService(ContentAcquirer acquirer, BaseGameCopier copier, TransactionEngine engine, ILogger<InstallationService> logger, string launcherVersion,
+        Func<ManifestTrustConfig>? trustProvider = null)
     {
         _acquirer = acquirer;
         _copier = copier;
         _engine = engine;
         _logger = logger;
         _launcherVersion = launcherVersion;
+        _trustProvider = trustProvider ?? (() => new ManifestTrustConfig());
     }
 
     public InstallState? GetState(string installDirectory) => InstallStateStore.Load(installDirectory);
 
-    public ResolvedManifest? GetInstalledManifest(string installDirectory) => ResolvedManifest.TryLoad(InstallStateStore.ManifestDirectory(installDirectory));
+    public ResolvedManifest? GetInstalledManifest(string installDirectory) => ResolvedManifest.TryLoad(InstallStateStore.ManifestDirectory(installDirectory), _trustProvider());
 
     /// <summary>Space needed for a fresh installation: original files, content, and the temporary download volume.</summary>
     public static long EstimateRequiredBytes(string originalGamePath, BaseGameReference? reference, ResolvedManifest manifest, IReadOnlySet<string> components)
@@ -104,8 +107,9 @@ public sealed class InstallationService
         try
         {
             full = SafePath.NormalizeRoot(installPath);
+            SafePath.RejectReparsePoints(full);
         }
-        catch (Exception ex) when (ex is ArgumentException or NotSupportedException or PathTooLongException)
+        catch (Exception ex) when (ex is ArgumentException or NotSupportedException or IOException or UnauthorizedAccessException || ex is SanovaException { Code: ErrorCodes.PathUnsafe })
         {
             return PathValidation.Fail(ErrorCodes.PathUnsafe, ("path", installPath));
         }

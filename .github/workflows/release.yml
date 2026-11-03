@@ -1,4 +1,4 @@
-# Builds a launcher release and creates a DRAFT GitHub release in this repository.
+# Builds a launcher package; draft creation requires a tag or explicit opt-in.
 # Nothing becomes visible to players until a maintainer reviews and publishes the draft.
 # See docs/RELEASING.md.
 name: Release launcher
@@ -11,9 +11,13 @@ on:
       version:
         description: Version to build, e.g. 0.2.0 or 0.3.0-beta.1
         required: true
+      create_draft:
+        description: Create a draft release after validation (leave off for a package-only run)
+        type: boolean
+        default: false
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: release
@@ -23,13 +27,18 @@ jobs:
   release:
     runs-on: windows-latest
     timeout-minutes: 45
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      prerelease: ${{ steps.version.outputs.prerelease }}
     env:
       DOTNET_NOLOGO: true
       DOTNET_CLI_TELEMETRY_OPTOUT: true
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
 
-      - uses: actions/setup-dotnet@v6
+      - uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6
         with:
           dotnet-version: 10.0.x
 
@@ -41,7 +50,7 @@ jobs:
           REF_NAME: ${{ github.ref_name }}
         run: |
           $version = if ($env:GITHUB_EVENT_NAME -eq 'workflow_dispatch') { $env:INPUT_VERSION } else { $env:REF_NAME -replace '^v', '' }
-          if ($version -notmatch '^\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?$') { throw "'$version' is not a semantic version." }
+          if ($version -notmatch '^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(-((0|[1-9]\d*|\d*[A-Za-z-][0-9A-Za-z-]*)(\.(0|[1-9]\d*|\d*[A-Za-z-][0-9A-Za-z-]*))*))?$') { throw "'$version' is not a supported semantic version." }
           "version=$version" >> $env:GITHUB_OUTPUT
           "prerelease=$(if ($version.Contains('-')) { 'true' } else { 'false' })" >> $env:GITHUB_OUTPUT
           Write-Host "Building SANOVA Launcher $version"
@@ -59,12 +68,33 @@ jobs:
           if ($updates.repository -and $updates.repository -ne $env:GITHUB_REPOSITORY) {
             Write-Host "::warning::launcherUpdates.repository is '$($updates.repository)', but this workflow publishes to '$env:GITHUB_REPOSITORY'."
           }
-          if (-not $config.trust.requireSignature -or -not $config.trust.publicKeys) {
-            Write-Host '::warning::Content manifest signatures are not required (trust.requireSignature / trust.publicKeys). Configure them before a public release.'
+          if (-not $config.trust.requireSignature) {
+            throw 'Production content signature enforcement must remain enabled.'
+          }
+          if (($config.content.repository -or $config.content.manifestUrl) -and -not $config.trust.publicKeys) {
+            throw 'Configured production content requires at least one trusted public key.'
+          }
+          if (-not $config.trust.publicKeys) {
+            Write-Host '::notice::No content trust keys configured; production content remains unavailable until signed content is ready.'
           }
 
+      - name: Restore
+        run: dotnet restore SANOVA.Launcher.slnx
+
+      - name: Build
+        run: dotnet build SANOVA.Launcher.slnx -c Release --no-restore -warnaserror
+
       - name: Test
-        run: dotnet test SANOVA.Launcher.slnx -c Release
+        run: dotnet test SANOVA.Launcher.slnx -c Release --no-build --logger trx --results-directory TestResults
+
+      - name: Keep test results
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: release-test-results
+          path: TestResults
+          if-no-files-found: ignore
+          retention-days: 14
 
       - name: Download the previous release (for a delta package)
         shell: pwsh
@@ -72,6 +102,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           dotnet tool restore
+          if ($LASTEXITCODE) { throw 'dotnet tool restore failed' }
           dotnet vpk download github --repoUrl "https://github.com/$env:GITHUB_REPOSITORY" --token $env:GH_TOKEN --channel win -o artifacts/releases
           if ($LASTEXITCODE) {
             Write-Host '::notice::No previous release could be downloaded; building without a delta package.'
@@ -107,13 +138,43 @@ jobs:
           if ($env:NOTES) { $package.ReleaseNotes = $env:NOTES }
           ./build/package.ps1 @package
 
+      - name: Keep build outputs
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: sanova-launcher-${{ steps.version.outputs.version }}
+          path: |
+            artifacts/releases
+            artifacts/tools
+          if-no-files-found: error
+          retention-days: 30
+
+  create-draft:
+    needs: release
+    if: github.event_name == 'push' || inputs.create_draft
+    runs-on: windows-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6
+        with:
+          dotnet-version: 10.0.x
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+        with:
+          name: sanova-launcher-${{ needs.release.outputs.version }}
+          path: artifacts
       - name: Create draft release
         shell: pwsh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VERSION: ${{ steps.version.outputs.version }}
-          PRERELEASE: ${{ steps.version.outputs.prerelease }}
+          VERSION: ${{ needs.release.outputs.version }}
+          PRERELEASE: ${{ needs.release.outputs.prerelease }}
         run: |
+          dotnet tool restore
+          if ($LASTEXITCODE) { throw 'dotnet tool restore failed' }
           # No --publish: the release stays a draft until a maintainer publishes it.
           $upload = @('vpk', 'upload', 'github',
             '--repoUrl', "https://github.com/$env:GITHUB_REPOSITORY", '--token', $env:GH_TOKEN,
@@ -122,12 +183,3 @@ jobs:
           if ($env:PRERELEASE -eq 'true') { $upload += '--pre' }
           dotnet @upload
           if ($LASTEXITCODE) { throw 'vpk upload failed' }
-
-      - name: Keep build outputs
-        uses: actions/upload-artifact@v7
-        with:
-          name: sanova-launcher-${{ steps.version.outputs.version }}
-          path: |
-            artifacts/releases
-            artifacts/tools
-          retention-days: 30

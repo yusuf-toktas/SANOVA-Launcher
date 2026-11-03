@@ -39,6 +39,7 @@ public sealed partial class AppState : ObservableObject
     private readonly GameProcessMonitor _processes;
     private readonly BandwidthThrottle _throttle;
     private readonly ILogger<AppState> _logger;
+    private int _contentRevision;
 
     [ObservableProperty]
     private LauncherSettings _settings;
@@ -116,6 +117,13 @@ public sealed partial class AppState : ObservableObject
 
     public ContentSourceConfig ContentSourceConfig => Distribution.EffectiveContentSource(Settings);
 
+    /// <summary>Production always requires a trusted signature. Unsigned fixtures are developer-only.</summary>
+    public ManifestTrustConfig EffectiveTrust => new()
+    {
+        PublicKeys = [.. Distribution.Trust.PublicKeys],
+        RequireSignature = !Settings.DeveloperMode,
+    };
+
     public bool HasGame => !string.IsNullOrWhiteSpace(Settings.OriginalGamePath);
 
     public bool IsGameCompatible => Compatibility?.CanProceed == true;
@@ -183,9 +191,24 @@ public sealed partial class AppState : ObservableObject
         }
         ApplyRuntimeSettings();
 
-        if (!string.Equals(previous.InstallPath, Settings.InstallPath, StringComparison.OrdinalIgnoreCase)) RefreshInstall();
+        var contentChanged = previous.DeveloperMode != Settings.DeveloperMode
+            || !string.Equals(previous.UpdateChannel, Settings.UpdateChannel, StringComparison.Ordinal)
+            || previous.ContentSource.Kind != Settings.ContentSource.Kind
+            || !string.Equals(previous.ContentSource.Value, Settings.ContentSource.Value, StringComparison.Ordinal);
+        if (contentChanged)
+        {
+            _contentRevision++;
+            LatestManifest = null;
+            ContentError = null;
+            LastContentCheck = null;
+            ContentSource = null;
+            ContentStatus = ContentSourceConfig.IsConfigured ? ContentStatus.Unknown : ContentStatus.NotConfigured;
+        }
+
+        if (!string.Equals(previous.InstallPath, Settings.InstallPath, StringComparison.OrdinalIgnoreCase)
+            || previous.DeveloperMode != Settings.DeveloperMode) RefreshInstall();
         if (!string.Equals(previous.OriginalGamePath, Settings.OriginalGamePath, StringComparison.OrdinalIgnoreCase) ||
-            previous.AllowUnsupportedGameVersions != Settings.AllowUnsupportedGameVersions)
+            previous.AllowUnsupportedGameVersions != Settings.AllowUnsupportedGameVersions || contentChanged)
         {
             _ = RefreshCompatibilityAsync();
         }
@@ -196,7 +219,7 @@ public sealed partial class AppState : ObservableObject
         ApplyRuntimeSettings();
         _processes.Start();
         RefreshInstall();
-        LatestManifest = _content.CachedManifest;
+        LatestManifest = _content.GetCachedManifest(EffectiveTrust, ContentSourceConfig, Settings.UpdateChannel);
         ContentStatus = ContentSourceConfig.IsConfigured ? ContentStatus.Unknown : ContentStatus.NotConfigured;
         await RefreshCompatibilityAsync().ConfigureAwait(true);
     }
@@ -296,6 +319,7 @@ public sealed partial class AppState : ObservableObject
     {
         if (ContentStatus == ContentStatus.Checking) return;
         var config = ContentSourceConfig;
+        var revision = _contentRevision;
         if (!config.IsConfigured)
         {
             ContentStatus = ContentStatus.NotConfigured;
@@ -303,8 +327,12 @@ public sealed partial class AppState : ObservableObject
         }
 
         ContentStatus = ContentStatus.Checking;
-        var result = await Task.Run(() => _content.CheckAsync(config, Distribution.Trust, Settings.UpdateChannel, Settings.DeveloperMode, CancellationToken.None))
+        var settings = Settings;
+        var trust = EffectiveTrust;
+        var result = await Task.Run(() => _content.CheckAsync(config, trust, settings.UpdateChannel, settings.DeveloperMode, CancellationToken.None))
             .ConfigureAwait(true);
+        // A source/channel change may have started another check while this one was downloading.
+        if (revision != _contentRevision) return;
         LastContentCheck = result.CheckedAt;
         ContentSource = result.SourceDescription;
         ContentError = result.Error;

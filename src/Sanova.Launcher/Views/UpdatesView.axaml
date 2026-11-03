@@ -43,7 +43,7 @@
                   <TextBlock Text="{l:Tr updates.channel.body}" Classes="small muted wrap" />
                   <TextBlock Text="{Binding SourceText.Value}" Classes="small faint" TextTrimming="CharacterEllipsis" />
                 </StackPanel>
-                <ComboBox Grid.Column="1" ItemsSource="{Binding Channels}" SelectedItem="{Binding SelectedChannel}" VerticalAlignment="Center">
+                <ComboBox Grid.Column="1" ItemsSource="{Binding Channels}" SelectedItem="{Binding SelectedChannel}" VerticalAlignment="Center" AutomationProperties.Name="{l:Tr updates.channel.title}">
                   <ComboBox.ItemTemplate>
                     <DataTemplate x:DataType="vm:ChoiceOption">
                       <TextBlock Text="{Binding Label.Value}" />

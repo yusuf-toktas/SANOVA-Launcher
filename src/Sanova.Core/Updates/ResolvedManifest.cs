@@ -16,7 +16,8 @@ public sealed class ResolvedManifest
         bool signatureVerified,
         IReadOnlyDictionary<string, IReadOnlyList<Uri>> packageLocations,
         string? sourceDescription,
-        string? releaseNotesFallback)
+        string? releaseNotesFallback,
+        string? signature = null)
     {
         Manifest = manifest;
         Bytes = bytes;
@@ -25,6 +26,7 @@ public sealed class ResolvedManifest
         PackageLocations = packageLocations;
         SourceDescription = sourceDescription;
         ReleaseNotesFallback = releaseNotesFallback;
+        Signature = signature;
     }
 
     public ContentManifest Manifest { get; }
@@ -34,6 +36,9 @@ public sealed class ResolvedManifest
     public string Sha256 { get; }
 
     public bool SignatureVerified { get; }
+
+    /// <summary>Detached signature over <see cref="Bytes"/>, retained for verification after a restart.</summary>
+    public string? Signature { get; }
 
     /// <summary>Package id → candidate URIs (primary first, then mirrors).</summary>
     public IReadOnlyDictionary<string, IReadOnlyList<Uri>> PackageLocations { get; }
@@ -54,6 +59,9 @@ public sealed class ResolvedManifest
     {
         Directory.CreateDirectory(directory);
         AtomicFile.WriteAllBytes(Path.Combine(directory, ContentManifest.FileName), Bytes);
+        var signaturePath = Path.Combine(directory, ContentManifest.FileName + ".sig");
+        if (Signature is not null) AtomicFile.WriteAllText(signaturePath, Signature);
+        else FileSystem.DeleteFile(signaturePath);
         var cache = new CacheFile(
             SourceDescription ?? string.Empty,
             ReleaseNotesFallback,
@@ -63,21 +71,25 @@ public sealed class ResolvedManifest
     }
 
     /// <summary>Reloads a manifest saved with <see cref="Save"/>, re-validating it.</summary>
-    public static ResolvedManifest? TryLoad(string directory)
+    public static ResolvedManifest? TryLoad(string directory, ManifestTrustConfig? trust = null)
     {
         var manifestPath = Path.Combine(directory, ContentManifest.FileName);
         if (!File.Exists(manifestPath)) return null;
         try
         {
             var bytes = File.ReadAllBytes(manifestPath);
-            var manifest = ManifestLoader.Parse(bytes);
+            var signaturePath = manifestPath + ".sig";
+            var signature = File.Exists(signaturePath) ? File.ReadAllText(signaturePath) : null;
+            // A cached boolean is not proof of authenticity: verify the exact bytes
+            // against the caller's current trust policy, including after key rotation.
+            var validated = ManifestLoader.Load(bytes, signature, trust ?? new ManifestTrustConfig(), null);
             var cachePath = Path.Combine(directory, "manifest-locations.json");
             var cache = File.Exists(cachePath) ? JsonSerializer.Deserialize<CacheFile>(File.ReadAllBytes(cachePath), JsonDefaults.Indented) : null;
             var locations = cache?.Locations.ToDictionary(
                 p => p.Key,
                 p => (IReadOnlyList<Uri>)p.Value.Select(u => Uri.TryCreate(u, UriKind.Absolute, out var uri) ? uri : null).OfType<Uri>().ToList(),
                 StringComparer.OrdinalIgnoreCase) ?? new Dictionary<string, IReadOnlyList<Uri>>();
-            return new ResolvedManifest(manifest, bytes, cache?.SignatureVerified ?? false, locations, cache?.SourceDescription, cache?.ReleaseNotesFallback);
+            return new ResolvedManifest(validated.Manifest, bytes, validated.SignatureVerified, locations, cache?.SourceDescription, cache?.ReleaseNotesFallback, signature);
         }
         catch (Exception ex) when (ex is IOException or JsonException or SanovaException or UnauthorizedAccessException)
         {
@@ -89,6 +101,7 @@ public sealed class ResolvedManifest
 public static class ManifestLoader
 {
     public const int MaxManifestBytes = 64 * 1024 * 1024;
+    private static readonly JsonSerializerOptions ManifestJson = new(JsonDefaults.Indented) { RespectNullableAnnotations = true };
 
     /// <summary>Parses and validates manifest bytes; throws <see cref="SanovaException"/> on any problem.</summary>
     public static ContentManifest Parse(byte[] bytes)
@@ -102,7 +115,9 @@ public static class ManifestLoader
         try
         {
             using var document = JsonDocument.Parse(bytes, new JsonDocumentOptions { AllowTrailingCommas = true, CommentHandling = JsonCommentHandling.Skip });
-            schemaVersion = document.RootElement.TryGetProperty("schemaVersion", out var schema) && schema.TryGetInt32(out var value) ? value : 0;
+            if (document.RootElement.ValueKind != JsonValueKind.Object) throw new JsonException("Manifest must be an object.");
+            schemaVersion = document.RootElement.TryGetProperty("schemaVersion", out var schema) &&
+                            schema.ValueKind == JsonValueKind.Number && schema.TryGetInt32(out var value) ? value : 0;
         }
         catch (JsonException ex)
         {
@@ -117,7 +132,7 @@ public static class ManifestLoader
         ContentManifest manifest;
         try
         {
-            manifest = JsonSerializer.Deserialize<ContentManifest>(bytes, JsonDefaults.Indented)
+            manifest = JsonSerializer.Deserialize<ContentManifest>(bytes, ManifestJson)
                        ?? throw new JsonException("Manifest is empty.");
         }
         catch (JsonException ex)
@@ -162,6 +177,6 @@ public static class ManifestLoader
                 ?? (package.Url is not null && Uri.TryCreate(package.Url, UriKind.Absolute, out var uri) ? [uri] : []);
         }
 
-        return new ResolvedManifest(manifest, bytes, verified, locations, release?.SourceDescription, release?.NotesMarkdown);
+        return new ResolvedManifest(manifest, bytes, verified, locations, release?.SourceDescription, release?.NotesMarkdown, signature);
     }
 }

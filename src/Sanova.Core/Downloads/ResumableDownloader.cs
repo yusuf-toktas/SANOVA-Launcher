@@ -56,6 +56,9 @@ public sealed class ResumableDownloader
 
     public async Task DownloadAsync(DownloadRequest request, IProgress<long>? progress, CancellationToken cancellationToken)
     {
+        SafePath.RejectReparsePoints(request.Destination);
+        SafePath.RejectReparsePoints(request.Destination + ".part");
+        SafePath.RejectReparsePoints(request.Destination + ".part.json");
         if (request.Sources.Count == 0)
         {
             throw SanovaException.Create(ErrorCodes.DownloadFailed, "No download source available.", ("url", "-"), ("detail", "no source"));

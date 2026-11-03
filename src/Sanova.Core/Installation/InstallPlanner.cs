@@ -247,13 +247,12 @@ public static class InstallPlanner
         });
     }
 
-    /// <summary>Cheap modification check: size, then write time, then (only if needed) a hash.</summary>
+    /// <summary>Checks ownership before destructive changes; timestamps alone cannot prove a file is unchanged.</summary>
     public static bool IsModified(string fullPath, InstalledFile record)
     {
         var info = new FileInfo(fullPath);
         if (!info.Exists) return false;
         if (info.Length != record.Size) return true;
-        if (record.LastWriteUtc is { } recorded && info.LastWriteTimeUtc == recorded) return false;
         var actual = FileHashing.Sha256FileAsync(fullPath).GetAwaiter().GetResult();
         return !FileHashing.HashEquals(actual, record.Sha256);
     }

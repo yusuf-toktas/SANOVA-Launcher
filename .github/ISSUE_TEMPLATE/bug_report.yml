@@ -22,6 +22,8 @@ body:
         1.
         2.
         3.
+    validations:
+      required: true
   - type: input
     id: launcher-version
     attributes:
@@ -35,6 +37,8 @@ body:
     attributes:
       label: Windows version
       placeholder: e.g. Windows 11 24H2
+    validations:
+      required: true
   - type: input
     id: game-version
     attributes:
@@ -47,4 +51,5 @@ body:
       label: Diagnostic report
       description: >-
         Diagnostics → "Export report…" creates a zip with your user name, computer name and
-        profile paths removed; attach it here. Or paste the text from Diagnostics → "Copy summary".
+        profile paths redacted; review it for remaining sensitive details before attaching it here.
+        Or paste the text from Diagnostics → "Copy summary" after reviewing it.

@@ -27,7 +27,7 @@
                   <TextBlock Text="{l:Tr settings.language.title}" Classes="h3" />
                   <TextBlock Text="{l:Tr settings.language.body}" Classes="small muted wrap" />
                 </StackPanel>
-                <ComboBox Grid.Column="1" ItemsSource="{Binding Languages}" SelectedItem="{Binding Language}" VerticalAlignment="Center" />
+                <ComboBox Grid.Column="1" ItemsSource="{Binding Languages}" SelectedItem="{Binding Language}" VerticalAlignment="Center" AutomationProperties.Name="{l:Tr settings.language.title}" />
               </Grid>
             </Border>
             <Border Classes="row last">
@@ -36,7 +36,7 @@
                   <TextBlock Text="{l:Tr settings.theme.title}" Classes="h3" />
                   <TextBlock Text="{l:Tr settings.theme.body}" Classes="small muted wrap" />
                 </StackPanel>
-                <ComboBox Grid.Column="1" ItemsSource="{Binding Themes}" SelectedItem="{Binding Theme}" VerticalAlignment="Center" />
+                <ComboBox Grid.Column="1" ItemsSource="{Binding Themes}" SelectedItem="{Binding Theme}" VerticalAlignment="Center" AutomationProperties.Name="{l:Tr settings.theme.title}" />
               </Grid>
             </Border>
           </StackPanel>
@@ -74,7 +74,7 @@
                   <TextBlock Text="{l:Tr settings.afterLaunch.title}" Classes="h3" />
                   <TextBlock Text="{l:Tr settings.afterLaunch.body}" Classes="small muted wrap" />
                 </StackPanel>
-                <ComboBox Grid.Column="1" ItemsSource="{Binding AfterLaunchOptions}" SelectedItem="{Binding AfterLaunch}" VerticalAlignment="Center" />
+                <ComboBox Grid.Column="1" ItemsSource="{Binding AfterLaunchOptions}" SelectedItem="{Binding AfterLaunch}" VerticalAlignment="Center" AutomationProperties.Name="{l:Tr settings.afterLaunch.title}" />
               </Grid>
             </Border>
             <Border Classes="row">
@@ -83,7 +83,7 @@
                   <TextBlock Text="{l:Tr settings.arguments.title}" Classes="h3" />
                   <TextBlock Text="{l:Tr settings.arguments.body}" Classes="small muted wrap" />
                 </StackPanel>
-                <TextBox Grid.Column="1" Text="{Binding LaunchArguments}" Width="260" VerticalAlignment="Center" Classes="mono" />
+                <TextBox Grid.Column="1" Text="{Binding LaunchArguments}" Width="260" VerticalAlignment="Center" Classes="mono" AutomationProperties.Name="{l:Tr settings.arguments.title}" />
               </Grid>
             </Border>
             <Border Classes="row last">
@@ -92,7 +92,7 @@
                   <TextBlock Text="{l:Tr settings.backupSaves.title}" Classes="h3" />
                   <TextBlock Text="{l:Tr settings.backupSaves.body}" Classes="small muted wrap" />
                 </StackPanel>
-                <ToggleSwitch Grid.Column="1" IsChecked="{Binding BackupSaves}" VerticalAlignment="Center" />
+                <ToggleSwitch Grid.Column="1" IsChecked="{Binding BackupSaves}" VerticalAlignment="Center" AutomationProperties.Name="{l:Tr settings.backupSaves.title}" />
               </Grid>
             </Border>
           </StackPanel>
@@ -110,7 +110,7 @@
                   <TextBlock Text="{l:Tr settings.parallel.title}" Classes="h3" />
                   <TextBlock Text="{l:Tr settings.parallel.body}" Classes="small muted wrap" />
                 </StackPanel>
-                <ComboBox Grid.Column="1" ItemsSource="{Binding ParallelOptions}" SelectedItem="{Binding Parallel}" MinWidth="120" VerticalAlignment="Center" />
+                <ComboBox Grid.Column="1" ItemsSource="{Binding ParallelOptions}" SelectedItem="{Binding Parallel}" MinWidth="120" VerticalAlignment="Center" AutomationProperties.Name="{l:Tr settings.parallel.title}" />
               </Grid>
             </Border>
             <Border Classes="row">
@@ -119,7 +119,7 @@
                   <TextBlock Text="{l:Tr settings.speed.title}" Classes="h3" />
                   <TextBlock Text="{l:Tr settings.speed.body}" Classes="small muted wrap" />
                 </StackPanel>
-                <ComboBox Grid.Column="1" ItemsSource="{Binding SpeedOptions}" SelectedItem="{Binding Speed}" VerticalAlignment="Center" />
+                <ComboBox Grid.Column="1" ItemsSource="{Binding SpeedOptions}" SelectedItem="{Binding Speed}" VerticalAlignment="Center" AutomationProperties.Name="{l:Tr settings.speed.title}" />
               </Grid>
             </Border>
             <Border Classes="row last">
@@ -128,7 +128,7 @@
                   <TextBlock Text="{l:Tr settings.keepCache.title}" Classes="h3" />
                   <TextBlock Text="{l:Tr settings.keepCache.body}" Classes="small muted wrap" />
                 </StackPanel>
-                <ToggleSwitch Grid.Column="1" IsChecked="{Binding KeepCache}" VerticalAlignment="Center" />
+                <ToggleSwitch Grid.Column="1" IsChecked="{Binding KeepCache}" VerticalAlignment="Center" AutomationProperties.Name="{l:Tr settings.keepCache.title}" />
               </Grid>
             </Border>
           </StackPanel>
@@ -146,7 +146,7 @@
                   <TextBlock Text="{l:Tr settings.checkContent.title}" Classes="h3" />
                   <TextBlock Text="{l:Tr settings.checkContent.body}" Classes="small muted wrap" />
                 </StackPanel>
-                <ToggleSwitch Grid.Column="1" IsChecked="{Binding CheckContentUpdates}" VerticalAlignment="Center" />
+                <ToggleSwitch Grid.Column="1" IsChecked="{Binding CheckContentUpdates}" VerticalAlignment="Center" AutomationProperties.Name="{l:Tr settings.checkContent.title}" />
               </Grid>
             </Border>
             <Border Classes="row">
@@ -155,7 +155,7 @@
                   <TextBlock Text="{l:Tr settings.checkLauncher.title}" Classes="h3" />
                   <TextBlock Text="{l:Tr settings.checkLauncher.body}" Classes="small muted wrap" />
                 </StackPanel>
-                <ToggleSwitch Grid.Column="1" IsChecked="{Binding CheckLauncherUpdates}" VerticalAlignment="Center" />
+                <ToggleSwitch Grid.Column="1" IsChecked="{Binding CheckLauncherUpdates}" VerticalAlignment="Center" AutomationProperties.Name="{l:Tr settings.checkLauncher.title}" />
               </Grid>
             </Border>
             <Border Classes="row last">
@@ -164,7 +164,7 @@
                   <TextBlock Text="{l:Tr updates.channel.title}" Classes="h3" />
                   <TextBlock Text="{l:Tr updates.channel.body}" Classes="small muted wrap" />
                 </StackPanel>
-                <ComboBox Grid.Column="1" ItemsSource="{Binding Channels}" SelectedItem="{Binding Channel}" VerticalAlignment="Center" />
+                <ComboBox Grid.Column="1" ItemsSource="{Binding Channels}" SelectedItem="{Binding Channel}" VerticalAlignment="Center" AutomationProperties.Name="{l:Tr updates.channel.title}" />
               </Grid>
             </Border>
           </StackPanel>
@@ -182,7 +182,7 @@
                   <TextBlock Text="{l:Tr settings.verbose.title}" Classes="h3" />
                   <TextBlock Text="{l:Tr settings.verbose.body}" Classes="small muted wrap" />
                 </StackPanel>
-                <ToggleSwitch Grid.Column="1" IsChecked="{Binding VerboseLogging}" VerticalAlignment="Center" />
+                <ToggleSwitch Grid.Column="1" IsChecked="{Binding VerboseLogging}" VerticalAlignment="Center" AutomationProperties.Name="{l:Tr settings.verbose.title}" />
               </Grid>
             </Border>
             <Border Classes="row">
@@ -191,7 +191,7 @@
                   <TextBlock Text="{l:Tr settings.unsupported.title}" Classes="h3" />
                   <TextBlock Text="{l:Tr settings.unsupported.body}" Classes="small muted wrap" />
                 </StackPanel>
-                <ToggleSwitch Grid.Column="1" IsChecked="{Binding AllowUnsupported}" VerticalAlignment="Center" />
+                <ToggleSwitch Grid.Column="1" IsChecked="{Binding AllowUnsupported}" VerticalAlignment="Center" AutomationProperties.Name="{l:Tr settings.unsupported.title}" />
               </Grid>
             </Border>
             <Border Classes="row">
@@ -200,7 +200,7 @@
                   <TextBlock Text="{l:Tr settings.developer.title}" Classes="h3" />
                   <TextBlock Text="{l:Tr settings.developer.body}" Classes="small muted wrap" />
                 </StackPanel>
-                <ToggleSwitch Grid.Column="1" IsChecked="{Binding DeveloperMode}" VerticalAlignment="Center" />
+                <ToggleSwitch Grid.Column="1" IsChecked="{Binding DeveloperMode}" VerticalAlignment="Center" AutomationProperties.Name="{l:Tr settings.developer.title}" />
               </Grid>
             </Border>
             <Border Classes="row" IsVisible="{Binding DeveloperMode}">
@@ -210,8 +210,8 @@
                   <TextBlock Text="{l:Tr settings.source.body}" Classes="small muted wrap" />
                 </StackPanel>
                 <Grid ColumnDefinitions="Auto,*,Auto,Auto">
-                  <ComboBox ItemsSource="{Binding SourceKinds}" SelectedItem="{Binding SourceKind}" />
-                  <TextBox Grid.Column="1" Text="{Binding SourceValue}" Margin="10,0" Classes="mono" PlaceholderText="{l:Tr settings.source.placeholder}" />
+                  <ComboBox ItemsSource="{Binding SourceKinds}" SelectedItem="{Binding SourceKind}" AutomationProperties.Name="{l:Tr settings.source.title}" />
+                  <TextBox Grid.Column="1" Text="{Binding SourceValue}" Margin="10,0" Classes="mono" PlaceholderText="{l:Tr settings.source.placeholder}" AutomationProperties.Name="{l:Tr settings.source.title}" />
                   <Button Grid.Column="2" Classes="icon" Command="{Binding BrowseSourceFolderCommand}" ToolTip.Tip="{l:Tr common.browse}" AutomationProperties.Name="{l:Tr common.browse}" Margin="0,0,8,0">
                     <PathIcon Data="{StaticResource Icon.FolderOpen}" />
                   </Button>

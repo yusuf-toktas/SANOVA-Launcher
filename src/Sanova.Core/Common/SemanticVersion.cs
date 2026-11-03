@@ -10,6 +10,9 @@ namespace Sanova.Core;
 /// </summary>
 public readonly struct SemanticVersion : IComparable<SemanticVersion>, IEquatable<SemanticVersion>
 {
+    private readonly string? _prerelease;
+    private readonly string? _build;
+
     public SemanticVersion(int major, int minor, int patch, string? prerelease = null, string? build = null)
     {
         if (major < 0 || minor < 0 || patch < 0)
@@ -19,15 +22,15 @@ public readonly struct SemanticVersion : IComparable<SemanticVersion>, IEquatabl
         Major = major;
         Minor = minor;
         Patch = patch;
-        Prerelease = prerelease ?? string.Empty;
-        Build = build ?? string.Empty;
+        _prerelease = prerelease;
+        _build = build;
     }
 
     public int Major { get; }
     public int Minor { get; }
     public int Patch { get; }
-    public string Prerelease { get; }
-    public string Build { get; }
+    public string Prerelease => _prerelease ?? string.Empty;
+    public string Build => _build ?? string.Empty;
 
     public bool IsPrerelease => Prerelease.Length > 0;
 
@@ -135,10 +138,16 @@ public readonly struct SemanticVersion : IComparable<SemanticVersion>, IEquatabl
         var right = other.Prerelease.Split('.');
         for (var i = 0; i < Math.Min(left.Length, right.Length); i++)
         {
-            var leftNumeric = long.TryParse(left[i], NumberStyles.None, CultureInfo.InvariantCulture, out var l);
-            var rightNumeric = long.TryParse(right[i], NumberStyles.None, CultureInfo.InvariantCulture, out var r);
+            var leftNumeric = left[i].All(char.IsAsciiDigit);
+            var rightNumeric = right[i].All(char.IsAsciiDigit);
             int cmp;
-            if (leftNumeric && rightNumeric) cmp = l.CompareTo(r);
+            if (leftNumeric && rightNumeric)
+            {
+                // SemVer numeric identifiers have no upper bound. Compare their digit
+                // counts before ordinal comparison rather than overflowing an integer.
+                cmp = left[i].Length.CompareTo(right[i].Length);
+                if (cmp == 0) cmp = string.CompareOrdinal(left[i], right[i]);
+            }
             else if (leftNumeric) cmp = -1;
             else if (rightNumeric) cmp = 1;
             else cmp = string.CompareOrdinal(left[i], right[i]);
