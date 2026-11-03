@@ -25,7 +25,7 @@ unconfigured; content signature enforcement remains enabled.
   are included. A legally owned original PC game will be required when content
   becomes available.
 - The portable ZIP is self-contained; extract it before running
-  `SanovaLauncher.exe`. The setup installer is also self-contained for Windows
+  `SANOVA Launcher.exe` in the extracted root folder. The setup installer is also self-contained for Windows
   x64. No separately installed .NET runtime is required by these packages.
 - Prerelease self-updates are disabled by default in the distribution settings.
   No previous public launcher exists for a real upgrade/delta test.
